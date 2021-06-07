@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Expense Tracker</title>
+    <link rel="stylesheet" href="style.css" />
+    <script
+      src="https://kit.fontawesome.com/d6ec0a10a7.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <h1>Expense Tracker</h1>
+
+    <section class="balance">
+      <h2>YOUR BALANCE</h2>
+      <p class="balance">$xxx</p>
+      <div class="account-summary">
+        <div class="income" id="income">
+          <h3>INCOME</h3>
+          <p></p>
+        </div>
+        <div class="expenses" id="expenses">
+          <h3>EXPENSES</h3>
+          <p></p>
+        </div>
+      </div>
+    </section>
+    <section class="history">
+      <h2>History</h2>
+      <div class="history-cards" id="history-cards"></div>
+    </section>
+    <section class="transaction">
+      <h2>Add new transaction</h2>
+      <form>
+        <label for="transact-text">Text:</label>
+        <input
+          type="text"
+          id="transact-text"
+          name="transact-text"
+          placeholder="Enter text..."
+        />
+        <label for="transact-amount"
+          >Amount:<br /><small
+            >(negative - expense, positive - income)</small
+          ></label
+        >
+        <input
+          type="text"
+          id="transact-amount"
+          name="transact-text"
+          placeholder="Enter text..."
+        />
+        <input type="submit" value="Submit" />
+      </form>
+    </section>
+    <script src="script.js"></script>
+  </body>
+</html>

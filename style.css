@@ -1,0 +1,95 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #fafafa;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 80vh;
+  margin: 0;
+  /* overflow: hidden; */
+  /* color: white; */
+}
+
+section {
+  width: 300px;
+}
+
+section h2 {
+  padding-bottom: 10px;
+  border-bottom: 1px solid grey;
+  text-align: left;
+  font-size: 1.25rem;
+}
+
+section.balance .account-summary {
+  display: flex;
+}
+
+.income,
+.expenses {
+  background-color: white;
+  fill: white;
+  flex-grow: 1;
+  box-shadow: 5px 5px 10px grey;
+  text-align: center;
+}
+
+.income p {
+  color: green;
+}
+
+.expenses p {
+  color: red;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+form label {
+  margin: 10px 0;
+  font-weight: 600;
+}
+
+form input[type='text'] {
+  padding: 5px;
+  outline: 0;
+  border: 1px solid lightgrey;
+}
+
+form input[type='submit'] {
+  margin: 20px 0;
+}
+
+.history-cards {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.transaction-card {
+  display: flex;
+  flex-direction: row;
+  margin: 5px 0;
+  background-color: white;
+  border-left: 2px solid grey;
+  border-top: 2px solid grey;
+  border-bottom: 2px solid grey;
+  /* border-right: 6px solid green; */
+}
+
+.transaction-card strong {
+  margin: auto;
+}
+
+.transaction-card p {
+  text-align: right;
+  flex-grow: 1;
+  justify-content: center;
+  margin: 10px 0;
+}
