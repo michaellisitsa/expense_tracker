@@ -2,16 +2,38 @@
   box-sizing: border-box;
 }
 
+html {
+  height: 100%;
+}
+
 body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.container {
   background-color: #fafafa;
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  position: relative;
+}
+
+/* TODO How to get the sidebar to be fixed to the top   */
+.transaction-sidebar {
+  background-color: white;
+  padding: 0 20px;
+  position: fixed;
+}
+
+main {
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 80vh;
+  /* height: 100vh; */
   margin: 0;
   /* overflow: hidden; */
   /* color: white; */
+  flex-grow: 1;
 }
 
 section {
@@ -25,8 +47,13 @@ section h2 {
   font-size: 1.25rem;
 }
 
-section.balance .account-summary {
+.balance-section .account-summary {
   display: flex;
+}
+
+.balance {
+  font-size: 24px;
+  text-align: center;
 }
 
 .income,
@@ -40,10 +67,12 @@ section.balance .account-summary {
 
 .income p {
   color: green;
+  font-size: 20px;
 }
 
 .expenses p {
   color: red;
+  font-size: 20px;
 }
 
 form {
@@ -63,7 +92,9 @@ form input[type='text'] {
 }
 
 form input[type='submit'] {
-  margin: 20px 0;
+  margin-top: 20px;
+  padding: 10px 10px;
+  border-radius: 5px;
 }
 
 .history-cards {

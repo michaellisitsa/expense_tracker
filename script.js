@@ -5,6 +5,7 @@ const historyCardsEl = document.getElementById('history-cards');
 const addTransactionForm = document.getElementById('add-transaction-form');
 const transactTextEl = document.getElementById('transact-text');
 const transactAmountEl = document.getElementById('transact-amount');
+const balanceEl = document.getElementById('balance');
 
 //Initialise arrays with transaction name and values:
 const descriptionArr = ['Income1', 'Income2', 'Expense1', 'Expenses2'];
@@ -13,12 +14,14 @@ const amountsArr = [4, 5, -5, -1];
 //Function to update account summary (income/expenses)
 function updateAccount() {
   //Update summary income / expense amounts
-  incomeEl.innerHTML = `<h3>INCOME:</h3><p>${amountsArr
+  incomeTot = amountsArr
     .filter((amount) => parseFloat(amount) >= 0)
-    .reduce((sum, record) => sum + record)}</p>`;
-  expensesEl.innerHTML = `<h3>EXPENSES:</h3><p>${amountsArr
+    .reduce((sum, record) => sum + record);
+  expensesTot = amountsArr
     .filter((amount) => parseFloat(amount) < 0)
-    .reduce((sum, record) => sum + record)}</p>`;
+    .reduce((sum, record) => sum + record);
+  incomeEl.innerHTML = `<h3>INCOME:</h3><p>${incomeTot}</p>`;
+  expensesEl.innerHTML = `<h3>EXPENSES:</h3><p>${expensesTot}</p>`;
 
   //Begin by clearing any elements within
   historyCardsEl.innerHTML = '';
@@ -37,6 +40,9 @@ function updateAccount() {
       'style',
       `border-right: 6px solid ${amount >= 0 ? 'green' : 'red'}`
     );
+
+    //Update balance
+    balanceEl.innerText = `$${incomeTot + expensesTot}`;
   });
 }
 
