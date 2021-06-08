@@ -75,6 +75,7 @@ form input[type='submit'] {
 .transaction-card {
   display: flex;
   flex-direction: row;
+  padding: 10px;
   margin: 5px 0;
   background-color: white;
   border-left: 2px solid grey;

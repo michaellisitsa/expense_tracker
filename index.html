@@ -6,10 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Expense Tracker</title>
     <link rel="stylesheet" href="style.css" />
-    <script
-      src="https://kit.fontawesome.com/d6ec0a10a7.js"
-      crossorigin="anonymous"
-    ></script>
   </head>
   <body>
     <h1>Expense Tracker</h1>
@@ -28,13 +24,9 @@
         </div>
       </div>
     </section>
-    <section class="history">
-      <h2>History</h2>
-      <div class="history-cards" id="history-cards"></div>
-    </section>
     <section class="transaction">
       <h2>Add new transaction</h2>
-      <form>
+      <form id="add-transaction-form">
         <label for="transact-text">Text:</label>
         <input
           type="text"
@@ -50,12 +42,17 @@
         <input
           type="text"
           id="transact-amount"
-          name="transact-text"
-          placeholder="Enter text..."
+          name="transact-amount"
+          placeholder="Enter amount..."
         />
         <input type="submit" value="Submit" />
       </form>
     </section>
+    <section class="history">
+      <h2>History</h2>
+      <div class="history-cards" id="history-cards"></div>
+    </section>
+
     <script src="script.js"></script>
   </body>
 </html>
