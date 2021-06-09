@@ -1,7 +1,7 @@
 //Get all variables
 const incomeEl = document.getElementById('income');
 const expensesEl = document.getElementById('expenses');
-const historyCardsEl = document.getElementById('history-cards');
+const historyCardsEl = document.getElementById('history-card-container');
 const addTransactionForm = document.getElementById('add-transaction-form');
 const transactTextEl = document.getElementById('transact-text');
 const transactAmountEl = document.getElementById('transact-amount');
@@ -30,7 +30,7 @@ function updateAccount() {
   descriptionArr.forEach((description, index) => {
     let amount = amountsArr[index];
     transaction = document.createElement('div');
-    transaction.classList = 'transaction-card';
+    transaction.classList = 'history-card';
     transaction.innerHTML = `<strong>${description}</strong>
                             <p>${amount}</p>`;
     historyCardsEl.appendChild(transaction);
