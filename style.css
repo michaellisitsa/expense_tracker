@@ -87,24 +87,22 @@ section h2 {
 
 /* Container showing income and expenses totals to be flex side-by-side display */
 .account-summary {
-  display: flex;
   box-shadow: 5px 5px 10px grey;
   border-radius: 10px;
   overflow: hidden;
   background-color: white;
-  text-align: center;
   padding: 5px 0;
 }
 
 .account-summary > .income {
   width: 50%;
   border-right: 1px solid lightgrey;
+  float: left;
 }
 
 .account-summary > .expenses {
   width: 50%;
-  /* box-shadow: 5px 5px 10px grey; */
-  /* border-radius: 0 10px 10px 0; */
+  float: left;
 }
 
 .income > p {

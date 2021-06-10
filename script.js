@@ -8,18 +8,26 @@ const transactAmountEl = document.getElementById('transact-amount');
 const balanceEl = document.getElementById('balance');
 
 //Initialise arrays with transaction name and values:
-const descriptionArr = ['Income1', 'Income2', 'Expense1', 'Expenses2'];
-const amountsArr = [4, 5, -5, -1];
+const database = [
+  {
+    description:"Income1",
+    amount:4,
+  },
+  {
+    description:"Income1",
+    amount:-3,
+  }
+]
 
 //Function to update account summary (income/expenses)
 function updateAccount() {
   //Update summary income / expense amounts
-  incomeTot = amountsArr
-    .filter((amount) => parseFloat(amount) >= 0)
-    .reduce((sum, record) => sum + record);
-  expensesTot = amountsArr
-    .filter((amount) => parseFloat(amount) < 0)
-    .reduce((sum, record) => sum + record);
+  incomeTot = database
+    .filter((db) => parseFloat(db.amount) >= 0)
+    .reduce((sum, record) => sum + record.amount,0);
+  expensesTot = database
+    .filter((db) => parseFloat(db.amount) < 0)
+    .reduce((sum, record) => sum + record.amount,0);
   incomeEl.innerHTML = `<h3>INCOME:</h3><p>${incomeTot}</p>`;
   expensesEl.innerHTML = `<h3>EXPENSES:</h3><p>${expensesTot}</p>`;
 
@@ -27,18 +35,18 @@ function updateAccount() {
   historyCardsEl.innerHTML = '';
 
   //Update history cards with all transactions
-  descriptionArr.forEach((description, index) => {
-    let amount = amountsArr[index];
+  database.forEach((db) => {
+    // let amount = db.amounts;
     transaction = document.createElement('div');
     transaction.classList = 'history-card';
-    transaction.innerHTML = `<strong>${description}</strong>
-                            <p>${amount}</p>`;
+    transaction.innerHTML = `<strong>${db.description}</strong>
+                            <p>${db.amount}</p>`;
     historyCardsEl.appendChild(transaction);
 
     //Based on transaction value, set border
     transaction.setAttribute(
       'style',
-      `border-right: 6px solid ${amount >= 0 ? 'green' : 'red'}`
+      `border-right: 6px solid ${db.amount >= 0 ? 'green' : 'red'}`
     );
 
     //Update balance
@@ -51,8 +59,12 @@ addTransactionForm.onsubmit = addTransaction;
 //Function to add transactions to the array, and rerun the update function.
 function addTransaction(event) {
   event.preventDefault();
-  descriptionArr.push(transactTextEl.value);
-  amountsArr.push(parseFloat(transactAmountEl.value));
+  database.push(  {
+    description:transactTextEl.value,
+    amount:parseFloat(transactAmountEl.value),
+  })
+  // descriptionArr.push(transactTextEl.value);
+  // amountsArr.push(parseFloat(transactAmountEl.value));
   updateAccount();
 }
 
