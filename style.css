@@ -1,20 +1,21 @@
-* {
+/* * {
   box-sizing: border-box;
-}
+} */
 
-html {
+/* html {
   height: 100%;
-}
+} */
 
-body {
+/* body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
+  height: 100%;
+} */
 
 /* Container wraps around both the sidebar and main */
-.container {
-  background-color: #fafafa;
+/* .container {
+  background-color: grey;
   height: 100%;
-}
+} */
 
 /* Sidebar fixed to the top left, however media query will override when < 600px */
 .sidebar {
@@ -24,6 +25,7 @@ body {
   left: 0;
   top: 0px;
   width: 300px;
+  height: 100%;
 }
 
 /* Main container including balance and history of transactions centered and offset from sidebar*/
@@ -73,6 +75,10 @@ section h2 {
   font-size: 1.25rem;
 }
 
+.balance-section {
+  margin: 15px 0 15px;
+}
+
 /* Total Net Balance to be styled in large bold text */
 .balance {
   font-size: 24px;
@@ -82,20 +88,29 @@ section h2 {
 /* Container showing income and expenses totals to be flex side-by-side display */
 .account-summary {
   display: flex;
+  box-shadow: 5px 5px 10px grey;
+  border-radius: 10px;
+  overflow: hidden;
+  background-color: white;
+  text-align: center;
+  padding: 5px 0;
 }
 
-.account-summary > .income,
+.account-summary > .income {
+  width: 50%;
+  border-right: 1px solid lightgrey;
+}
+
 .account-summary > .expenses {
-  background-color: white;
-  fill: white;
-  flex-grow: 1;
-  box-shadow: 5px 5px 10px grey;
-  text-align: center;
+  width: 50%;
+  /* box-shadow: 5px 5px 10px grey; */
+  /* border-radius: 0 10px 10px 0; */
 }
 
 .income > p {
   color: green;
   font-size: 20px;
+  
 }
 
 .expenses > p {
@@ -140,6 +155,7 @@ Right border set green or red in js for income vs expense */
     left: 0;
     position: static;
     width: 100%;
+    height: auto;
   }
 
   main {

@@ -1,0 +1,386 @@
+/**
+ * Global style overrides.
+ *
+ * This is the least specific selector available, and the best place
+ * to fix the box-sizing and line-height for all elements.
+ *
+ * Don't worry about the * selector here, research suggests that the
+ * performance is negligible in straight line performance cases, as
+ * long as there are no slow-effect rules are being applied (box-shadow,
+ * z-axis rotation, etc.)
+ *
+ * http://stackoverflow.com/a/13432169/495876
+ * http://www.telerik.com/blogs/css-tip-star-selector-not-that-bad
+**/
+*,
+*::before,
+*::after {
+    /**
+     * Rather than setting `border-box` on every element we can just
+     * inherit from it's parent.
+     *
+     * This is the currently suggested "best-practice" from:
+     * https://css-tricks.com/inheriting-box-sizing-probably-slightly-better-best-practice/
+     *
+     * `box-sizing` doesn't naturally support inherit, but ss specified
+     * in CSS Values and Units Level 3 [CSS3VAL], all CSS properties can
+     * accept these values.
+     *
+     * http://www.w3.org/TR/css3-values/#common-keywords
+    **/
+    box-sizing: inherit;
+
+    /**
+     * Inherit the line height, so we can reset the line-height for all
+     * elements to 1.
+     *
+     * This allows us to use inline-block elements inside a parent without
+     * the default line-height (~1.2-1.5 depending on the browser) adding
+     * extra space around the boxes.
+    **/
+    line-height: inherit;
+
+    /**
+     * Remove the grey hightlight the appears on elements when they are selected
+     * on iOS. Confirmed this is still an issue with iOS 8+, mostly only on the
+     * long tap, FastClick seems to have the rest under control.
+    **/
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+
+    /**
+     * So in the spec:
+     *
+     *    http://www.w3.org/TR/CSS2/box.html#border-width-properties
+     *
+     * Borders of all elements have the initial value of `medium` this causes
+     * unexpected behaviour if you only set the style and not the width.
+     *
+     * Becuase it applied to all elements we're going to put it here.
+    **/
+    border: 0;
+}
+
+/**
+ * The rest of these styles are to reset the tags to look as plain as possible
+ * with the odd exception that makes sense (b/strong tags should be bold)
+ *
+ * A lot of this was found through trial and error accross browsers, but reflects
+ * basically what it found in existing reset style sheets.
+**/
+html {
+    /**
+     * Make sure the document fills the available space on the page. Without
+     * this the body can't fill the available space in of the window.
+    **/
+    width: 100%;
+    height: 100%;
+
+    /* Set the box-sizing so everything else can inherit from it. */
+    box-sizing: border-box;
+}
+
+body {
+    /**
+     * Make the body fill the available space in the window by default, this
+     * will make sure any backgrounds, etc. will appear as the whole window
+     * if the content doesn't fill more than one screen.
+    **/
+    width: 100%;
+    height: 100%;
+
+    /* Overrides the 8px margin added to the body by most browsers by default. */
+    margin: 0;
+
+    /**
+     * Default the line-height to 1, this acts as a multiplier so no explicit
+     * units are required. See notes above regarding why.
+     *
+     * This defaults to (~1.2-1.5 depending on the browser) when set to `normal`
+     * so it's difficult to do maths with that value in SCSS. Atleast if this
+     * is standardized we have a place to start.
+    **/
+    line-height: 1;
+
+    /* Reset the body font size to 1rem, just to be safe. */
+    font-size: 1rem;
+    font-family: "Open Sans", sans-serif;
+    font-weight: 400;
+
+    /**
+     * Make the body the relative parent for position: absolute elements.
+     * This allows height: 100% to mean the full height of the body, rather than just the viewport.
+    **/
+    position: relative;
+
+    background: #eeeeee;
+}
+
+pre {
+    /**
+     * Don't mind this funny looking font-family rule, it's here to prevent some
+     * browsers from automatically reducing the font-size to 13px (0.825em). The
+     * confirmed culprit at the moment in WebKit browsers, everything else seems
+     * to respond correctly with the inherited font-size from the body.
+     *
+     *      http://code.stephenmorley.org/html-and-css/fixing-browsers-broken-monospace-font-handling/
+    **/
+    font-family: monospace, monospace;
+    margin: 0;
+}
+b,
+strong {
+    /**
+     * Browsers default this to bolder by default, this increases the font-weight
+     * by 100. We don't load `Open Sans` at 500 so let's just explicitly make it
+     * bold.
+    **/
+    font-weight: 700;
+}
+
+sub {
+    /* Default the font-size to .5em because it's varies browser to browsers. */
+    font-size: 0.75em;
+    vertical-align: sub;
+
+    /**
+     * We need to reduce the line-height to 0 so that the sub tag doesn't increase
+     * the line-height of it's parent. This doesn't affect the display of the actual
+     * tag at all.
+    **/
+    line-height: 0;
+}
+sup {
+    /* Default the font-size to .5em because it's varies browser to browsers. */
+    font-size: 0.75em;
+    vertical-align: super;
+
+    /**
+     * We need to reduce the line-height to 0 so that the sub tag doesn't increase
+     * the line-height of it's parent. This doesn't affect the display of the actual
+     * tag at all.
+    **/
+    line-height: 0;
+}
+
+hr {
+    /**
+     * Default border on the `hr` element is 1px inset. This give a bevelled look on
+     * the border and also defaults it to 2px tall (top and bottom border).
+    **/
+    border: 0;
+    border-bottom: 1px solid;
+
+    /**
+     * Inherit the color of the parents text. By default the browser uses color as
+     * the default border color. Also browsers default the color of `hr` elements
+     * to #808080 (grey)
+    **/
+    color: inherit;
+
+    margin: 0;
+}
+
+table {
+    border-spacing: 0;
+    border-collapse: collapse;
+    border-color: inherit;
+}
+th,
+caption {
+    /**
+     * Remove the default bold font weight, instead just inherit from the
+     * table.
+    **/
+    font-weight: inherit;
+    text-align: left;
+}
+
+/**
+ * Remove the margin off all the various block elements that have default
+ * margins on them. Headings are also included, but are dealt with separately
+ * below.
+**/
+blockquote,
+form,
+ol,
+ul,
+pre,
+p {
+    margin: 0;
+}
+
+/**
+ * Elements that will have text in them need their line-height set back to 1.4
+ * to allow space between lines. Headings are also included, but are dealt with
+ * separately below.
+**/
+blockquote,
+label,
+p,
+li {
+    line-height: 1.5;
+}
+
+/**
+ * Minimal reset for form elements. These make the default form elements look
+ * as close to any other block/inline element. From there they can be built back
+ * up without worrying about browser inconsistencies.
+**/
+button {
+    display: block;
+    width: 100%;
+    border: 0;
+    padding: 0;
+    margin: 0;
+    font: inherit;
+    color: inherit;
+    background: none;
+    cursor: pointer;
+    text-align: left;
+}
+
+/**
+ * Remove this crap from Firefox. It adds a border to the content if the
+ * user focuses on it.
+ *
+ * It also gets in the way when trying to make things have actual size.
+**/
+button::-moz-focus-inner {
+    border: 0;
+    padding: 0;
+}
+
+input,
+select,
+textarea {
+    /**
+     * Various parts of border/padding/margin causes browser to display
+     * elements with some sort of built-in OS looking style, best to
+     * just remove them all.
+    **/
+    border: 0;
+    padding: 0;
+    margin: 0;
+
+    /**
+     * Make sure we inherit the font, the textarea likes to default to a
+     * fixed-width font.
+    **/
+    font: inherit;
+    color: inherit;
+
+    /**
+     * Default the line-height to 1.5 for any elements that will by default
+     * have text content in them, as we overriden them by the default 1 line
+     * height.
+    **/
+    line-height: 1.5;
+
+    /**
+     * Default to white background by default as this is most likely what
+     * you actually wanted.
+    **/
+    background: white;
+
+    /**
+     * This hasn't been implemented correctly in any browser yet, but may in
+     * the future. This should by default remove any OS-related default styles
+     *
+     * Previous implimentations have been dropped from the CSS3 spec, but has
+     * been drafted in the CSS4-UI spec:
+     *
+     *      https://drafts.csswg.org/css-ui-4/#appearance-switching
+    **/
+    appearance: none;
+
+    /**
+     * Inputs should be block elements that take up the witdth of the parent
+     * as a default.
+    **/
+    display: block;
+    width: 100%;
+}
+
+select:-moz-focusring {
+    color: transparent;
+    text-shadow: 0 0 0 #000;
+}
+option {
+    /**
+     * For some reason Chrome has added extra padding and a min-height
+     * to all options. Let's remove that
+    **/
+    padding: 0;
+    min-height: initial;
+
+    /**
+     * IE11 doesn't display options as block by default, let's make it
+     * match the other browsers.
+    **/
+    display: block;
+}
+
+ul,
+ol {
+    list-style-type: none;
+    padding: 0;
+}
+ul.reset {
+    list-style-type: disc;
+    padding-left: 1.5em;
+}
+ol.reset {
+    list-style-type: decimal;
+    padding-left: 1.5em;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    /**
+     * Remove the default bold font weight, instead just inherit from the
+     * parent.
+    **/
+    font-weight: inherit;
+    text-align: inherit;
+
+    /**
+     * Default the line-height to 1.5 for any elements that will by default
+     * have text content in them, as we overriden them by the default 1 line
+     * height.
+    **/
+    line-height: 1.5;
+
+    /**
+     * Remove the margin off all the various block elements that have default
+     * margins on them.
+    **/
+    margin: 0;
+
+    /**
+     * Inherit the default font-size, this will make all the heading styles
+     * look the same.
+    **/
+    font-size: inherit;
+}
+/* Heading font size overrides. */
+h1 {
+    font-size: 2em;
+}
+h2 {
+    font-size: 2em;
+}
+h3 {
+    font-size: 1.5em;
+}
+h4 {
+    font-size: 1.25em;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
