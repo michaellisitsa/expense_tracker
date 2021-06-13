@@ -9,52 +9,53 @@
     <link rel="stylesheet" href="reset.css" />
   </head>
   <body>
-      <div class="sidebar">
-        <h2>Add new transaction</h2>
-        <form id="add-transaction-form" class="add-transaction-form">
-          <label for="transact-text">Text:</label>
-          <input
-            type="text"
-            id="transact-text"
-            name="transact-text"
-            placeholder="Enter text..."
-          />
-          <label for="transact-amount"
-            >Amount:<br /><small
-              >(negative - expense, positive - income)</small
-            ></label
-          >
-          <input
-            type="text"
-            id="transact-amount"
-            name="transact-amount"
-            placeholder="Enter amount..."
-          />
-          <input type="submit" value="Submit" />
-        </form>
-      </div>
+    <div class="sidebar">
+      <h2>Add new transaction</h2>
+      <form id="add-transaction-form" class="add-transaction-form">
+        <label for="transact-text">Text:</label>
+        <input
+          type="text"
+          id="transact-text"
+          name="transact-text"
+          placeholder="Enter text..."
+        />
+        <label for="transact-amount"
+          >Amount:<br /><small
+            >(negative - expense, positive - income)</small
+          ></label
+        >
+        <input
+          type="text"
+          id="transact-amount"
+          name="transact-amount"
+          placeholder="Enter amount..."
+        />
+        <div class="radio" id="radio"></div>
+        <input type="submit" value="Submit" />
+      </form>
+    </div>
 
-      <main>
-        <section class="balance-section">
-          <h2>YOUR BALANCE</h2>
-          <p id="balance" class="balance"></p>
-          <div class="account-summary">
-            <div class="income" id="income">
-              <h3>INCOME</h3>
-              <p></p>
-            </div>
-            <div class="expenses" id="expenses">
-              <h3>EXPENSES</h3>
-              <p></p>
-            </div>
+    <main>
+      <section class="balance-section">
+        <h2>YOUR BALANCE</h2>
+        <p id="balance" class="balance"></p>
+        <div class="account-summary">
+          <div class="income" id="income">
+            <h3>INCOME</h3>
+            <p></p>
           </div>
-        </section>
-        <section class="history-section">
-          <h2>HISTORY</h2>
-          <div class="history-card-container" id="history-card-container"></div>
-        </section>
-      </main>
+          <div class="expenses" id="expenses">
+            <h3>EXPENSES</h3>
+            <p></p>
+          </div>
+        </div>
+      </section>
+      <section class="history-section">
+        <h2>HISTORY</h2>
+        <div class="history-card-container" id="history-card-container"></div>
+      </section>
+    </main>
 
-      <script src="script.js"></script>
+    <script src="script.js"></script>
   </body>
 </html>
