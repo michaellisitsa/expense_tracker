@@ -65,6 +65,34 @@ form > label {
   font-weight: 600;
 }
 
+.hidden {
+  display: none;
+}
+
+.error-message {
+  font-size: 0.85rem;
+  color: red;
+}
+
+/* Validation icons styling */
+.icon {
+  width: 24px;
+  height: 24px;
+  /* position: absolute; */
+  top: 32px;
+  right: 5px;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.icon-success {
+  fill: green;
+}
+
+.icon-error {
+  fill: red;
+}
+
 form > input[type='text'] {
   padding: 5px;
   outline: 0;
