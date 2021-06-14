@@ -1,3 +1,5 @@
+import FormValidator from './validation.js';
+
 //Get all variables
 const incomeEl = document.getElementById('income');
 const expensesEl = document.getElementById('expenses');
@@ -8,16 +10,21 @@ const transactAmountEl = document.getElementById('transact-amount');
 const balanceEl = document.getElementById('balance');
 const radioContainerEl = document.getElementById('radio');
 
+const fields = ['transact-text', 'transact-amount'];
+
+const validator = new FormValidator(addTransactionForm, fields);
+validator.initialize();
+
 //Initialise arrays to be connected to database later
 const database = [];
 
 //Function to update account summary (income/expenses)
 function updateAccount() {
   //Update summary income / expense amounts
-  incomeTot = database
+  const incomeTot = database
     .filter((db) => parseFloat(db.amount) >= 0)
     .reduce((sum, record) => sum + record.amount, 0);
-  expensesTot = database
+  const expensesTot = database
     .filter((db) => parseFloat(db.amount) < 0)
     .reduce((sum, record) => sum + record.amount, 0);
   incomeEl.innerHTML = `<h3>INCOME:</h3><p>${incomeTot}</p>`;
@@ -29,7 +36,7 @@ function updateAccount() {
   //Update history cards with all transactions
   database.forEach((db) => {
     // let amount = db.amounts;
-    transaction = document.createElement('div');
+    const transaction = document.createElement('div');
     transaction.classList = 'history-card';
     transaction.innerHTML = `<strong>${db.description}</strong>
                             <p>${db.amount}</p>`;
@@ -97,7 +104,7 @@ function setAttributes(el, attrs) {
 }
 
 function createExpenseType(expense) {
-  expenseInputEl = document.createElement('input');
+  const expenseInputEl = document.createElement('input');
   setAttributes(expenseInputEl, {
     class: 'radio__input',
     value: expense.value,
@@ -105,7 +112,7 @@ function createExpenseType(expense) {
     name: 'expense_type',
     id: expense.id,
   });
-  expenseLabelEl = document.createElement('label');
+  const expenseLabelEl = document.createElement('label');
   setAttributes(expenseLabelEl, {
     for: expense.id,
     class: 'radio__label',

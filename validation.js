@@ -114,8 +114,4 @@ class FormValidator {
   }
 }
 
-const form = document.querySelector('#add-transaction-form');
-const fields = ['transact-text', 'transact-amount'];
-
-const validator = new FormValidator(form, fields);
-validator.initialize();
+export default FormValidator;
