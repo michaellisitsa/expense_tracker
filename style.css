@@ -105,6 +105,10 @@ form > input[type='submit'] {
   border-radius: 5px;
 }
 
+form > input[type='submit']:disabled {
+  color: grey;
+}
+
 /* Sections within main are stretched, however media query will override when < 600px */
 section {
   width: 80%;

@@ -17,37 +17,58 @@ class FormValidator {
 
     this.form.addEventListener('submit', (e) => {
       e.preventDefault();
-      self.fields.forEach((field) => {
-        const input = document.querySelector(`#${field}`);
-        self.validateFields(input);
-      });
+      // get a list of input elements with validation, and then check if any of them have an errorState
+      let error = self.fields
+        .map((field) => document.querySelector(`#${field}`))
+        .some((element) => self.validateFields(element) === true);
     });
   }
 
   validateOnEntry() {
     let self = this;
-    this.fields.forEach((field) => {
-      const input = document.querySelector(`#${field}`);
 
+    function submitEnabled() {
+      let error = self.fields
+        .map((field) => document.querySelector(`#${field}`))
+        .some((element) => self.validateFields(element) === true);
+      console.log(error);
+      const submitEl = document.getElementById('submit');
+      if (error) {
+        submitEl.setAttribute('disabled', '');
+      } else if (!error && submitEl.hasAttribute('disabled')) {
+        submitEl.removeAttribute('disabled');
+      }
+    }
+
+    self.fields.forEach((field) => {
+      const input = document.querySelector(`#${field}`);
       input.addEventListener('input', (event) => {
-        self.validateFields(input);
+        submitEnabled();
       });
     });
   }
 
   validateFields(field) {
+    let errorState = false;
+
     // Check presence of values
-    if (field.value.trim() === '') {
-      this.setStatus(
-        field,
-        `${field.previousElementSibling.innerText} cannot be blank`,
-        'error'
-      );
-    } else {
-      this.setStatus(field, null, 'success');
+    if (field.id === 'transact-text') {
+      if (field.value.trim() === '') {
+        this.setStatus(
+          field,
+          `${field.previousElementSibling.innerText} cannot be blank`,
+          'error'
+        );
+        errorState = true;
+      } else {
+        this.setStatus(field, null, 'success');
+      }
     }
 
     // check that it is a number
+    // Note that let and const are scoped within if statements,
+    // hence why it wasn't working to redeclare errorState using let
+    // https://www.sitepoint.com/demystifying-javascript-variable-scope-hoisting/
     if (field.id === 'transact-amount') {
       if (field.value.trim() === '') {
         this.setStatus(
@@ -55,12 +76,15 @@ class FormValidator {
           `${field.previousElementSibling.innerText} cannot be blank`,
           'error'
         );
+        errorState = true;
       } else if (isNaN(field.value)) {
         this.setStatus(field, 'Please enter a number', 'error');
+        errorState = true;
       } else {
         this.setStatus(field, null, 'success');
       }
     }
+    return errorState;
   }
 
   setStatus(field, message, status) {
