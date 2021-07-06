@@ -51,6 +51,8 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "expensetracker.core",
+    # local
+    "expensetracker.users",
 ]
 
 MIDDLEWARE = [
@@ -122,6 +124,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTH_USER_MODEL = "users.User"
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
@@ -148,4 +151,4 @@ STATIC_URL = "/static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Django heroku modifies the above settings in place by modifying the locals.
-django_heroku.settings(locals())
+django_heroku.settings(locals(), secret_key=False)
