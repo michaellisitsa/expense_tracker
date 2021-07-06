@@ -21,7 +21,7 @@ import environ
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-env = environ.Env(DEBUG=(bool, False))
+env = environ.Env(DEBUG=(bool, False), DEBUG_TOOLBAR=(bool, False))
 
 # read the .env file
 env_file = os.path.join(BASE_DIR, ".env")
@@ -34,8 +34,9 @@ environ.Env.read_env(env_file)
 # Secret key kept in .env file
 SECRET_KEY = env("SECRET_KEY")
 
-# If I run it locally Debug will be set to False
+# If I run it locally Debug will be set to True
 DEBUG = env("DEBUG")
+DEBUG_TOOLBAR = env("DEBUG_TOOLBAR")
 
 ALLOWED_HOSTS = []
 
@@ -61,6 +62,15 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
+if DEBUG and DEBUG_TOOLBAR:
+    # Enable the debug toolbar only in debug mode.
+    INSTALLED_APPS.append("debug_toolbar")
+    MIDDLEWARE.insert(
+        0,
+        "debug_toolbar.middleware.DebugToolbarMiddleware",
+    )
+    INTERNAL_IPS = ["127.0.0.1"]
 
 ROOT_URLCONF = "project.urls"
 
