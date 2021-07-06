@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     "allauth.account",  # new
     "allauth.socialaccount",  # new
     # local
+    "expensetracker.expenses",
     "expensetracker.users",
 ]
 
@@ -84,7 +85,7 @@ ROOT_URLCONF = "project.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [os.path.join(BASE_DIR, "templates")],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -130,6 +131,10 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 AUTH_USER_MODEL = "users.User"
+
+
+LOGIN_REDIRECT_URL = "core:app"
+ACCOUNT_LOGOUT_REDIRECT_URL = "core:index"
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/

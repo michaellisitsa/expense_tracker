@@ -18,7 +18,9 @@ from django.urls import include, path
 from django.contrib import admin
 
 urlpatterns = [
+    path("", include("expensetracker.core.urls")),
     path("admin/", admin.site.urls),
+    path("accounts/", include("allauth.urls")),
 ]
 
 if settings.DEBUG:
