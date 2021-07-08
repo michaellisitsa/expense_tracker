@@ -6,7 +6,10 @@
 {% if user.is_authenticated %} Hi {{ user.email }}!
 <body>
   <div class="sidebar">
-    <p><a href="{% url 'account_logout' %}">Log Out</a></p>
+    <form method="POST" action="{% url 'account_logout' %}">
+      {% csrf_token %}
+      <button type="submit">Log Out</button>
+    </form>
     <h2>Add new transaction</h2>
     <form id="add-transaction-form" class="add-transaction-form">
       <div class="input-group">

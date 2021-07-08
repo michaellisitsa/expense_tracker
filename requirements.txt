@@ -40,6 +40,8 @@ oauthlib==3.1.1
     # via requests-oauthlib
 psycopg2==2.9.1
     # via django-heroku
+psycopg2-binary==2.9.1
+    # via -r requirements.in
 pycparser==2.20
     # via cffi
 pyjwt[crypto]==2.1.0
