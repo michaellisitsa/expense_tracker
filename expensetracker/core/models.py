@@ -14,3 +14,6 @@ class Expenses(models.Model):
     description = models.CharField(max_length=100)
     cost = models.DecimalField(max_digits=8, decimal_places=2)
     category = models.CharField(max_length=30, choices=CATEGORY_CHOICES)
+
+    def __str__(self):
+        return f"{self.description} ${self.cost:.2f}"
