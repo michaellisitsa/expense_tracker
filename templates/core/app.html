@@ -6,7 +6,7 @@
 {% if user.is_authenticated %} Hi {{ user.email }}!
 <body>
   <div class="sidebar">
-    <form action="/success/" method="post">
+    <form method="post">
       {% csrf_token %} {{ form }}
       <input type="submit" value="Submit" />
     </form>
@@ -68,7 +68,6 @@
   <main>
     <section class="balance-section">
       <h2>YOUR BALANCE</h2>
-      <p>Test transaction here {{filtered_description}}</p>
       <p id="balance" class="balance"></p>
       <div class="account-summary">
         <div class="income" id="income">
@@ -83,10 +82,19 @@
     </section>
     <section class="history-section">
       <h2>HISTORY</h2>
-      <div class="history-card-container" id="history-card-container"></div>
+      <div class="history-card-container" id="history-card-container">
+        {% for card in filtered_description %}
+        <div class="history-card">
+          <strong>{{card.description}}</strong>
+          <p>${{card.cost}}</p>
+        </div>
+        {% endfor %}
+      </div>
     </section>
   </main>
+  {% comment %}
   <script src="{% static 'app/script.js' %}"></script>
+  {% endcomment %}
 </body>
 {% else %}
 <p>You are not logged in</p>
