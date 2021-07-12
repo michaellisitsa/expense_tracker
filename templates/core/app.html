@@ -1,4 +1,4 @@
-{% load static %}
+{% load static %} {% load myfilters %}
 
 <link rel="stylesheet" type="text/css" href="{% static 'app/style.css' %}" />
 <link rel="stylesheet" type="text/css" href="{% static 'app/reset.css' %}" />
@@ -7,7 +7,15 @@
 <body>
   <div class="sidebar">
     <form method="post">
-      {% csrf_token %} {{ form }}
+      {% csrf_token %} {{ form.non_field_errors }}
+      <div class="fieldWrapper">
+        <label for="id_description">Description</label>
+        {{form.description}}
+        <label for="id_cost">Amount:</label>
+        {{form.cost}} {{ form.category.errors }} {{ form.category.label_tag }}
+        {{ form.category|addclass:'radio__label' }}
+        <span class="helptext">{{ form.category.help_text }}</span>
+      </div>
       <input type="submit" value="Submit" />
     </form>
     <form method="POST" action="{% url 'account_logout' %}">

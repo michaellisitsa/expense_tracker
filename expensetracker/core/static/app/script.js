@@ -127,15 +127,19 @@ const radioContainerEl = document.getElementById('radio');
 
 const fields = ['transact-text', 'transact-amount'];
 
-const validator = new FormValidator(addTransactionForm, fields);
-validator.initialize();
+/* Disable validator code and rely only on Django form validation on Submit*/
+// const validator = new FormValidator(addTransactionForm, fields);
+// validator.initialize();
 
 //Initialise arrays to be connected to database later
 const database = [];
 
 //Function to update account summary (income/expenses)
 function updateAccount() {
-  //Update summary income / expense amounts
+  /* Disable front-end code to update the list from a database.
+  Instead use Django */
+
+  // //Update summary income / expense amounts
   const incomeTot = database
     .filter((db) => parseFloat(db.amount) >= 0)
     .reduce((sum, record) => sum + record.amount, 0);
@@ -145,30 +149,31 @@ function updateAccount() {
   incomeEl.innerHTML = `<h3>INCOME:</h3><p>${incomeTot}</p>`;
   expensesEl.innerHTML = `<h3>EXPENSES:</h3><p>${expensesTot}</p>`;
 
-  //Begin by clearing any elements within
+  // //Begin by clearing any elements within
   historyCardsEl.innerHTML = '';
 
-  //Update history cards with all transactions
+  // //Update history cards with all transactions
   database.forEach((db) => {
-    // let amount = db.amounts;
+    // //let amount = db.amounts;
     const transaction = document.createElement('div');
     transaction.classList = 'history-card';
     transaction.innerHTML = `<strong>${db.description}</strong>
                             <p>${db.amount}</p>`;
     historyCardsEl.appendChild(transaction);
 
-    //Based on transaction value, set border
+    // //Based on transaction value, set border
     transaction.setAttribute(
       'style',
       `border-right: 6px solid ${db.amount >= 0 ? 'green' : 'red'}`
     );
 
-    //Update balance
+    // //Update balance
     balanceEl.innerText = `$${incomeTot + expensesTot}`;
   });
 }
 
-addTransactionForm.onsubmit = addTransaction;
+/* Disable event listener on the form, instead use Django approach*/
+// addTransactionForm.onsubmit = addTransaction;
 
 //Function to add transactions to the array, and rerun the update function.
 function addTransaction(event) {

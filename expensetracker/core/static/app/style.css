@@ -24,6 +24,11 @@
   display: none;
 }
 
+.radio__label input[type='radio']:checked {
+  background: #006b56;
+}
+
+/* This isn't working anymore */
 .radio__input:checked + .radio__label {
   background: #006b56;
 }
