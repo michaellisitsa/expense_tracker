@@ -7,4 +7,4 @@ class ExpensesForm(ModelForm):
         model = Expenses
         fields = ["description", "cost", "category"]
         # class customisation https://colinkingswood.github.io/Model-Form-Customisation/
-        # widgets = {"category": RadioSelect(attrs={"class": ["radio__label", "radio"]})}
+        widgets = {"category": RadioSelect()}
