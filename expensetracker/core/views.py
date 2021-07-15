@@ -22,7 +22,7 @@ def app(request):
         if form.is_valid():
             # expense_instance.description = form.cleaned_data["description"]
             form.save()
-            # return HttpResponseRedirect("/submitted/")
+            return HttpResponseRedirect("/app/")
     else:
         form = ExpensesForm()
     context = {"filtered_description": filtered_description, "form": form}
