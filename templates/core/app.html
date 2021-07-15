@@ -1,11 +1,11 @@
 {% load static %} {% load myfilters %}
-
 <link rel="stylesheet" type="text/css" href="{% static 'app/style.css' %}" />
 <link rel="stylesheet" type="text/css" href="{% static 'app/reset.css' %}" />
 
 {% if user.is_authenticated %} Hi {{ user.email }}!
 <body>
   <div class="sidebar">
+    <h2>Add new transaction</h2>
     <form action="/app/" method="post">
       {% csrf_token %} {{ form.non_field_errors }}
       <div class="fieldWrapper">
@@ -18,59 +18,10 @@
       </div>
       <input type="submit" value="Submit" />
     </form>
+    {% include 'core/includes/messages.html' %}
     <form method="POST" action="{% url 'account_logout' %}">
       {% csrf_token %}
       <button type="submit">Log Out</button>
-    </form>
-    <h2>Add new transaction</h2>
-    <form id="add-transaction-form" class="add-transaction-form">
-      <div class="input-group">
-        <label for="transact-text">Text:</label>
-        <input
-          type="text"
-          id="transact-text"
-          name="transact-text"
-          placeholder="Enter text..."
-        />
-        <object
-          id="success-svg"
-          class="icon icon-success hidden"
-          data="{% static 'app/images/success.svg'%}"
-          type="image/svg+xml"
-        ></object>
-        <object
-          id="error-svg"
-          class="icon icon-error hidden"
-          data="{% static 'app/images/error.svg'%}"
-          type="image/svg+xml"
-        ></object>
-        <span class="error-message"></span>
-      </div>
-      <div class="input-group">
-        <label for="transact-amount">Amount:</label>
-        <input
-          type="text"
-          id="transact-amount"
-          name="transact-amount"
-          placeholder="Enter amount..."
-        />
-        <object
-          id="success-svg"
-          class="icon icon-success hidden"
-          data="{% static 'app/images/success.svg'%}"
-          type="image/svg+xml"
-        ></object>
-        <object
-          id="error-svg"
-          class="icon icon-error hidden"
-          data="{% static 'app/images/error.svg'%}"
-          type="image/svg+xml"
-        ></object>
-        <span class="error-message"></span>
-      </div>
-      <label>Category:</label>
-      <div class="radio" id="radio"></div>
-      <input type="submit" value="Submit" id="submit" disabled />
     </form>
   </div>
   <main>
@@ -100,11 +51,10 @@
       </div>
     </section>
   </main>
-  {% comment %}
-  <script src="{% static 'app/script.js' %}"></script>
-  {% endcomment %}
 </body>
-{% else %}
+{% comment %}
+<script src="{% static 'app/script.js' %}"></script>
+{% endcomment %} {% else %}
 <p>You are not logged in</p>
 <a href="{% url 'account_login' %}">Log In</a> |
 <a href="{% url 'account_signup' %}">Sign Up</a>

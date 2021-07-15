@@ -1,4 +1,6 @@
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic.base import TemplateView
@@ -22,7 +24,11 @@ def app(request):
         if form.is_valid():
             # expense_instance.description = form.cleaned_data["description"]
             form.save()
+            messages.success(request, "Expense submitted successfully.")
             return HttpResponseRedirect("/app/")
+            # return render(request, "core/app.html", {"form": ExpensesForm(request.GET)})
+        else:
+            messages.error(request, "Invalid form submission.")
     else:
         form = ExpensesForm()
     context = {"filtered_description": filtered_description, "form": form}

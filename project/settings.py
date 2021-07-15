@@ -50,6 +50,9 @@ INSTALLED_APPS = [
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
+    # Alert message on form submit. See
+    # https://www.csestack.org/display-messages-form-submit-django/
+    # https://www.ordinarycoders.com/blog/article/django-messages-framework
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "expensetracker.core",
