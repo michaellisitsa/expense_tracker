@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.db.models import Avg, Count, Min, Sum
 
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse, HttpResponseRedirect
@@ -16,7 +17,10 @@ class IndexView(TemplateView):
 # redirect to a login page or display an error rather than take you to the "app.html" page
 @login_required
 def app(request):
-    filtered_description = Expenses.objects.all()
+    expenses = Expenses.objects.all()
+    income_sum = expenses.filter(cost__gt=0).aggregate(Sum("cost"))
+    expenses_sum = expenses.filter(cost__lt=0).aggregate(Sum("cost"))
+    # expenses_max = Expenses.objects
     # expense_instance = get_object_or_404(Expenses, id=1)
     if request.method == "POST":
         # Create a form instance and populate with data from the request
@@ -31,5 +35,10 @@ def app(request):
             messages.error(request, "Invalid form submission.")
     else:
         form = ExpensesForm()
-    context = {"filtered_description": filtered_description, "form": form}
+    context = {
+        "expenses": expenses,
+        "income_sum": income_sum,
+        "expenses_sum": expenses_sum,
+        "form": form,
+    }
     return render(request, "core/app.html", context)
