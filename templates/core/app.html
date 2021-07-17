@@ -1,9 +1,5 @@
-{% load static %} {% load myfilters %}
-<link rel="stylesheet" type="text/css" href="{% static 'app/style.css' %}" />
-<link rel="stylesheet" type="text/css" href="{% static 'app/reset.css' %}" />
-
-{% if user.is_authenticated %} Hi {{ user.email }}!
-<body>
+{% extends "base.html" %} {% load static %} {% block content %}
+{% load myfilters %} {% if user.is_authenticated %}
   <div class="sidebar">
     <h2>Add new transaction</h2>
     <form action="/app/" method="post">
@@ -51,10 +47,9 @@
       </div>
     </section>
   </main>
-</body>
 <script src="{% static 'app/script.js' %}"></script>
 {% else %}
 <p>You are not logged in</p>
 <a href="{% url 'account_login' %}">Log In</a> |
 <a href="{% url 'account_signup' %}">Sign Up</a>
-{% endif %}
+{% endif %} {% endblock %}
