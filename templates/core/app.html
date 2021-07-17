@@ -27,15 +27,15 @@
   <main>
     <section class="balance-section">
       <h2>YOUR BALANCE</h2>
-      <p id="balance" class="balance"></p>
+      <p id="balance" class="balance">${{net_sum.cost__sum|floatformat:"0"}}</p>
       <div class="account-summary">
         <div class="income" id="income">
           <h3>INCOME</h3>
-          <p>{{income_sum.cost_sum}}</p>
+          <p>${{income_sum.cost__sum|floatformat:"0"}}</p>
         </div>
         <div class="expenses" id="expenses">
           <h3>EXPENSES</h3>
-          <p>{{expenses_sum.cost_sum}}</p>
+          <p>${{expenses_sum.cost__sum}}</p>
         </div>
       </div>
     </section>

@@ -20,6 +20,7 @@ def app(request):
     expenses = Expenses.objects.all()
     income_sum = expenses.filter(cost__gt=0).aggregate(Sum("cost"))
     expenses_sum = expenses.filter(cost__lt=0).aggregate(Sum("cost"))
+    net_sum = expenses.aggregate(Sum("cost"))
     # expenses_max = Expenses.objects
     # expense_instance = get_object_or_404(Expenses, id=1)
     if request.method == "POST":
@@ -40,5 +41,6 @@ def app(request):
         "income_sum": income_sum,
         "expenses_sum": expenses_sum,
         "form": form,
+        "net_sum": net_sum,
     }
     return render(request, "core/app.html", context)
