@@ -9,9 +9,8 @@
   height: 100%;
 }
 
-.sidebar > form > .radio {
-  /* width: 100px;
-  height: 50px; */
+/* Style the outside container for the checkboxes */
+ul.radio__label {
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -20,27 +19,43 @@
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
 }
 
-.radio__input {
-  display: none;
+/* Add padding on the individual list items */
+ul.radio__label > li {
+  padding: 8px 0;
+  position: relative;
 }
 
-.radio__input:checked + .radio__label {
-  background: #006b56;
-}
-
-.radio__label {
+ul.radio__label li {
   text-align: center;
-  padding: 8px 14px;
+  padding: 8px 0;
   font-size: 14px;
   font-family: sans-serif;
   color: #ffffff;
-  background: #009578;
   cursor: pointer;
   transition: background-color 0.1s;
 }
 
-.radio__label:not(:last-of-type) {
-  border-bottom: 1px solid #006b56;
+ul.radio__label label {
+}
+
+input.radio__label {
+  background: rgba(0, 149, 120, 0.8);
+  display: inline-block;
+  height: 100%;
+  width: 100%;
+  z-index: -1;
+  padding: 0.5em 1em;
+  padding-left: 2.6em;
+  border: 1px transparent;
+  box-sizing: border-box;
+  margin: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+input.radio__label:checked {
+  background: #006b56;
 }
 
 /* Main container including balance and history of transactions centered and offset from sidebar*/
