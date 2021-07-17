@@ -1,11 +1,13 @@
-{% load staticfiles %}
+{% load static %}
 
 <!DOCTYPE html>
 <html>
   <head>
     <title>Web Expense Tracker</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'app/style.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'app/reset.css' %}" />
   </head>
   <body>
-    {% block content %}{% endblock %}
+    {% block content %} {% endblock %}
   </body>
 </html>
