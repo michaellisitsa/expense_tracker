@@ -1,4 +1,5 @@
 {% extends "base.html" %} {% load static %} {% block content %}
+{% include "core/includes/tabs.html" with active_tab='app' %}
 {% load myfilters %} {% if user.is_authenticated %}
   <div class="sidebar">
     <h2>Add new transaction</h2>
@@ -15,10 +16,6 @@
       <input type="submit" value="Submit" />
     </form>
     <p>{% include 'core/includes/messages.html' %}</p>
-    <form method="POST" action="{% url 'account_logout' %}">
-      {% csrf_token %}
-      <button type="submit">Log Out</button>
-    </form>
   </div>
   <main>
     <section class="balance-section">
