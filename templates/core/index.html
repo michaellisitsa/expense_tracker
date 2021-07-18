@@ -1,11 +1,10 @@
 {% extends "base.html" %} {% load static %} {% block content %}
 {% include "core/includes/tabs.html" with active_tab='index' %}
 <h1>Expense Tracker</h1>
-{% if user.is_authenticated %} Hi {{user.email}}!
-<p><a href="{%url 'account_logout' %}">Log Out </a></p>
-<p><a href="{%url 'core:app' %}">Enter App </a></p>
+{% if user.is_authenticated %} 
+<h1> Hi {{user.username}}!, welcome to the Expense Tracker App </h1>
+<p><a class="welcomeBtn" href="{%url 'core:app' %}">Enter App</a></p>
 {%else%}
-<p>You are not logged in</p>
-<a href="{% url 'account_login'%}">Log In</a>
-<a href="{% url 'account_signup'%}">Sign Up</a>
+<h1> Welcome to the Expense Tracker App</h1>
+<p>Login or Sign Up to use this site!</p>
 {% endif %} {% endblock %}
