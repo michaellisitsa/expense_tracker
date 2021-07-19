@@ -249,11 +249,21 @@ Right border set green or red in js for income vs expense */
   border-bottom: 2px solid grey;
 }
 
-.history-card > strong {
+.history-card strong {
   margin: auto;
 }
 
-.history-card > p {
+.history-card span {
+  margin: auto;
+  text-align: justify
+}
+
+.history-card i {
+  margin: auto;
+  font-size: 14px;
+}
+
+.history-card p {
   text-align: right;
   flex-grow: 1;
   justify-content: center;

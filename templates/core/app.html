@@ -37,7 +37,10 @@
       <div class="history-card-container" id="history-card-container">
         {% for card in expenses %}
         <div class="history-card">
-          <strong>{{card.description}}</strong>
+          <span>
+          <strong>{{card.description}}</strong><br>
+          <i>[{{card.category}}]</i>
+        </span>
           <p>${{card.cost}}</p>
         </div>
         {% endfor %}

@@ -21,17 +21,13 @@ def app(request):
     income_sum = expenses.filter(cost__gt=0).aggregate(Sum("cost"))
     expenses_sum = expenses.filter(cost__lt=0).aggregate(Sum("cost"))
     net_sum = expenses.aggregate(Sum("cost"))
-    # expenses_max = Expenses.objects
-    # expense_instance = get_object_or_404(Expenses, id=1)
     if request.method == "POST":
         # Create a form instance and populate with data from the request
         form = ExpensesForm(request.POST)
         if form.is_valid():
-            # expense_instance.description = form.cleaned_data["description"]
             form.save()
             messages.success(request, "Expense submitted successfully.")
             return HttpResponseRedirect("/app/")
-            # return render(request, "core/app.html", {"form": ExpensesForm(request.GET)})
         else:
             messages.error(request, "Invalid form submission.")
     else:
