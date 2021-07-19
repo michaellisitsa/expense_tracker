@@ -64,13 +64,23 @@ ul.radio__label {
 
 /* Add padding on the individual list items */
 ul.radio__label > li {
-  padding: 8px 0;
+  padding: 0px 0;
   position: relative;
+}
+
+/* Clickable area https://ishadeed.com/article/clickable-area/ */
+ul.radio__label label {
+  display: block;
+  padding: 8px 10px;
+  cursor: pointer;
+  /* overflow: hidden; */
+  /* box-sizing: border-box; */
+  height: 100%;
+  width: 100%;
 }
 
 ul.radio__label li {
   text-align: center;
-  padding: 8px 0;
   font-size: 14px;
   font-family: sans-serif;
   color: #ffffff;
