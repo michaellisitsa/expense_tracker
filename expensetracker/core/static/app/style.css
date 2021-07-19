@@ -11,6 +11,7 @@
   height: var(--navHeight);
   display: block;
   position: fixed;
+  z-index: 10;
 }
 
 /* Style the links inside the navigation bar */
@@ -274,9 +275,10 @@ Right border set green or red in js for income vs expense */
 @media (max-width: 600px) {
   .sidebar {
     left: 0;
-    position: static;
+    position: sticky;
     width: 100%;
     height: auto;
+    transform: translateY(var(--navHeight))
   }
 
   main {
