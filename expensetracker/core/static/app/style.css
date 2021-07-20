@@ -87,10 +87,11 @@ ul.radio__label li {
   color: #ffffff;
   cursor: pointer;
   transition: background-color 0.1s;
+  background: rgba(0, 149, 120, 0.8);
+
 }
 
 input.radio__label {
-  background: rgba(0, 149, 120, 0.8);
   display: inline-block;
   height: 100%;
   width: 100%;
@@ -103,6 +104,9 @@ input.radio__label {
   position: absolute;
   top: 0;
   left: 0;
+  appearance: none;
+  /* Safari None appearance */
+  -webkit-appearance: none;
 }
 
 input.radio__label:checked {
