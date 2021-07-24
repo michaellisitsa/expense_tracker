@@ -2,6 +2,11 @@
   --navHeight: 50px;
 }
 
+body {
+  margin: 0;
+  background: #eee;
+}
+
 /* Nav menu styling */
 /* Add a black background color to the top navigation */
 .topnav {
@@ -11,6 +16,7 @@
   height: var(--navHeight);
   display: block;
   position: fixed;
+  top: 0;
   z-index: 10;
 }
 
@@ -23,6 +29,8 @@
   text-decoration: none;
   font-size: 17px;
   height: 100%;
+  background: #333;
+  border: 0;
 }
 
 /* Change the color of links on hover */
@@ -51,65 +59,63 @@
   bottom: 0px;
   width: 200px;
   height: calc(100% - var(--navHeight));
+  box-sizing: border-box;
 }
 
-/* Style the outside container for the checkboxes */
-ul.radio__label {
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  border-radius: 15px;
+input,
+select,
+textarea {
+  display: block
+}
+
+/* From reset.css To hide the dot points and remove the space required for them */
+ul,
+ol {
+  list-style-type: none;
+  padding: 0;
+}
+
+/* From reset.css To avoid default user agent margin on radios */
+input[type="radio"] {
+  margin: 0;
+}
+
+/* Outer container for categories checkboxes */
+ul.categoryRadioSelect {
   margin: 10px 0;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
+  border-radius: 20px;
+  box-shadow: 0 0 3px black;
+  overflow: hidden;
 }
 
-/* Add padding on the individual list items */
-ul.radio__label > li {
-  padding: 0px 0;
-  position: relative;
-}
-
-/* Clickable area https://ishadeed.com/article/clickable-area/ */
-ul.radio__label label {
+/* Instruction to create a clickable area https://ishadeed.com/article/clickable-area/
+2nd inner container for categories checkboxes */
+ul.categoryRadioSelect label {
   display: block;
-  padding: 8px 10px;
+  padding: 8px 0;
   cursor: pointer;
-  /* overflow: hidden; */
-  /* box-sizing: border-box; */
-  height: 100%;
-  width: 100%;
-}
-
-ul.radio__label li {
-  text-align: center;
-  font-size: 14px;
-  font-family: sans-serif;
+  position: relative;
   color: #ffffff;
   cursor: pointer;
-  transition: background-color 0.1s;
-  background: rgba(0, 149, 120, 0.8);
-
+  font-size: 14px;
+  text-align: center;
 }
 
-input.radio__label {
-  display: inline-block;
+input.categoryRadioSelect {
   height: 100%;
   width: 100%;
   z-index: -1;
-  padding: 0.5em 1em;
-  padding-left: 2.6em;
-  border: 1px transparent;
-  box-sizing: border-box;
-  margin: 0;
   position: absolute;
   top: 0;
   left: 0;
   appearance: none;
-  /* Safari None appearance */
   -webkit-appearance: none;
+  background: rgba(0, 149, 120, 0.8);
+
 }
 
-input.radio__label:checked {
+input.categoryRadioSelect:checked {
+  transition: background-color 0.3s;
   background: #006b56;
 }
 
@@ -205,6 +211,7 @@ section h2 {
 
 /* Container showing income and expenses totals to be flex side-by-side display */
 .account-summary {
+  box-sizing: border-box;
   box-shadow: 5px 5px 10px grey;
   border-radius: 10px;
   overflow: hidden;
@@ -213,12 +220,14 @@ section h2 {
 }
 
 .account-summary > .income {
+  box-sizing: inherit;
   width: 50%;
   border-right: 1px solid lightgrey;
   float: left;
 }
 
 .account-summary > .expenses {
+  box-sizing: inherit;
   width: 50%;
   float: left;
 }
