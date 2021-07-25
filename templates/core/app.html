@@ -10,7 +10,7 @@
         {{form.description|addclass:"text__input" }}
         <label for="id_cost">Amount:</label>
         {{form.cost|addclass:"text__input"}} {{ form.category.errors }}
-        {{form.category.label_tag }} {{ form.category|addclass:'radio__label' }}
+        {{form.category.label_tag }} {{ form.category|addclass:'categoryRadioSelect' }}
         <span class="helptext">{{ form.category.help_text }}</span>
       </div>
       <input type="submit" value="Submit" />

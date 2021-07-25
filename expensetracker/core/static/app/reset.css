@@ -320,11 +320,6 @@ option {
   display: block;
 }
 
-ul,
-ol {
-  list-style-type: none;
-  padding: 0;
-}
 ul.reset {
   list-style-type: disc;
   padding-left: 1.5em;
