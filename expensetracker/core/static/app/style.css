@@ -7,6 +7,18 @@ body {
   background: #eee;
 }
 
+/* Taken from reset.css ensure that browser doesn't apply automatic margins to text */
+h1, h2, h3, p {
+  margin: 0;
+}
+
+blockquote,
+label,
+p,
+li {
+  line-height: 1.5;
+}
+
 /* Nav menu styling */
 /* Add a black background color to the top navigation */
 .topnav {
@@ -62,10 +74,15 @@ body {
   box-sizing: border-box;
 }
 
+/* Copied from reset.css */
 input,
 select,
 textarea {
-  display: block
+  /* Makes sure that inputs are always on the next line  */
+  display: block;
+
+  /* Gives a bit more space for input fields */
+  line-height: 1.5;
 }
 
 /* From reset.css To hide the dot points and remove the space required for them */
@@ -220,6 +237,7 @@ section h2 {
 }
 
 .account-summary > .income {
+  display: block;
   box-sizing: inherit;
   width: 50%;
   border-right: 1px solid lightgrey;
@@ -227,6 +245,7 @@ section h2 {
 }
 
 .account-summary > .expenses {
+  display: block;
   box-sizing: inherit;
   width: 50%;
   float: left;
