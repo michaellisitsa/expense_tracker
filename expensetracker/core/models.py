@@ -23,6 +23,9 @@ class ExpenseCategory(models.Model):
     assignee = models.CharField(max_length=50)
     description = models.CharField(max_length=255)
     groupTransactions = models.BooleanField(default=True)
+
+    def __str__(self):
+        return f"{self.description} by {self.assignee}"
     
 
 # Expenses are grouped into time periods, related by a foreign key

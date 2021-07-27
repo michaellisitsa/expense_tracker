@@ -5,7 +5,7 @@ from django.db.models import Avg, Count, Min, Sum
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic.base import TemplateView
-from .models import Expenses
+from .models import Expenses, ExpenseTimePeriod, ExpenseCategory
 from .forms import ExpensesForm
 
 # Create your views here.
@@ -40,3 +40,11 @@ def app(request):
         "net_sum": net_sum,
     }
     return render(request, "core/app.html", context)
+
+@login_required
+def time_period (request):
+    expensesTimePeriod = ExpenseTimePeriod.objects.all()
+    context = {
+        "expenses": expensesTimePeriod
+    }
+    return render(request, "core/timePeriod.html", context)
