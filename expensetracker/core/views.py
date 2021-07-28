@@ -6,7 +6,7 @@ from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic.base import TemplateView
 from .models import Expenses, ExpenseTimePeriod, ExpenseCategory
-from .forms import ExpensesForm
+from .forms import ExpensesForm, ExpenseTimePeriodForm
 
 # Create your views here.
 class IndexView(TemplateView):
@@ -44,7 +44,19 @@ def app(request):
 @login_required
 def time_period (request):
     expensesTimePeriod = ExpenseTimePeriod.objects.all()
+    if request.method == "POST":
+        # Create a form instance and populate with data from the request
+        form = ExpenseTimePeriodForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Expense Time Period submitted successfully.")
+            return HttpResponseRedirect("/timeperiods/")
+        else:
+            messages.error(request, "Invalid form submission.")
+    else:
+        form = ExpenseTimePeriodForm()
     context = {
-        "expenses": expensesTimePeriod
+        "expenses": expensesTimePeriod,
+        "form": form,
     }
     return render(request, "core/timePeriod.html", context)

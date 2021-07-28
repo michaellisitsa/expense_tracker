@@ -2,6 +2,21 @@
 {% include "core/includes/tabs.html" with active_tab='timeperiods' %}
 {% load myfilters %} {% if user.is_authenticated %}
   <div class="sidebar">
+  <h2>Add new Expense Period</h2>
+    <form action="/timeperiods/" method="post">
+      {% csrf_token %} {{ form.non_field_errors }}
+      <div class="fieldWrapper">
+        <label for="id_description">Description</label>
+        {{form.description|addclass:"text__input" }}
+        <label for="id_dateStart">Start Date</label>
+        {{form.dateStart }}
+        <label for="id_dateEnd">End Date:</label>
+        {{form.dateEnd|addclass:"text__input" }} {{ form.category.errors }}
+        {{form.category.label_tag }} {{ form.category|addclass:'categoryRadioSelect' }}
+        <span class="helptext">{{ form.category.help_text }}</span>
+      </div>
+      <input type="submit" value="Submit" />
+    </form>
     <p>{% include 'core/includes/messages.html' %}</p>
   </div>
   <main>
