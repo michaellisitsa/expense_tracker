@@ -5,8 +5,8 @@ from django.db.models import Avg, Count, Min, Sum
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic.base import TemplateView
-from .models import Expenses, ExpenseTimePeriod, ExpenseCategory
-from .forms import ExpensesForm, ExpenseTimePeriodForm
+from .models import Expenses, ExpenseTimePeriod, ExpenseCategory, Expense
+from .forms import ExpensesForm, ExpenseTimePeriodForm, ExpenseForm
 
 # Create your views here.
 class IndexView(TemplateView):
@@ -60,3 +60,22 @@ def time_period (request):
         "form": form,
     }
     return render(request, "core/timePeriod.html", context)
+
+@login_required
+def createExpenses(request):
+    expensesPerCategory = Expense.objects.all()
+    if request.method == "POST":
+        form = ExpenseForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Expense submitted successfully.")
+            return HttpResponseRedirect("/createExpenses/")
+        else:
+            messages.error(request, "Invalid Form Submission")
+    else:
+        form = ExpenseForm()
+    context = {
+        "form": form,
+        "expenses": expensesPerCategory,
+    }
+    return render(request, "core/createExpenses.html", context)

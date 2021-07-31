@@ -1,6 +1,5 @@
-from django.forms import ModelForm, RadioSelect, DateInput
-from .models import Expenses, ExpenseTimePeriod
-
+from django.forms import ModelForm, RadioSelect, DateInput, Select
+from .models import Expenses, ExpenseTimePeriod, Expense
 
 class ExpensesForm(ModelForm):
     class Meta:
@@ -17,3 +16,8 @@ class ExpenseTimePeriodForm(ModelForm):
                 'dateStart': DateInput(format=('%d/%m/%Y'), attrs={'class':'form-control', 'placeholder':'Select a date', 'type':'date'}),
                 'dateEnd': DateInput(format=('%d/%m/%Y'), attrs={'class':'form-control', 'placeholder':'Select a date', 'type':'date'}),
 }
+class ExpenseForm(ModelForm):
+    class Meta:
+        model = Expense
+        fields = ["description", "cost", "expenseTimePeiod"]
+        widgets = {"category": Select()}
