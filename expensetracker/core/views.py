@@ -42,8 +42,12 @@ def app(request):
     return render(request, "core/app.html", context)
 
 @login_required
-def time_period (request):
-    expensesTimePeriod = ExpenseTimePeriod.objects.all()
+def time_period (request, pk=1):
+    """
+        Create a time period.
+    """
+    timePeriodPerCategory = ExpenseTimePeriod.objects.filter(category__pk=pk)
+    expenseCategory = ExpenseCategory.objects.get(id=pk)
     if request.method == "POST":
         # Create a form instance and populate with data from the request
         form = ExpenseTimePeriodForm(request.POST)
@@ -64,10 +68,11 @@ def time_period (request):
         else:
             messages.error(request, "Invalid form submission.")
     else:
-        form = ExpenseTimePeriodForm()
+        form = ExpenseTimePeriodForm(initial={'category':expenseCategory})
     context = {
-        "expenses": expensesTimePeriod,
+        "expenses": timePeriodPerCategory,
         "form": form,
+        "expenseCategory":expenseCategory,
     }
     return render(request, "core/timePeriod.html", context)
 

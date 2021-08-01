@@ -269,13 +269,20 @@ section h2 {
   /* position: relative; */
 }
 
+/* Entire card is hyperlinked, prevent text looking like a link */
+.history-card-container > a {
+  color: inherit;
+  text-decoration: none;
+  display: block;
+  margin: 5px 0;
+}
+
 /* Dynamically created cards for each added transaction
 Right border set green or red in js for income vs expense */
 .history-card {
   display: flex;
   flex-direction: row;
   padding: 10px;
-  margin: 5px 0;
   background-color: white;
   border-left: 2px solid grey;
   border-top: 2px solid grey;

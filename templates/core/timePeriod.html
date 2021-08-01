@@ -24,6 +24,7 @@
       <h2>HISTORY</h2>
       <div class="history-card-container" id="history-card-container">
         {% for card in expenses %}
+        <a href="{% url 'core:createExpensesSelected' card.id %}">
         <div class="history-card">
           <span>
           <strong>{{card.description}}</strong><br>
@@ -31,6 +32,7 @@
         </span>
           <p>{{card.dateStart}} to {{card.dateEnd}}</p>
         </div>
+        </a>
         {% endfor %}
       </div>
     </section>

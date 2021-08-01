@@ -2,7 +2,7 @@
 {% include "core/includes/tabs.html" with active_tab='createExpenses' %}
 {% if user.is_authenticated %}
   <div class="sidebar">
-  <h2>Add new Expense Period</h2>
+  <h2>Add new Expense</h2>
     <form action="/createExpenses/" method="post">
       {% csrf_token %} {{ form.non_field_errors }}
       <div class="fieldWrapper">
