@@ -2,47 +2,37 @@
 {% include "core/includes/tabs.html" with active_tab='app' %}
 {% load myfilters %} {% if user.is_authenticated %}
   <div class="sidebar">
-    <h2>Add new transaction</h2>
-    <form action="/app/" method="post">
+    <h2>Add New Category</h2>
+    <form method="post">
       {% csrf_token %} {{ form.non_field_errors }}
       <div class="fieldWrapper">
-        <label for="id_description">Description</label>
+        <label for="id_name">Name:</label>
+        {{form.name|addclass:"text__input" }}
+        <label for="id_assignee">Assignee:</label>
+        {{form.assignee|addclass:"text__input" }}
+        <label for="id_description">Description:</label>
         {{form.description|addclass:"text__input" }}
-        <label for="id_cost">Amount:</label>
-        {{form.cost|addclass:"text__input"}} {{ form.category.errors }}
-        {{form.category.label_tag }} {{ form.category|addclass:'categoryRadioSelect' }}
-        <span class="helptext">{{ form.category.help_text }}</span>
+        <label for="id_groupTransactions">Grouped Transaction:</label>
+        {{form.groupTransactions }}
       </div>
       <input type="submit" value="Submit" />
     </form>
     <p>{% include 'core/includes/messages.html' %}</p>
   </div>
   <main>
-    <section class="balance-section">
-      <h2>YOUR BALANCE</h2>
-      <p id="balance" class="balance">${{net_sum.cost__sum|floatformat:"0"}}</p>
-      <div class="account-summary">
-        <div class="income" id="income">
-          <h3>INCOME</h3>
-          <p>${{income_sum.cost__sum|floatformat:"0"}}</p>
-        </div>
-        <div class="expenses" id="expenses">
-          <h3>EXPENSES</h3>
-          <p>${{expenses_sum.cost__sum}}</p>
-        </div>
-      </div>
-    </section>
     <section class="history-section">
       <h2>HISTORY</h2>
       <div class="history-card-container" id="history-card-container">
-        {% for card in expenses %}
+        {% for card in category %}
+        <a href="{% url 'core:timeperiodsSelected' card.id %}">
         <div class="history-card">
           <span>
-          <strong>{{card.description}}</strong><br>
-          <i>[{{card.category}}]</i>
+          <strong>{{card.name}}</strong><br>
+          <i>[{{card.description}}]</i>
         </span>
-          <p>${{card.cost}}</p>
+          <p>${{card.assignee}}</p>
         </div>
+        </a>
         {% endfor %}
       </div>
     </section>

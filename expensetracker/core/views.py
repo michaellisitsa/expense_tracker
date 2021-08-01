@@ -5,8 +5,8 @@ from django.urls import reverse
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic.base import TemplateView
-from .models import Expenses, ExpenseTimePeriod, ExpenseCategory, Expense
-from .forms import ExpensesForm, ExpenseTimePeriodForm, ExpenseForm
+from .models import ExpenseTimePeriod, ExpenseCategory, Expense
+from .forms import CategoryForm, ExpenseTimePeriodForm, ExpenseForm
 
 # Create your views here.
 class IndexView(TemplateView):
@@ -17,27 +17,21 @@ class IndexView(TemplateView):
 # redirect to a login page or display an error rather than take you to the "app.html" page
 @login_required
 def app(request):
-    expenses = Expenses.objects.all()
-    income_sum = expenses.filter(cost__gt=0).aggregate(Sum("cost"))
-    expenses_sum = expenses.filter(cost__lt=0).aggregate(Sum("cost"))
-    net_sum = expenses.aggregate(Sum("cost"))
+    category = ExpenseCategory.objects.all()
     if request.method == "POST":
         # Create a form instance and populate with data from the request
-        form = ExpensesForm(request.POST)
+        form = CategoryForm(request.POST)
         if form.is_valid():
             form.save()
-            messages.success(request, "Expense submitted successfully.")
-            return HttpResponseRedirect("/app/")
+            messages.success(request, "Category created successfully.")
+            return HttpResponseRedirect(reverse('core:app'))
         else:
             messages.error(request, "Invalid form submission.")
     else:
-        form = ExpensesForm()
+        form = CategoryForm()
     context = {
-        "expenses": expenses,
-        "income_sum": income_sum,
-        "expenses_sum": expenses_sum,
+        "category": category,
         "form": form,
-        "net_sum": net_sum,
     }
     return render(request, "core/app.html", context)
 
