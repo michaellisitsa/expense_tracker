@@ -1,19 +1,19 @@
 {% extends "base.html" %} {% load static %} {% block content %}
-{% include "core/includes/tabs.html" with active_tab='app' %}
+{% include "core/includes/tabs.html" with active_tab='timeperiods' %}
 {% load myfilters %} {% if user.is_authenticated %}
   <div class="sidebar">
-    <h2>Add New Category</h2>
+  <h2>Add new Expense Period</h2>
     <form method="post">
       {% csrf_token %} {{ form.non_field_errors }}
       <div class="fieldWrapper">
-        <label for="id_name">Name:</label>
-        {{form.name|addclass:"text__input" }}
-        <label for="id_assignee">Assignee:</label>
-        {{form.assignee|addclass:"text__input" }}
-        <label for="id_description">Description:</label>
+        <label for="id_description">Description</label>
         {{form.description|addclass:"text__input" }}
-        <label for="id_groupTransactions">Grouped Transaction:</label>
-        {{form.groupTransactions }}
+        <label for="id_dateStart">Start Date</label>
+        {{form.dateStart }}
+        <label for="id_dateEnd">End Date:</label>
+        {{form.dateEnd|addclass:"text__input" }} {{ form.category.errors }}
+        {{form.category.label_tag }} {{ form.category|addclass:'categoryRadioSelect' }}
+        <span class="helptext">{{ form.category.help_text }}</span>
       </div>
       <input type="submit" value="Submit" />
     </form>
@@ -23,14 +23,14 @@
     <section class="history-section">
       <h2>HISTORY</h2>
       <div class="history-card-container" id="history-card-container">
-        {% for card in category %}
-        <a href="{% url 'core:timeperiodsSelected' card.id %}">
+        {% for card in expenses %}
+        <a href="{% url 'core:createExpensesSelected' card.id %}">
         <div class="history-card">
           <span>
-          <strong>{{card.name}}</strong><br>
-          <i>[{{card.description}}]</i>
+          <strong>{{card.description}}</strong><br>
+          <i>[{{card.category.name}}]</i>
         </span>
-          <p>${{card.assignee}}</p>
+          <p>{{card.dateStart}} to {{card.dateEnd}}</p>
         </div>
         </a>
         {% endfor %}

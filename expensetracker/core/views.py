@@ -1,12 +1,12 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.db.models import Avg, Count, Min, Sum
-
+from django.urls import reverse
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic.base import TemplateView
-from .models import Expenses
-from .forms import ExpensesForm
+from .models import ExpenseTimePeriod, ExpenseCategory, Expense
+from .forms import CategoryForm, ExpenseTimePeriodForm, ExpenseForm
 
 # Create your views here.
 class IndexView(TemplateView):
@@ -17,26 +17,81 @@ class IndexView(TemplateView):
 # redirect to a login page or display an error rather than take you to the "app.html" page
 @login_required
 def app(request):
-    expenses = Expenses.objects.all()
-    income_sum = expenses.filter(cost__gt=0).aggregate(Sum("cost"))
-    expenses_sum = expenses.filter(cost__lt=0).aggregate(Sum("cost"))
-    net_sum = expenses.aggregate(Sum("cost"))
+    category = ExpenseCategory.objects.all()
     if request.method == "POST":
         # Create a form instance and populate with data from the request
-        form = ExpensesForm(request.POST)
+        form = CategoryForm(request.POST)
         if form.is_valid():
             form.save()
-            messages.success(request, "Expense submitted successfully.")
-            return HttpResponseRedirect("/app/")
+            messages.success(request, "Category created successfully.")
+            return HttpResponseRedirect(reverse('core:app'))
         else:
             messages.error(request, "Invalid form submission.")
     else:
-        form = ExpensesForm()
+        form = CategoryForm()
     context = {
-        "expenses": expenses,
-        "income_sum": income_sum,
-        "expenses_sum": expenses_sum,
+        "category": category,
         "form": form,
-        "net_sum": net_sum,
     }
     return render(request, "core/app.html", context)
+
+@login_required
+def time_period (request, pk=1):
+    """
+        Create a time period.
+    """
+    timePeriodPerCategory = ExpenseTimePeriod.objects.filter(category__pk=pk)
+    expenseCategory = ExpenseCategory.objects.get(id=pk)
+    if request.method == "POST":
+        # Create a form instance and populate with data from the request
+        form = ExpenseTimePeriodForm(request.POST)
+        if form.is_valid():
+            # You can obtain the id of the record just created, and then pass it into the url inside HttpResponseRedirect
+            # https://stackoverflow.com/questions/41700796/how-to-get-id-in-the-url-after-submission-of-form
+            instance = form.save(commit = False)
+            instance.user = ExpenseTimePeriod.objects.get(id=request.user.id)
+            instance.save()            
+            messages.success(request, "Expense Time Period submitted successfully.")
+            # When using HttpResponseRedirect, remove action from form template
+            # https://stackoverflow.com/a/60816124/12462631
+            # You can use kwargs to pass into the url string. Refer example from
+            # https://docs.djangoproject.com/en/3.2/ref/urlresolvers/
+            # >>> reverse('admin:app_list', kwargs={'app_label': 'auth'})
+            # '/admin/auth/'
+            return HttpResponseRedirect(reverse('core:createExpensesSelected',kwargs={'pk': instance.id}))
+        else:
+            messages.error(request, "Invalid form submission.")
+    else:
+        form = ExpenseTimePeriodForm(initial={'category':expenseCategory})
+    context = {
+        "expenses": timePeriodPerCategory,
+        "form": form,
+        "expenseCategory":expenseCategory,
+    }
+    return render(request, "core/timePeriod.html", context)
+
+@login_required
+def createExpenses(request, pk=1):
+    """
+        Create an expense entry under a time period
+    """
+    expensesPerCategory = Expense.objects.filter(expenseTimePeriod__pk=pk)
+    expenseTimePeriod = ExpenseTimePeriod.objects.get(id=pk)
+    if request.method == "POST":
+        form = ExpenseForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Expense submitted successfully.")
+            return HttpResponseRedirect("/createExpenses/")
+        else:
+            messages.error(request, "Invalid Form Submission")
+    else:
+    # Use id to fill in the initial value of the foreign key
+    # https://youtu.be/MRWFg30FmZQ?t=128
+        form = ExpenseForm(initial={'expenseTimePeriod':expenseTimePeriod})
+    context = {
+        "form": form,
+        "expenses": expensesPerCategory,
+        "expenses_time_period": expenseTimePeriod,
+    }
+    return render(request, "core/createExpenses.html", context)

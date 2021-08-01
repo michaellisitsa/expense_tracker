@@ -1,0 +1,41 @@
+{% extends "base.html" %} {% load static %} {% block content %}
+{% include "core/includes/tabs.html" with active_tab='createExpenses' %}
+{% if user.is_authenticated %}
+  <div class="sidebar">
+  <h2>Add new Expense</h2>
+    <form action="/createExpenses/" method="post">
+      {% csrf_token %} {{ form.non_field_errors }}
+      <div class="fieldWrapper">
+        <label for="id_description">Description</label>
+        {{form.description}}
+        <label for="id_cost">Cost</label>
+        {{form.cost }} {{ form.expenseTimePeriod.errors }}
+        {{form.expenseTimePeriod.label_tag }} {{ form.expenseTimePeriod}}
+        <span class="helptext">{{ form.expenseTimePeriod.help_text }}</span>
+      </div>
+      <input type="submit" value="Submit" />
+    </form>
+    <p>{% include 'core/includes/messages.html' %}</p>
+  </div>
+  <main>
+    <section class="history-section">
+      <h2>HISTORY</h2>
+      <div class="history-card-container" id="history-card-container">
+        {% for card in expenses %}
+        <div class="history-card">
+          <span>
+          <strong>{{card.description}}</strong><br>
+          <i>[{{card.expenseTimePeriod.description}}]</i>
+        </span>
+          <p>${{card.cost}}</p>
+        </div>
+        {% endfor %}
+      </div>
+    </section>
+  </main>
+<script src="{% static 'app/script.js' %}"></script>
+{% else %}
+<p>You are not logged in</p>
+<a href="{% url 'account_login' %}">Log In</a> |
+<a href="{% url 'account_signup' %}">Sign Up</a>
+{% endif %} {% endblock %}
