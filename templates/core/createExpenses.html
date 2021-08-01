@@ -9,9 +9,9 @@
         <label for="id_description">Description</label>
         {{form.description}}
         <label for="id_cost">Cost</label>
-        {{form.cost }} {{ form.expenseTimePeiod.errors }}
-        {{form.expenseTimePeiod.label_tag }} {{ form.expenseTimePeiod}}
-        <span class="helptext">{{ form.expenseTimePeiod.help_text }}</span>
+        {{form.cost }} {{ form.expenseTimePeriod.errors }}
+        {{form.expenseTimePeriod.label_tag }} {{ form.expenseTimePeriod}}
+        <span class="helptext">{{ form.expenseTimePeriod.help_text }}</span>
       </div>
       <input type="submit" value="Submit" />
     </form>
@@ -25,7 +25,7 @@
         <div class="history-card">
           <span>
           <strong>{{card.description}}</strong><br>
-          <i>[{{card.expenseTimePeiod.description}}]</i>
+          <i>[{{card.expenseTimePeriod.description}}]</i>
         </span>
           <p>${{card.cost}}</p>
         </div>

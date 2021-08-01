@@ -22,7 +22,7 @@ class ExpenseTimePeriod(models.Model):
 class Expense(models.Model):
     description = models.CharField(max_length=100)
     cost = models.DecimalField(max_digits=8, decimal_places=2)
-    expenseTimePeiod = models.ForeignKey(ExpenseTimePeriod, on_delete=models.CASCADE)
+    expenseTimePeriod = models.ForeignKey(ExpenseTimePeriod, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"{self.description} ${self.cost:.2f}"

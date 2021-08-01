@@ -17,5 +17,5 @@ class ExpenseTimePeriodForm(ModelForm):
 class ExpenseForm(ModelForm):
     class Meta:
         model = Expense
-        fields = ["description", "cost", "expenseTimePeiod"]
+        fields = ["description", "cost", "expenseTimePeriod"]
         widgets = {"category": Select()}

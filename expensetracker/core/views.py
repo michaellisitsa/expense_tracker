@@ -75,8 +75,8 @@ def createExpenses(request, pk=1):
     """
         Create an expense entry under a time period
     """
-    expensesPerCategory = Expense.objects.filter(expenseTimePeiod__pk=pk)
-    expenses_time_period = ExpenseTimePeriod.objects.get(id=pk)
+    expensesPerCategory = Expense.objects.filter(expenseTimePeriod__pk=pk)
+    expenseTimePeriod = ExpenseTimePeriod.objects.get(id=pk)
     if request.method == "POST":
         form = ExpenseForm(request.POST)
         if form.is_valid():
@@ -88,10 +88,10 @@ def createExpenses(request, pk=1):
     else:
     # Use id to fill in the initial value of the foreign key
     # https://youtu.be/MRWFg30FmZQ?t=128
-        form = ExpenseForm(initial={'expenseTimePeiod':expenses_time_period})
+        form = ExpenseForm(initial={'expenseTimePeriod':expenseTimePeriod})
     context = {
         "form": form,
         "expenses": expensesPerCategory,
-        "expenses_time_period": expenses_time_period,
+        "expenses_time_period": expenseTimePeriod,
     }
     return render(request, "core/createExpenses.html", context)
