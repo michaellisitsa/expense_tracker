@@ -3,7 +3,7 @@
 {% load myfilters %} {% if user.is_authenticated %}
   <div class="sidebar">
   <h2>Add new Expense Period</h2>
-    <form method="post">
+    {% comment %} <form method="post">
       {% csrf_token %} {{ form.non_field_errors }}
       <div class="fieldWrapper">
         <label for="id_description">Description</label>
@@ -16,10 +16,16 @@
         <span class="helptext">{{ form.category.help_text }}</span>
       </div>
       <input type="submit" value="Submit" />
-    </form>
+    </form> {% endcomment %}
     <p>{% include 'core/includes/messages.html' %}</p>
   </div>
   <main>
+    <section class="expensePeriodFilterForm">
+    <form method="GET">
+      {{myFilter.form}}
+      <button type="submit">Search</button>
+      </form>
+    </section>
     <section class="history-section">
       <h2>HISTORY</h2>
       <div class="history-card-container" id="history-card-container">
