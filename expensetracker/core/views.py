@@ -37,12 +37,16 @@ def app(request):
     return render(request, "core/app.html", context)
 
 @login_required
-def time_period (request, pk=1):
+def time_period (request, pk=None):
     """
         Create a time period.
     """
-    timePeriodPerCategory = ExpenseTimePeriod.objects.filter(category__pk=pk)
-    expenseCategory = ExpenseCategory.objects.get(id=pk)
+    if pk is None:
+        timePeriodPerCategory = ExpenseTimePeriod.objects.all()
+        expenseCategory = None
+    else:
+        timePeriodPerCategory = ExpenseTimePeriod.objects.filter(category__pk=pk)
+        expenseCategory = ExpenseCategory.objects.get(id=pk)
     if request.method == "POST":
         # Create a form instance and populate with data from the request
         form = ExpenseTimePeriodForm(request.POST, prefix='add')
@@ -78,12 +82,17 @@ def time_period (request, pk=1):
     return render(request, "core/timePeriod.html", context)
 
 @login_required
-def createExpenses(request, pk=1):
+def createExpenses(request, pk=None):
     """
         Create an expense entry under a time period
     """
-    expensesPerCategory = Expense.objects.filter(expenseTimePeriod__pk=pk)
-    expenseTimePeriod = ExpenseTimePeriod.objects.get(id=pk)
+    if pk is None:
+        expensesPerCategory = Expense.objects.all()
+        expenseTimePeriod = None
+    else:
+        expensesPerCategory = Expense.objects.filter(expenseTimePeriod__pk=pk)
+        expenseTimePeriod = ExpenseTimePeriod.objects.get(id=pk)
+
     if request.method == "POST":
         form = ExpenseForm(request.POST)
         if form.is_valid():
@@ -99,6 +108,6 @@ def createExpenses(request, pk=1):
     context = {
         "form": form,
         "expenses": expensesPerCategory,
-        "expenses_time_period": expenseTimePeriod,
+        "expenseTimePeriod": expenseTimePeriod,
     }
     return render(request, "core/createExpenses.html", context)
