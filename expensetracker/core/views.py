@@ -7,6 +7,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic.base import TemplateView
 from .models import ExpenseTimePeriod, ExpenseCategory, Expense
 from .forms import CategoryForm, ExpenseTimePeriodForm, ExpenseForm
+from .filters import ExpenseTimePeriodFilter
 
 # Create your views here.
 class IndexView(TemplateView):
@@ -44,7 +45,7 @@ def time_period (request, pk=1):
     expenseCategory = ExpenseCategory.objects.get(id=pk)
     if request.method == "POST":
         # Create a form instance and populate with data from the request
-        form = ExpenseTimePeriodForm(request.POST)
+        form = ExpenseTimePeriodForm(request.POST, prefix='add')
         if form.is_valid():
             # You can obtain the id of the record just created, and then pass it into the url inside HttpResponseRedirect
             # https://stackoverflow.com/questions/41700796/how-to-get-id-in-the-url-after-submission-of-form
@@ -62,11 +63,17 @@ def time_period (request, pk=1):
         else:
             messages.error(request, "Invalid form submission.")
     else:
-        form = ExpenseTimePeriodForm(initial={'category':expenseCategory})
+        form = ExpenseTimePeriodForm(initial={'category':expenseCategory}, prefix='add')
+    
+    #Re-instantiate that variable with the filtered query set using Django-filter
+    myFilter = ExpenseTimePeriodFilter(request.GET, queryset=timePeriodPerCategory)
+    timePeriodPerCategory = myFilter.qs
+
     context = {
         "expenses": timePeriodPerCategory,
         "form": form,
-        "expenseCategory":expenseCategory,
+        "expenseCategory": expenseCategory,
+        'myFilter': myFilter,
     }
     return render(request, "core/timePeriod.html", context)
 

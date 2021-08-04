@@ -64,6 +64,7 @@ INSTALLED_APPS = [
     # local
     "expensetracker.expenses",
     "expensetracker.users",
+    "django_filters"
 ]
 
 MIDDLEWARE = [

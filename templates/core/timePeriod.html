@@ -20,6 +20,12 @@
     <p>{% include 'core/includes/messages.html' %}</p>
   </div>
   <main>
+    <section class="expensePeriodFilterForm">
+    <form method="GET">
+      {{myFilter.form}}
+      <button type="submit">Search</button>
+      </form>
+    </section>
     <section class="history-section">
       <h2>HISTORY</h2>
       <div class="history-card-container" id="history-card-container">
