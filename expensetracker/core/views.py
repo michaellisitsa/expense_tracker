@@ -3,11 +3,13 @@ from django.contrib import messages
 from django.db.models import Avg, Count, Min, Sum
 from django.urls import reverse
 from django.shortcuts import get_object_or_404, render
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.views.generic.base import TemplateView
 from .models import ExpenseTimePeriod, ExpenseCategory, Expense
 from .forms import CategoryForm, ExpenseTimePeriodForm, ExpenseForm
 from .filters import ExpenseTimePeriodFilter
+
+from django.core import serializers
 
 # Create your views here.
 class IndexView(TemplateView):
@@ -47,7 +49,7 @@ def time_period (request, pk=None):
     else:
         timePeriodPerCategory = ExpenseTimePeriod.objects.filter(category__pk=pk)
         expenseCategory = ExpenseCategory.objects.get(id=pk)
-    if request.method == "POST":
+    if request.method == "FAKE":
         # Create a form instance and populate with data from the request
         form = ExpenseTimePeriodForm(request.POST, prefix='add')
         if form.is_valid():
@@ -80,6 +82,30 @@ def time_period (request, pk=None):
         'myFilter': myFilter,
     }
     return render(request, "core/timePeriod.html", context)
+
+
+def AjaxExpensePeriod(request):
+    """
+        First attempt at an ajax request.
+        https://www.pluralsight.com/guides/work-with-ajax-django
+    """
+    # request should be ajax and method POST
+    if request.method == "POST":
+        # get the form data
+        form = ExpenseTimePeriodForm(request.POST, prefix='ajax')
+        if form.is_valid():
+            instance = form.save()
+            # serialize in new friend object in json
+            ser_instance = serializers.serialize('json', [ instance, ])
+            # send to client side.
+            return JsonResponse({"instance": ser_instance}, status=200)
+        else:
+            #Some form error occurs
+            return JsonResponse({
+                "error": form.errors
+            }, status=400)
+    # some error occured
+    return JsonResponse({"error": ""}, status=400)
 
 @login_required
 def createExpenses(request, pk=None):

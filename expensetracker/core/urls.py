@@ -8,6 +8,8 @@ urlpatterns = [
     path("app/", views.app, name="app"),
     path("timeperiods/", views.time_period, name="timeperiods"),
     path("timeperiods/<str:pk>", views.time_period, name="timeperiodsSelected"),
+    # https://www.pluralsight.com/guides/work-with-ajax-django
+    path("post/ajax/createExpense", views.AjaxExpensePeriod, name = "ajaxExpensePeriod"),
     path("createExpenses/", views.createExpenses, name="createExpenses"),
     path("createExpenses/<str:pk>", views.createExpenses, name="createExpensesSelected"),
 ]
