@@ -12,4 +12,4 @@ class ExpenseTimePeriodFilter(django_filters.FilterSet):
     note = CharFilter(field_name='description',lookup_expr='icontains')
     class Meta:
         model = ExpenseTimePeriod
-        fields = []
+        fields = ['category']
