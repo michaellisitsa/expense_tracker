@@ -11,6 +11,9 @@ from .filters import ExpenseTimePeriodFilter
 
 from django.core import serializers
 
+from rest_framework import viewsets, permissions
+from .serializers import ExpenseTimePeriodSerializer
+
 # Create your views here.
 class IndexView(TemplateView):
     template_name = "core/index.html"
@@ -137,3 +140,11 @@ def createExpenses(request, pk=None):
         "expenseTimePeriod": expenseTimePeriod,
     }
     return render(request, "core/createExpenses.html", context)
+
+class ExpenseTimePeriodViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows Expense Time Periods to be viewed or editted.
+    """
+    queryset = ExpenseTimePeriod.objects.all()
+    serializer_class = ExpenseTimePeriodSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]

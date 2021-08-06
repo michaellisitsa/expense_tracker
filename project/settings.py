@@ -64,7 +64,8 @@ INSTALLED_APPS = [
     # local
     "expensetracker.expenses",
     "expensetracker.users",
-    "django_filters"
+    "django_filters",
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -206,3 +207,12 @@ DATABASES["default"].update(db_from_env)
 # Simplified static file serving.
 # https://warehouse.python.org/project/whitenoise/
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_AUTHENTICATION_CLASSES': [],
+    'DEFAULT_PERMISSION_CLASSES': [],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10
+}
