@@ -49,7 +49,7 @@ def time_period (request, pk=None):
     else:
         timePeriodPerCategory = ExpenseTimePeriod.objects.filter(category__pk=pk)
         expenseCategory = ExpenseCategory.objects.get(id=pk)
-    if request.method == "FAKE":
+    if request.method == "POST":
         # Create a form instance and populate with data from the request
         form = ExpenseTimePeriodForm(request.POST, prefix='add')
         if form.is_valid():

@@ -7,7 +7,7 @@
 
 expensePeriodForm = document.querySelector("#ExpensePeriodForm")
 
-expensePeriodForm.onsubmit = submitForm
+// expensePeriodForm.onsubmit = submitForm
 
 function submitForm (e) {
     e.preventDefault();
