@@ -11,7 +11,7 @@ from .filters import ExpenseTimePeriodFilter
 
 from django.core import serializers
 
-from rest_framework import viewsets, permissions
+from rest_framework import viewsets, permissions, authentication
 from .serializers import ExpenseTimePeriodSerializer
 
 # Create your views here.
@@ -147,4 +147,4 @@ class ExpenseTimePeriodViewSet(viewsets.ModelViewSet):
     """
     queryset = ExpenseTimePeriod.objects.all()
     serializer_class = ExpenseTimePeriodSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.IsAuthenticated]
