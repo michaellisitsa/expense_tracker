@@ -3,7 +3,8 @@ from rest_framework import routers
 from expensetracker.core import views
 
 router = routers.DefaultRouter()
-router.register(r'expenseTimePeriodAPI', views.ExpenseTimePeriodViewSet)
+router.register(r'expenseTimePeriod', views.ExpenseTimePeriodViewSet)
+router.register(r'expenseCategory', views.ExpenseCategoryViewSet)
 
 
 app_name = "core"
@@ -16,5 +17,5 @@ urlpatterns = [
     path("post/ajax/createExpense", views.AjaxExpensePeriod, name = "ajaxExpensePeriod"),
     path("createExpenses/", views.createExpenses, name="createExpenses"),
     path("createExpenses/<str:pk>", views.createExpenses, name="createExpensesSelected"),
-    path('',include(router.urls)),
+    path('api/',include(router.urls)),
 ]

@@ -14,7 +14,7 @@ class ExpenseTimePeriod(models.Model):
     description = models.CharField(max_length=100)
     dateStart = models.DateField('dateStart')
     dateEnd = models.DateField('dateEnd')
-    category = models.ForeignKey(ExpenseCategory, on_delete=models.CASCADE)
+    category = models.ForeignKey(ExpenseCategory, on_delete=models.CASCADE, related_name='expenseTimePeriod')
 
     def __str__(self):
         return f"{self.description} {self.dateStart} to {self.dateEnd}"

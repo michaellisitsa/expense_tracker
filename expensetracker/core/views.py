@@ -8,11 +8,13 @@ from django.views.generic.base import TemplateView
 from .models import ExpenseTimePeriod, ExpenseCategory, Expense
 from .forms import CategoryForm, ExpenseTimePeriodForm, ExpenseForm
 from .filters import ExpenseTimePeriodFilter
+from .serializers import ExpenseTimePeriodSerializer, ExpenseCategorySerializer
 
 from django.core import serializers
 
-from rest_framework import viewsets, permissions, authentication
-from .serializers import ExpenseTimePeriodSerializer
+from rest_framework import viewsets, permissions, authentication, status
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 
 # Create your views here.
 class IndexView(TemplateView):
@@ -147,4 +149,12 @@ class ExpenseTimePeriodViewSet(viewsets.ModelViewSet):
     """
     queryset = ExpenseTimePeriod.objects.all()
     serializer_class = ExpenseTimePeriodSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+class ExpenseCategoryViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows Expense Time Periods to be viewed or editted.
+    """
+    queryset = ExpenseCategory.objects.all()
+    serializer_class = ExpenseCategorySerializer
     permission_classes = [permissions.IsAuthenticated]
