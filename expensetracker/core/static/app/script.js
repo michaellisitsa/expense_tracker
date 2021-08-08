@@ -29,6 +29,8 @@ data = JSON.stringify({
     groupTransactions: true,
 })
 
+// Get the cookie for the csrf token, needed for API POST requests
+// https://docs.djangoproject.com/en/dev/ref/csrf/#ajax
 function getCookie(name) {
     let cookieValue = null;
     if (document.cookie && document.cookie !== '') {
@@ -48,6 +50,10 @@ const csrftoken = getCookie('csrftoken');
 if (asyncBtn) {
     asyncBtn.onclick = asyncFormSubmit
 }
+
+// Making a post request
+// Stack Overflow:
+// https://stackoverflow.com/questions/45308153/posting-data-to-django-rest-framework-using-javascript-fetch
 function asyncFormSubmit (e) {
     fetch('http://0.0.0.0:5000/api/expenseCategory/', {
     method: 'post',
