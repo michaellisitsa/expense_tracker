@@ -3,11 +3,18 @@ from django.contrib import messages
 from django.db.models import Avg, Count, Min, Sum
 from django.urls import reverse
 from django.shortcuts import get_object_or_404, render
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.views.generic.base import TemplateView
 from .models import ExpenseTimePeriod, ExpenseCategory, Expense
 from .forms import CategoryForm, ExpenseTimePeriodForm, ExpenseForm
 from .filters import ExpenseTimePeriodFilter
+from .serializers import ExpenseTimePeriodSerializer, ExpenseCategorySerializer
+
+from django.core import serializers
+
+from rest_framework import viewsets, permissions, authentication, status
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 
 # Create your views here.
 class IndexView(TemplateView):
@@ -81,6 +88,30 @@ def time_period (request, pk=None):
     }
     return render(request, "core/timePeriod.html", context)
 
+
+def AjaxExpensePeriod(request):
+    """
+        First attempt at an ajax request.
+        https://www.pluralsight.com/guides/work-with-ajax-django
+    """
+    # request should be ajax and method POST
+    if request.method == "POST":
+        # get the form data
+        form = ExpenseTimePeriodForm(request.POST, prefix='ajax')
+        if form.is_valid():
+            instance = form.save()
+            # serialize in new friend object in json
+            ser_instance = serializers.serialize('json', [ instance, ])
+            # send to client side.
+            return JsonResponse({"instance": ser_instance}, status=200)
+        else:
+            #Some form error occurs
+            return JsonResponse({
+                "error": form.errors
+            }, status=400)
+    # some error occured
+    return JsonResponse({"error": ""}, status=400)
+
 @login_required
 def createExpenses(request, pk=None):
     """
@@ -111,3 +142,19 @@ def createExpenses(request, pk=None):
         "expenseTimePeriod": expenseTimePeriod,
     }
     return render(request, "core/createExpenses.html", context)
+
+class ExpenseTimePeriodViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows Expense Time Periods to be viewed or editted.
+    """
+    queryset = ExpenseTimePeriod.objects.all()
+    serializer_class = ExpenseTimePeriodSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+class ExpenseCategoryViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows Expense Time Periods to be viewed or editted.
+    """
+    queryset = ExpenseCategory.objects.all()
+    serializer_class = ExpenseCategorySerializer
+    permission_classes = [permissions.IsAuthenticated]
