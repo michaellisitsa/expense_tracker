@@ -6,7 +6,7 @@ from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.views.generic.base import TemplateView
 from .models import ExpenseTimePeriod, ExpenseCategory, Expense
-from .forms import CategoryForm, ExpenseTimePeriodForm, ExpenseForm
+from .forms import CategoryForm, ExpenseTimePeriodForm, ExpenseForm, CreateExpenseSet
 from .filters import ExpenseTimePeriodFilter
 from .serializers import ExpenseTimePeriodSerializer, ExpenseCategorySerializer
 
@@ -125,21 +125,32 @@ def createExpenses(request, pk=None):
         expenseTimePeriod = ExpenseTimePeriod.objects.get(id=pk)
 
     if request.method == "POST":
-        form = ExpenseForm(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Expense submitted successfully.")
-            return HttpResponseRedirect("/createExpenses/")
-        else:
-            messages.error(request, "Invalid Form Submission")
+        if "form" in request.POST:
+            form = ExpenseForm(request.POST)
+            if form.is_valid():
+                form.save()
+                messages.success(request, "Expense submitted successfully.")
+                return HttpResponseRedirect("/createExpenses/")
+            else:
+                messages.error(request, "Invalid Form Submission")
+        if "formset" in request.POST:
+            formset = CreateExpenseSet(data=request.POST)
+
+            #Check if submitted forms are valid
+            if formset.is_valid():
+                formset.save()
+                return HttpResponseRedirect("/createExpenses/")
     else:
     # Use id to fill in the initial value of the foreign key
     # https://youtu.be/MRWFg30FmZQ?t=128
         form = ExpenseForm(initial={'expenseTimePeriod':expenseTimePeriod})
+
+    formset = CreateExpenseSet(queryset=Expense.objects.none())
     context = {
         "form": form,
         "expenses": expensesPerCategory,
         "expenseTimePeriod": expenseTimePeriod,
+        "formset":formset,
     }
     return render(request, "core/createExpenses.html", context)
 
@@ -158,3 +169,5 @@ class ExpenseCategoryViewSet(viewsets.ModelViewSet):
     queryset = ExpenseCategory.objects.all()
     serializer_class = ExpenseCategorySerializer
     permission_classes = [permissions.IsAuthenticated]
+
+

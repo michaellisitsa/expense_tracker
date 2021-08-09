@@ -13,11 +13,42 @@
         {{form.expenseTimePeriod.label_tag }} {{ form.expenseTimePeriod}}
         <span class="helptext">{{ form.expenseTimePeriod.help_text }}</span>
       </div>
-      <input type="submit" value="Submit" />
+      <input type="submit" name="form" value="Submit" />
     </form>
     <p>{% include 'core/includes/messages.html' %}</p>
   </div>
   <main>
+  <section class="formset">
+  {% comment %} <table>
+    <thead>
+        {% for form in formset.forms %}
+            {% if forloop.first %}
+                {% for field in form %}
+                    <th>{{ field.label_tag }}</th>
+                {% endfor %}
+            {% endif %}
+    </thead>
+    <tbody>
+            <tr>
+                {% for field in form %}
+                    <td>{{ field }}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </tbody>
+</table> {% endcomment %}
+    <h1>Add new Expenses</h1>
+    <form id='form-container' method="POST"> 
+      {% csrf_token %}
+      {{formset.management_form}}
+      {% for form in formset %}
+      <div class="expense-formset">
+        {{form.as_p}}
+      </div>
+      {% endfor %}
+      <button type="submit" name="formset">Create Expenses</button>
+    </form>
+  </section>
     <section class="history-section">
       <h1>{{expenseTimePeriod.description}}</h1>
       <div class="history-card-container" id="history-card-container">
