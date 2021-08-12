@@ -2,7 +2,7 @@
 {% include "core/includes/tabs.html" with active_tab='createExpenses' %}
 {% if user.is_authenticated %}
   <div class="sidebar">
-  <h2>Add new Expense</h2>
+    <h2>Add new Expense</h2>
     <form action="/createExpenses/" method="post">
       {% csrf_token %} {{ form.non_field_errors }}
       <div class="fieldWrapper">
@@ -19,24 +19,6 @@
   </div>
   <main>
   <section class="formset">
-  {% comment %} <table>
-    <thead>
-        {% for form in formset.forms %}
-            {% if forloop.first %}
-                {% for field in form %}
-                    <th>{{ field.label_tag }}</th>
-                {% endfor %}
-            {% endif %}
-    </thead>
-    <tbody>
-            <tr>
-                {% for field in form %}
-                    <td>{{ field }}</td>
-                {% endfor %}
-            </tr>
-        {% endfor %}
-    </tbody>
-</table> {% endcomment %}
     <h1>Add new Expenses</h1>
     <form id='form-container' method="POST"> 
       {% csrf_token %}
@@ -46,6 +28,7 @@
         {{form.as_p}}
       </div>
       {% endfor %}
+      <button id="add-form" type="button">Add Another Expense</button>
       <button type="submit" name="formset">Create Expenses</button>
     </form>
   </section>

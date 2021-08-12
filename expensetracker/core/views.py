@@ -145,6 +145,8 @@ def createExpenses(request, pk=None):
     # https://youtu.be/MRWFg30FmZQ?t=128
         form = ExpenseForm(initial={'expenseTimePeriod':expenseTimePeriod})
 
+    # Use of formsets
+    # https://www.brennantymrak.com/articles/django-dynamic-formsets-javascript.html
     formset = CreateExpenseSet(queryset=Expense.objects.none())
     context = {
         "form": form,
