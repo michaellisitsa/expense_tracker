@@ -7,6 +7,7 @@
 
 expensePeriodForm = document.querySelector("#ExpensePeriodForm")
 asyncBtn = document.querySelector("#asyncBtn")
+asyncBtn = document.querySelector("#asyncDeleteBtn")
 
 let expenseFormset = document.querySelectorAll(".expense-formset")
 let container = document.querySelector("#form-container")
@@ -72,10 +73,28 @@ function asyncFormSubmit (e) {
       .then(res => console.log(res));
 }
 
+// Making a delete request
+
+if (asyncDeleteBtn) {
+    asyncDeleteBtn.onclick = asyncFormDelete
+}
+
+function asyncFormDelete (e) {
+    fetch('http://0.0.0.0:5000/api/expenseCategory/4', {
+    method: 'delete',
+      headers: {
+        'Accept': 'application/json, text/plain, */*',
+        'Content-Type': "application/json",
+        'X-CSRFToken': csrftoken 
+    },
+    }).then(res=>res.text())
+      .then(res => console.log(res));
+}
+
 // Functionality for adding extra entries into the formset
 let formNum = expenseFormset.length - 1 // Get the num of the last form on the page
 
-addButton.addEventListener('click',addForm)
+addButton && addButton.addEventListener('click',addForm)
 
 function addForm(e) {
     e.preventDefault()
@@ -86,7 +105,7 @@ function addForm(e) {
     formNum++ // Increment the form number
     newForm.innerHTML = newForm.innerHTML.replace(formRegex, `form-${formNum}-`)
     container.insertBefore(newForm, addButton)
-    
+
     totalForms.setAttribute('value',`${formNum+1}`) // Increment the total number of forms in the hidden input 
 
 }
