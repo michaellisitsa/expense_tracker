@@ -57,7 +57,8 @@ function asyncFormDelete (id) {
         'X-CSRFToken': csrftoken 
     },
     }).then(res=>res.text())
-      .then(res => console.log(res));
+      .then(res => console.log(res))
+      .then(() => updateDeletedUI(id));
 }
 
 // Register button by id
@@ -70,3 +71,8 @@ deleteBtns.forEach(deleteBtn => {
     }
     )
 });
+
+const updateDeletedUI = (id) => {
+    deletedCard = document.getElementById(`${id}-wrapper`)
+    deletedCard.parentNode.removeChild(deletedCard);
+}
