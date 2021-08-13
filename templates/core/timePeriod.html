@@ -41,6 +41,9 @@
           <p>{{card.dateStart}} to {{card.dateEnd}}</p>
         </div>
         </a>
+          <div class="deleteBtn" id={{card.id}}>
+            <img src="{% static 'app/images/trash.svg' %}" />
+          </div>
         </div>
         {% endfor %}
       </div>
@@ -51,3 +54,6 @@
 <a href="{% url 'account_login' %}">Log In</a> |
 <a href="{% url 'account_signup' %}">Sign Up</a>
 {% endif %} {% endblock %}
+{% block page_scripts %}
+  <script src="{% static 'app/expenseTimePeriod.js' %}"></script>
+{% endblock %}
