@@ -35,7 +35,7 @@ const csrftoken = getCookie('csrftoken');
 // Stack Overflow:
 // https://stackoverflow.com/questions/45308153/posting-data-to-django-rest-framework-using-javascript-fetch
 function asyncFormSubmit (e) {
-    fetch('http://0.0.0.0:5000/api/expenseTimePeriod/', {
+    fetch('/api/expenseTimePeriod/', {
     method: 'post',
       headers: {
         'Accept': 'application/json, text/plain, */*',
@@ -49,7 +49,7 @@ function asyncFormSubmit (e) {
 
 // Making a delete request
 function asyncFormDelete (id) {
-    fetch(`http://0.0.0.0:5000/api/expenseTimePeriod/${id}`, {
+    fetch(`/api/expenseTimePeriod/${id}`, {
     method: 'delete',
       headers: {
         'Accept': 'application/json, text/plain, */*',
