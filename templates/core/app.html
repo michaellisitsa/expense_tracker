@@ -26,16 +26,18 @@
       <h2>HISTORY</h2>
       <div class="history-card-container" id="history-card-container">
         {% for card in category %}
-        <a href="{% url 'core:timeperiodsSelected' card.id %}">
-        <div class="history-card">
-          <span>
-          <strong>{{card.name}}</strong><br>
-          <i>[{{card.description}}]</i>
-        </span>
-          <p>${{card.assignee}}
-        </div>
-        </a>
-          <input type="button" class="deleteBtn" id={{card.id}}></p>
+          <div class="history-card-wrapper">
+            <a href="{% url 'core:timeperiodsSelected' card.id %}">
+              <div class="history-card">
+                <span>
+                  <strong>{{card.name}}</strong><br>
+                  <i>[{{card.description}}]</i>
+                </span>
+                <p>${{card.assignee}}
+              </div>
+            </a>
+            <input type="button" class="deleteBtn" id={{card.id}}></p>
+          </div>
         {% endfor %}
       </div>
     </section>

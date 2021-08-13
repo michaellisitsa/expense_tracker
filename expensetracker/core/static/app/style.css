@@ -269,12 +269,24 @@ section h2 {
   /* position: relative; */
 }
 
+.history-card-wrapper {
+  display: flex;
+  flex-direction: row;
+}
+
 /* Entire card is hyperlinked, prevent text looking like a link */
-.history-card-container > a {
+.history-card-wrapper > a {
   color: inherit;
   text-decoration: none;
-  display: block;
+  display: inline block;
+  width: 80%;
   margin: 5px 0;
+}
+
+.history-card-wrapper > input {
+  display: inline block;
+  width: 20%;
+  margin: 10px 5px;
 }
 
 /* Dynamically created cards for each added transaction
