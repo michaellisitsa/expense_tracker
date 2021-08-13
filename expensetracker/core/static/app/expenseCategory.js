@@ -55,8 +55,8 @@ function asyncFormSubmit (e) {
 asyncDeleteBtn.onclick = asyncFormDelete
 
 // Making a delete request
-function asyncFormDelete (e) {
-    fetch('http://0.0.0.0:5000/api/expenseCategory/3', {
+function asyncFormDelete (id) {
+    fetch(`http://0.0.0.0:5000/api/expenseCategory/${id}`, {
     method: 'delete',
       headers: {
         'Accept': 'application/json, text/plain, */*',
@@ -66,3 +66,13 @@ function asyncFormDelete (e) {
     }).then(res=>res.text())
       .then(res => console.log(res));
 }
+
+// Register button by id
+const deleteBtns = document.querySelectorAll(".deleteBtn")
+deleteBtns.forEach(deleteBtn => {
+    deleteBtn.addEventListener( 
+    'click',
+    function (e) {asyncFormDelete(this.id)
+    }
+    )
+});

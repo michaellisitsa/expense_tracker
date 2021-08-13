@@ -32,9 +32,10 @@
           <strong>{{card.name}}</strong><br>
           <i>[{{card.description}}]</i>
         </span>
-          <p>${{card.assignee}}</p>
+          <p>${{card.assignee}}
         </div>
         </a>
+          <input type="button" class="deleteBtn" id={{card.id}}></p>
         {% endfor %}
       </div>
     </section>
