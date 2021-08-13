@@ -1,4 +1,4 @@
-from django.forms import ModelForm, RadioSelect, DateInput, Select
+from django.forms import ModelForm, RadioSelect, DateInput, Select, modelformset_factory
 from .models import ExpenseCategory, ExpenseTimePeriod, Expense
 
 class CategoryForm(ModelForm):
@@ -19,3 +19,5 @@ class ExpenseForm(ModelForm):
         model = Expense
         fields = ["description", "cost", "expenseTimePeriod"]
         widgets = {"category": Select()}
+
+CreateExpenseSet = modelformset_factory(Expense, fields=('description', 'cost', 'expenseTimePeriod'), extra=1)

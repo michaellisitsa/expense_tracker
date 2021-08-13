@@ -5,5 +5,9 @@ Visit the live website on:
 
 - [x] Sign up with email and password\n
 - [x] Enter your expenses and watch the totals increase\n
-- [ ] Store the type of expense and/or allow filtering by type\n
-- [ ] Connect to Django Database
+- [x] Store the type of expense and/or allow filtering by type\n
+- [x] Connect to Django Database
+- [x] Allow deleting records without refreshing whole page
+- [x] Add formsets, to add multiple expenses at one time.
+- [ ] Add diagrams showing history of expense
+- [ ] Add logic to estimate your budget.
