@@ -6,8 +6,6 @@
 */
 
 expensePeriodForm = document.querySelector("#ExpensePeriodForm")
-asyncBtn = document.querySelector("#asyncBtn")
-asyncDeleteBtn = document.querySelector("#asyncDeleteBtn")
 
 data = JSON.stringify({
     name: 'API Category',
@@ -34,7 +32,6 @@ function getCookie(name) {
     return cookieValue;
 }
 const csrftoken = getCookie('csrftoken');
-asyncBtn.onclick = asyncFormSubmit
 
 // Making a post request
 // Stack Overflow:
@@ -52,8 +49,6 @@ function asyncFormSubmit (e) {
       .then(res => console.log(res));
 }
 
-asyncDeleteBtn.onclick = asyncFormDelete
-
 // Making a delete request
 function asyncFormDelete (id) {
     fetch(`http://0.0.0.0:5000/api/expenseCategory/${id}`, {
@@ -69,6 +64,7 @@ function asyncFormDelete (id) {
 
 // Register button by id
 const deleteBtns = document.querySelectorAll(".deleteBtn")
+
 deleteBtns.forEach(deleteBtn => {
     deleteBtn.addEventListener( 
     'click',

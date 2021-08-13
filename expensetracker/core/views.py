@@ -61,8 +61,8 @@ def time_period (request, pk=None):
             # You can obtain the id of the record just created, and then pass it into the url inside HttpResponseRedirect
             # https://stackoverflow.com/questions/41700796/how-to-get-id-in-the-url-after-submission-of-form
             instance = form.save(commit = False)
-            instance.user = ExpenseTimePeriod.objects.get(id=request.user.id)
-            instance.save()            
+            # instance.user = ExpenseTimePeriod.objects.get(id=request.user.id)
+            instance.save()
             messages.success(request, "Expense Time Period submitted successfully.")
             # When using HttpResponseRedirect, remove action from form template
             # https://stackoverflow.com/a/60816124/12462631
@@ -88,7 +88,7 @@ def time_period (request, pk=None):
     }
     return render(request, "core/timePeriod.html", context)
 
-
+# Not used
 def AjaxExpensePeriod(request):
     """
         First attempt at an ajax request.

@@ -17,8 +17,6 @@
       </div>
       <input type="submit" value="Submit" />
     </form>
-    <button id='asyncBtn'>Create Async Category</button>
-    <button id='asyncDeleteBtn'>Delete Async Category</button>
     <p>{% include 'core/includes/messages.html' %}</p>
   </div>
   <main>
@@ -36,7 +34,9 @@
                 <p>${{card.assignee}}
               </div>
             </a>
-            <input type="button" class="deleteBtn" id={{card.id}}></p>
+            <div class="deleteBtn" id={{card.id}}>
+              <img src="{% static 'app/images/trash.svg' %}" />
+            </div>
           </div>
         {% endfor %}
       </div>

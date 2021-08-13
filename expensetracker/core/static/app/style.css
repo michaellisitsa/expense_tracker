@@ -322,6 +322,29 @@ Right border set green or red in js for income vs expense */
   margin: 10px 0;
 }
 
+.deleteBtn {
+  position: relative;
+}
+
+.deleteBtn > img {
+  margin-left: 4px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(0, -50%);
+}
+
+.deleteBtn > img:hover {
+  background: white;
+  box-shadow: grey 4px 5px;
+}
+
+.deleteBtn > img:active {
+  background: white;
+  transform: translate(0, -50%) translate(+3px, +3px);
+  box-shadow: grey 1px 2px;
+}
+
 /* For narrow displays, sidebar is placed at top and sidebar no longer fixed in position */
 @media (max-width: 600px) {
   .sidebar {
