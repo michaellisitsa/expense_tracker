@@ -363,3 +363,15 @@ Right border set green or red in js for income vs expense */
     width: 300px;
   }
 }
+
+
+.expense-formset p {
+  display: inline-block;
+}
+
+.expense-formset label {
+  display: inline-block;
+}
+.expense-formset input {
+  display: inline-block;
+}

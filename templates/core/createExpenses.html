@@ -23,29 +23,22 @@
     <form id='form-container' method="POST"> 
       {% csrf_token %}
       {{formset.management_form}}
+        {{formset.non_form_errors}}
       {% for form in formset %}
       <div class="expense-formset">
         {{form.as_p}}
       </div>
+        {{ form.non_field_errors }}
       {% endfor %}
       <button id="add-form" type="button">Add Another Expense</button>
+      {% for dict in formset.errors %}
+          {% for error in dict.values %}
+              {{ error.values }}
+          {% endfor %}
+      {% endfor %}
       <button type="submit" name="formset">Submit Changes</button>
     </form>
   </section>
-    <section class="history-section">
-      <h1>{{expenseTimePeriod.description}}</h1>
-      <div class="history-card-container" id="history-card-container">
-        {% for card in expenses %}
-        <div class="history-card">
-          <span>
-          <strong>{{card.description}}</strong><br>
-          <i>[{{card.expenseTimePeriod.description}}]</i>
-        </span>
-          <p>${{card.cost}}</p>
-        </div>
-        {% endfor %}
-      </div>
-    </section>
   </main>
 {% else %}
 <p>You are not logged in</p>

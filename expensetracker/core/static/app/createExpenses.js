@@ -12,13 +12,13 @@ function addForm(e) {
     e.preventDefault()
 
     let newForm = expenseFormset[0].cloneNode(true)  // Clone the last form
-    let formRegex = RegExp(`form-(\\d){1}-`,'g') // Regex to find all instances of the form number
+    let formRegex = RegExp(`expense_set-(\\d){1}-`,'g') // Regex to find all instances of the form number
     
     formNum++ // Increment the form number
-    newForm.innerHTML = newForm.innerHTML.replace(formRegex, `form-${formNum}-`)
+    newForm.innerHTML = newForm.innerHTML.replace(formRegex, `expense_set-${formNum}-`)
     container.insertBefore(newForm, addButton)
     
     totalForms.setAttribute('value',`${formNum+1}`) // Increment the total number of forms in the hidden input 
-    const newInputs = newForm.querySelectorAll('input')
+    let newInputs = newForm.querySelectorAll("input:not([type=hidden])")
     newInputs.forEach(input => input.value = '')
 }
