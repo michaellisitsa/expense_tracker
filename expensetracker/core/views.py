@@ -134,12 +134,14 @@ def createExpenses(request, pk=None):
             else:
                 messages.error(request, "Invalid Form Submission")
         if "formset" in request.POST:
-            formset = CreateExpenseSet(data=request.POST)
+            formset = CreateExpenseSet(data=request.POST, instance=expenseTimePeriod)
 
+            form = ExpenseForm(initial={'expenseTimePeriod':expenseTimePeriod})
             #Check if submitted forms are valid
             if formset.is_valid():
                 formset.save()
-                return HttpResponseRedirect("/createExpenses/")
+                return HttpResponseRedirect(reverse('core:createExpensesSelected',kwargs={'pk': pk}))
+            
     else:
     # Use id to fill in the initial value of the foreign key
     # https://youtu.be/MRWFg30FmZQ?t=128
@@ -147,7 +149,7 @@ def createExpenses(request, pk=None):
 
     # Use of formsets
     # https://www.brennantymrak.com/articles/django-dynamic-formsets-javascript.html
-    formset = CreateExpenseSet(queryset=Expense.objects.none())
+    formset = CreateExpenseSet(instance=expenseTimePeriod)
     context = {
         "form": form,
         "expenses": expensesPerCategory,
