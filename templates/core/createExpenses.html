@@ -1,20 +1,7 @@
 {% extends "base.html" %} {% load static %} {% block content %}
-{% include "core/includes/tabs.html" with active_tab='createExpenses' %}
+{% include "core/includes/tabs.html" with active_tab='timeperiods' %}
 {% if user.is_authenticated %}
   <div class="sidebar">
-    <h2>Add new Expense</h2>
-    <form action="/createExpenses/" method="post">
-      {% csrf_token %} {{ form.non_field_errors }}
-      <div class="fieldWrapper">
-        <label for="id_description">Description</label>
-        {{form.description}}
-        <label for="id_cost">Cost</label>
-        {{form.cost }} {{ form.expenseTimePeriod.errors }}
-        {{form.expenseTimePeriod.label_tag }} {{ form.expenseTimePeriod}}
-        <span class="helptext">{{ form.expenseTimePeriod.help_text }}</span>
-      </div>
-      <input type="submit" name="form" value="Submit" />
-    </form>
     <p>{% include 'core/includes/messages.html' %}</p>
   </div>
   <main>

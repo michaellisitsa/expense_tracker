@@ -14,7 +14,6 @@ urlpatterns = [
     path("timeperiods/", views.time_period, name="timeperiods"),
     path("timeperiods/<str:pk>", views.time_period, name="timeperiodsSelected"),
     # https://www.pluralsight.com/guides/work-with-ajax-django
-    path("createExpenses/", views.createExpenses, name="createExpenses"),
-    path("createExpenses/<str:pk>", views.createExpenses, name="createExpensesSelected"),
+    path("createExpenses/<str:pk>", views.createExpenses, name="createExpenses"),
     path('api/',include(router.urls)),
 ]

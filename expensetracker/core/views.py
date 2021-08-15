@@ -70,7 +70,7 @@ def time_period (request, pk=None):
             # https://docs.djangoproject.com/en/3.2/ref/urlresolvers/
             # >>> reverse('admin:app_list', kwargs={'app_label': 'auth'})
             # '/admin/auth/'
-            return HttpResponseRedirect(reverse('core:createExpensesSelected',kwargs={'pk': instance.id}))
+            return HttpResponseRedirect(reverse('core:createExpenses',kwargs={'pk': instance.id}))
         else:
             messages.error(request, "Invalid form submission.")
     else:
@@ -125,14 +125,6 @@ def createExpenses(request, pk=None):
         expenseTimePeriod = ExpenseTimePeriod.objects.get(id=pk)
 
     if request.method == "POST":
-        if "form" in request.POST:
-            form = ExpenseForm(request.POST)
-            if form.is_valid():
-                form.save()
-                messages.success(request, "Expense submitted successfully.")
-                return HttpResponseRedirect("/createExpenses/")
-            else:
-                messages.error(request, "Invalid Form Submission")
         if "formset" in request.POST:
             formset = CreateExpenseSet(data=request.POST, instance=expenseTimePeriod)
             form = ExpenseForm(initial={'expenseTimePeriod':expenseTimePeriod})
@@ -140,7 +132,7 @@ def createExpenses(request, pk=None):
             if formset.is_valid():
                 formset.save()
                 messages.success(request, "Expense submitted successfully.")
-                return HttpResponseRedirect(reverse('core:createExpensesSelected',kwargs={'pk': pk}))
+                return HttpResponseRedirect(reverse('core:createExpenses',kwargs={'pk': pk}))
             else:
                 messages.error(request, "Invalid Form Submission") 
     else:
@@ -152,7 +144,6 @@ def createExpenses(request, pk=None):
         formset = CreateExpenseSet(instance=expenseTimePeriod)
 
     context = {
-        "form": form,
         "expenses": expensesPerCategory,
         "expenseTimePeriod": expenseTimePeriod,
         "formset":formset,

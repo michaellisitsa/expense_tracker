@@ -29,10 +29,13 @@
     </section>
     <section class="history-section">
       <h2>HISTORY</h2>
+      <div class="addExpensePeriod">
+        <p>Add New</p>
+      </div>
       <div class="history-card-container" id="history-card-container">
         {% for card in expenses %}
         <div class="history-card-wrapper" id="{{card.id}}-wrapper">
-        <a href="{% url 'core:createExpensesSelected' card.id %}">
+        <a href="{% url 'core:createExpenses' card.id %}">
         <div class="history-card">
           <span>
           <strong>{{card.description}}</strong><br>

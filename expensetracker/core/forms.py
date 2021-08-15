@@ -20,4 +20,4 @@ class ExpenseForm(ModelForm):
         fields = ["description", "cost", "expenseTimePeriod"]
         widgets = {"category": Select()}
 
-CreateExpenseSet = inlineformset_factory(ExpenseTimePeriod, Expense, fields=('description', 'cost','expenseTimePeriod'), extra=0)
+CreateExpenseSet = inlineformset_factory(ExpenseTimePeriod, Expense, fields=('description', 'cost','expenseTimePeriod'), extra=1)
