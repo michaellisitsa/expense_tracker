@@ -52,7 +52,7 @@ def time_period (request, pk=None):
         timePeriodPerCategory = ExpenseTimePeriod.objects.all()
         expenseCategory = None
     else:
-        timePeriodPerCategory = ExpenseTimePeriod.objects.filter(category__pk=pk)
+        timePeriodPerCategory = ExpenseTimePeriod.objects.all()
         expenseCategory = ExpenseCategory.objects.get(id=pk)
     if request.method == "POST":
         # Create a form instance and populate with data from the request
@@ -132,7 +132,7 @@ def createExpenses(request, pk=None):
             if formset.is_valid():
                 formset.save()
                 messages.success(request, "Expense submitted successfully.")
-                return HttpResponseRedirect(reverse('core:createExpenses',kwargs={'pk': pk}))
+                return HttpResponseRedirect(reverse('core:timeperiods'))
             else:
                 messages.error(request, "Invalid Form Submission") 
     else:

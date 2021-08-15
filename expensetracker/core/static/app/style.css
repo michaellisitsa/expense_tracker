@@ -99,6 +99,10 @@ input[type="radio"] {
 
 /* Outer container for categories checkboxes */
 ul.categoryRadioSelect {
+  display: none;
+}
+
+ul.categoryFilter {
   margin: 10px 0;
   border-radius: 20px;
   box-shadow: 0 0 3px black;
@@ -107,7 +111,7 @@ ul.categoryRadioSelect {
 
 /* Instruction to create a clickable area https://ishadeed.com/article/clickable-area/
 2nd inner container for categories checkboxes */
-ul.categoryRadioSelect label {
+ul.categoryFilter label {
   display: block;
   padding: 8px 0;
   cursor: pointer;
@@ -118,7 +122,7 @@ ul.categoryRadioSelect label {
   text-align: center;
 }
 
-input.categoryRadioSelect {
+input.categoryFilter {
   height: 100%;
   width: 100%;
   z-index: -1;
@@ -131,7 +135,7 @@ input.categoryRadioSelect {
 
 }
 
-input.categoryRadioSelect:checked {
+input.categoryFilter:checked {
   transition: background-color 0.3s;
   background: #006b56;
 }
