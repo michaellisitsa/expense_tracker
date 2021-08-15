@@ -1,51 +1,33 @@
 {% extends "base.html" %} {% load static %} {% block content %}
-{% include "core/includes/tabs.html" with active_tab='createExpenses' %}
+{% include "core/includes/tabs.html" with active_tab='timeperiods' %}
 {% if user.is_authenticated %}
   <div class="sidebar">
-    <h2>Add new Expense</h2>
-    <form action="/createExpenses/" method="post">
-      {% csrf_token %} {{ form.non_field_errors }}
-      <div class="fieldWrapper">
-        <label for="id_description">Description</label>
-        {{form.description}}
-        <label for="id_cost">Cost</label>
-        {{form.cost }} {{ form.expenseTimePeriod.errors }}
-        {{form.expenseTimePeriod.label_tag }} {{ form.expenseTimePeriod}}
-        <span class="helptext">{{ form.expenseTimePeriod.help_text }}</span>
-      </div>
-      <input type="submit" name="form" value="Submit" />
-    </form>
     <p>{% include 'core/includes/messages.html' %}</p>
   </div>
   <main>
   <section class="formset">
     <h1>Add new Expenses</h1>
-    <form id='form-container' method="POST"> 
+    <h2>{{expenseTimePeriod}}</h2>
+    <form id='form-container' method="POST">
       {% csrf_token %}
       {{formset.management_form}}
+        {{formset.non_form_errors}}
       {% for form in formset %}
       <div class="expense-formset">
         {{form.as_p}}
       </div>
+        {{ form.non_field_errors }}
       {% endfor %}
       <button id="add-form" type="button">Add Another Expense</button>
-      <button type="submit" name="formset">Create Expenses</button>
+      {% for dict in formset.errors %}
+          {% for error in dict.values %}
+              {{ error.values }}
+          {% endfor %}
+      {% endfor %}
+      <button type="submit" name="formset">Submit Changes</button>
+      <a href="/timeperiods/">Go Back Without Saving</a>
     </form>
   </section>
-    <section class="history-section">
-      <h1>{{expenseTimePeriod.description}}</h1>
-      <div class="history-card-container" id="history-card-container">
-        {% for card in expenses %}
-        <div class="history-card">
-          <span>
-          <strong>{{card.description}}</strong><br>
-          <i>[{{card.expenseTimePeriod.description}}]</i>
-        </span>
-          <p>${{card.cost}}</p>
-        </div>
-        {% endfor %}
-      </div>
-    </section>
   </main>
 {% else %}
 <p>You are not logged in</p>

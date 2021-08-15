@@ -76,3 +76,24 @@ const updateDeletedUI = (id) => {
     deletedCard = document.getElementById(`${id}-wrapper`)
     deletedCard.parentNode.removeChild(deletedCard);
 }
+
+
+// https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/change_event
+const selectElement = document.querySelector('#categoryField');
+
+selectElement.addEventListener('change', (event) => {
+    console.log(event.target.value)
+    const categorySelectedDynamic = document.querySelector(`input.categoryRadioSelect[value='${event.target.value}']`)
+    categorySelectedDynamic.checked = true;
+    // const result = document.querySelector('.result');
+    // result.textContent = `You like ${event.target.value}`;
+  });
+
+const queryString = window.location.search
+if (queryString != "") {
+const urlParams = new URLSearchParams(queryString);
+const category = urlParams.get('category')
+const categorySelected = document.querySelector(`input.categoryRadioSelect[value='${category}']`)
+categorySelected.checked = true;
+console.log(categorySelected)
+}

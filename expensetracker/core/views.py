@@ -52,7 +52,7 @@ def time_period (request, pk=None):
         timePeriodPerCategory = ExpenseTimePeriod.objects.all()
         expenseCategory = None
     else:
-        timePeriodPerCategory = ExpenseTimePeriod.objects.filter(category__pk=pk)
+        timePeriodPerCategory = ExpenseTimePeriod.objects.all()
         expenseCategory = ExpenseCategory.objects.get(id=pk)
     if request.method == "POST":
         # Create a form instance and populate with data from the request
@@ -70,7 +70,7 @@ def time_period (request, pk=None):
             # https://docs.djangoproject.com/en/3.2/ref/urlresolvers/
             # >>> reverse('admin:app_list', kwargs={'app_label': 'auth'})
             # '/admin/auth/'
-            return HttpResponseRedirect(reverse('core:createExpensesSelected',kwargs={'pk': instance.id}))
+            return HttpResponseRedirect(reverse('core:createExpenses',kwargs={'pk': instance.id}))
         else:
             messages.error(request, "Invalid form submission.")
     else:
@@ -125,31 +125,25 @@ def createExpenses(request, pk=None):
         expenseTimePeriod = ExpenseTimePeriod.objects.get(id=pk)
 
     if request.method == "POST":
-        if "form" in request.POST:
-            form = ExpenseForm(request.POST)
-            if form.is_valid():
-                form.save()
-                messages.success(request, "Expense submitted successfully.")
-                return HttpResponseRedirect("/createExpenses/")
-            else:
-                messages.error(request, "Invalid Form Submission")
         if "formset" in request.POST:
-            formset = CreateExpenseSet(data=request.POST)
-
+            formset = CreateExpenseSet(data=request.POST, instance=expenseTimePeriod)
+            form = ExpenseForm(initial={'expenseTimePeriod':expenseTimePeriod})
             #Check if submitted forms are valid
             if formset.is_valid():
                 formset.save()
-                return HttpResponseRedirect("/createExpenses/")
+                messages.success(request, "Expense submitted successfully.")
+                return HttpResponseRedirect(reverse('core:timeperiods'))
+            else:
+                messages.error(request, "Invalid Form Submission") 
     else:
-    # Use id to fill in the initial value of the foreign key
-    # https://youtu.be/MRWFg30FmZQ?t=128
+        # Use id to fill in the initial value of the foreign key
+        # https://youtu.be/MRWFg30FmZQ?t=128
         form = ExpenseForm(initial={'expenseTimePeriod':expenseTimePeriod})
+        # Use of formsets
+        # https://www.brennantymrak.com/articles/django-dynamic-formsets-javascript.html
+        formset = CreateExpenseSet(instance=expenseTimePeriod)
 
-    # Use of formsets
-    # https://www.brennantymrak.com/articles/django-dynamic-formsets-javascript.html
-    formset = CreateExpenseSet(queryset=Expense.objects.none())
     context = {
-        "form": form,
         "expenses": expensesPerCategory,
         "expenseTimePeriod": expenseTimePeriod,
         "formset":formset,
