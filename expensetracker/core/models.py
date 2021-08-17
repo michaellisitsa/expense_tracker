@@ -4,8 +4,8 @@ from django.db import models
 class ExpenseCategory(models.Model):
     name = models.CharField(max_length=100)
     assignee = models.CharField(max_length=50)
+    budget = models.DecimalField(max_digits=8, decimal_places=2, default=0.00)
     description = models.CharField(max_length=255)
-    groupTransactions = models.BooleanField(default=True)
 
     def __str__(self):
         return f"{self.name} by {self.assignee}"

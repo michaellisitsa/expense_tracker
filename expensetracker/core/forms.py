@@ -1,11 +1,12 @@
-from django.forms import ModelForm, RadioSelect, DateInput, Select, inlineformset_factory
+from django.forms import ModelForm, RadioSelect, DateInput, NumberInput, TextInput, Select, inlineformset_factory
 from .models import ExpenseCategory, ExpenseTimePeriod, Expense
 
 class CategoryForm(ModelForm):
     class Meta:
         model = ExpenseCategory
-        fields = ["name", "assignee", "description","groupTransactions"]
+        fields = ["name", "assignee", "budget", "description"]
         # class customisation https://colinkingswood.github.io/Model-Form-Customisation/
+        widgets = {"budget": TextInput(attrs={'type': 'number','min':0,'step':50})}
 class ExpenseTimePeriodForm(ModelForm):
     class Meta:
         model = ExpenseTimePeriod
