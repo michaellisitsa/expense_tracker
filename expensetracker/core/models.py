@@ -1,11 +1,13 @@
 from django.db import models
-
+from expensetracker.users.models import User
 
 class ExpenseCategory(models.Model):
+    # Multi-tenancy model
     name = models.CharField(max_length=100)
     assignee = models.CharField(max_length=50)
     budget = models.DecimalField(max_digits=8, decimal_places=2, default=0.00)
     description = models.CharField(max_length=255)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"{self.name} by {self.assignee}"

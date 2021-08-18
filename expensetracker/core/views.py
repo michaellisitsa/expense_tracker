@@ -25,12 +25,14 @@ class IndexView(TemplateView):
 # redirect to a login page or display an error rather than take you to the "app.html" page
 @login_required
 def app(request):
-    category = ExpenseCategory.objects.all()
+    category = ExpenseCategory.objects.filter(user=request.user)
     if request.method == "POST":
         # Create a form instance and populate with data from the request
         form = CategoryForm(request.POST)
         if form.is_valid():
-            form.save()
+            event = form.save(commit=False)
+            event.user = request.user
+            event.save()
             messages.success(request, "Category created successfully.")
             return HttpResponseRedirect(reverse('core:app'))
         else:
@@ -49,11 +51,11 @@ def time_period (request, pk=None):
         Create a time period.
     """
     if pk is None:
-        timePeriodPerCategory = ExpenseTimePeriod.objects.all()
+        timePeriodPerCategory = ExpenseTimePeriod.objects.filter(category__user=request.user)
         expenseCategory = None
     else:
-        timePeriodPerCategory = ExpenseTimePeriod.objects.all()
-        expenseCategory = ExpenseCategory.objects.get(id=pk)
+        timePeriodPerCategory = ExpenseTimePeriod.objects.filter(category__user=request.user)
+        expenseCategory = ExpenseCategory.objects.filter(user=request.user).get(id=pk)
     if request.method == "POST":
         # Create a form instance and populate with data from the request
         form = ExpenseTimePeriodForm(request.POST, prefix='add')
@@ -77,7 +79,8 @@ def time_period (request, pk=None):
         form = ExpenseTimePeriodForm(initial={'category':expenseCategory}, prefix='add')
     
     #Re-instantiate that variable with the filtered query set using Django-filter
-    myFilter = ExpenseTimePeriodFilter(request.GET, queryset=timePeriodPerCategory)
+    myFilter = ExpenseTimePeriodFilter(data=request.GET, queryset=timePeriodPerCategory)
+    # myFilter.category.queryset = ExpenseTimePeriod.objects.filter(category__user=request.user)
     timePeriodPerCategory = myFilter.qs
 
     context = {
