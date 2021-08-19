@@ -25,7 +25,7 @@
       <div class="history-card-container" id="history-card-container">
         {% for card in category %}
           <div class="history-card-wrapper" id="{{card.id}}-wrapper">
-            <a href="{% url 'core:timeperiodsSelected' card.id %}?category={{card.id}}">
+            <a href="{% url 'core:timeperiods' %}?category={{card.id}}">
               <div class="history-card">
                 <span>
                   <strong>{{card.name}}</strong><br>

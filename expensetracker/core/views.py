@@ -46,16 +46,16 @@ def app(request):
     return render(request, "core/app.html", context)
 
 @login_required
-def time_period (request, pk=None):
+def time_period (request):
     """
         Create a time period.
     """
-    if pk is None:
+    if request.GET.get('category','') == '':
         timePeriodPerCategory = ExpenseTimePeriod.objects.filter(category__user=request.user)
         expenseCategory = None
     else:
         timePeriodPerCategory = ExpenseTimePeriod.objects.filter(category__user=request.user)
-        expenseCategory = ExpenseCategory.objects.filter(user=request.user).get(id=pk)
+        expenseCategory = ExpenseCategory.objects.filter(user=request.user).get(id=request.GET.get('category'))
     if request.method == "POST":
         # Create a form instance and populate with data from the request
         form = ExpenseTimePeriodForm(request.POST, prefix='add')
