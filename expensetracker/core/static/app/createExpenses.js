@@ -8,6 +8,8 @@ let formNum = expenseFormset.length - 1 // Get the num of the last form on the p
 
 addButton && addButton.addEventListener('click',addForm)
 
+document.querySelector(`#id_expense_set-${formNum}-cost`).addEventListener('focusout', addForm)
+
 function addForm(e) {
     e.preventDefault()
 
@@ -17,7 +19,8 @@ function addForm(e) {
     formNum++ // Increment the form number
     newForm.innerHTML = newForm.innerHTML.replace(formRegex, `expense_set-${formNum}-`)
     container.insertBefore(newForm, addButton)
-    
+    newForm.querySelector(`#id_expense_set-${formNum}-cost`).addEventListener('focusout', addForm)
+    document.querySelector(`#id_expense_set-${formNum-1}-cost`).removeEventListener('focusout',addForm)
     totalForms.setAttribute('value',`${formNum+1}`) // Increment the total number of forms in the hidden input 
     let newInputs = newForm.querySelectorAll("input:not([type=hidden])")
     newInputs.forEach(input => input.value = '')
