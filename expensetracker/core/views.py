@@ -25,12 +25,14 @@ class IndexView(TemplateView):
 # redirect to a login page or display an error rather than take you to the "app.html" page
 @login_required
 def app(request):
-    category = ExpenseCategory.objects.all()
+    category = ExpenseCategory.objects.filter(user=request.user)
     if request.method == "POST":
         # Create a form instance and populate with data from the request
         form = CategoryForm(request.POST)
         if form.is_valid():
-            form.save()
+            event = form.save(commit=False)
+            event.user = request.user
+            event.save()
             messages.success(request, "Category created successfully.")
             return HttpResponseRedirect(reverse('core:app'))
         else:
@@ -44,16 +46,16 @@ def app(request):
     return render(request, "core/app.html", context)
 
 @login_required
-def time_period (request, pk=None):
+def time_period (request):
     """
         Create a time period.
     """
-    if pk is None:
-        timePeriodPerCategory = ExpenseTimePeriod.objects.all()
+    if request.GET.get('category','') == '':
+        timePeriodPerCategory = ExpenseTimePeriod.objects.filter(category__user=request.user)
         expenseCategory = None
     else:
-        timePeriodPerCategory = ExpenseTimePeriod.objects.all()
-        expenseCategory = ExpenseCategory.objects.get(id=pk)
+        timePeriodPerCategory = ExpenseTimePeriod.objects.filter(category__user=request.user)
+        expenseCategory = ExpenseCategory.objects.filter(user=request.user).get(id=request.GET.get('category'))
     if request.method == "POST":
         # Create a form instance and populate with data from the request
         form = ExpenseTimePeriodForm(request.POST, prefix='add')
@@ -77,7 +79,10 @@ def time_period (request, pk=None):
         form = ExpenseTimePeriodForm(initial={'category':expenseCategory}, prefix='add')
     
     #Re-instantiate that variable with the filtered query set using Django-filter
-    myFilter = ExpenseTimePeriodFilter(request.GET, queryset=timePeriodPerCategory)
+    #After lots of pain, finally found a post that the request needs to be passed in here
+    #https://stackoverflow.com/a/58055651/12462631
+    myFilter = ExpenseTimePeriodFilter(data=request.GET, request=request, queryset=timePeriodPerCategory)
+    # myFilter.category.queryset = ExpenseTimePeriod.objects.filter(category__user=request.user)
     timePeriodPerCategory = myFilter.qs
 
     context = {
@@ -113,38 +118,27 @@ def AjaxExpensePeriod(request):
     return JsonResponse({"error": ""}, status=400)
 
 @login_required
-def createExpenses(request, pk=None):
+def createExpenses(request, pk):
     """
         Create an expense entry under a time period
     """
-    if pk is None:
-        expensesPerCategory = Expense.objects.all()
-        expenseTimePeriod = None
-    else:
-        expensesPerCategory = Expense.objects.filter(expenseTimePeriod__pk=pk)
-        expenseTimePeriod = ExpenseTimePeriod.objects.get(id=pk)
-
+    expenseTimePeriod = ExpenseTimePeriod.objects.filter(category__user=request.user).get(id=pk)
     if request.method == "POST":
         if "formset" in request.POST:
             formset = CreateExpenseSet(data=request.POST, instance=expenseTimePeriod)
-            form = ExpenseForm(initial={'expenseTimePeriod':expenseTimePeriod})
             #Check if submitted forms are valid
             if formset.is_valid():
                 formset.save()
                 messages.success(request, "Expense submitted successfully.")
-                return HttpResponseRedirect(reverse('core:timeperiods'))
+                return HttpResponseRedirect(f"{reverse('core:timeperiods')}?category={expenseTimePeriod.category.id}")
             else:
                 messages.error(request, "Invalid Form Submission") 
     else:
-        # Use id to fill in the initial value of the foreign key
-        # https://youtu.be/MRWFg30FmZQ?t=128
-        form = ExpenseForm(initial={'expenseTimePeriod':expenseTimePeriod})
         # Use of formsets
         # https://www.brennantymrak.com/articles/django-dynamic-formsets-javascript.html
         formset = CreateExpenseSet(instance=expenseTimePeriod)
 
     context = {
-        "expenses": expensesPerCategory,
         "expenseTimePeriod": expenseTimePeriod,
         "formset":formset,
     }

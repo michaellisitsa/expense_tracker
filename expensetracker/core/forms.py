@@ -8,6 +8,10 @@ class CategoryForm(ModelForm):
         # class customisation https://colinkingswood.github.io/Model-Form-Customisation/
         widgets = {"budget": TextInput(attrs={'type': 'number','min':0,'step':50})}
 class ExpenseTimePeriodForm(ModelForm):
+
+    # def __init__(self,*args,**kwargs):
+    #     super().__init__(*args, **kwargs)
+    #     self.fields['category'].queryset = ExpenseTimePeriod.objects.filter()
     class Meta:
         model = ExpenseTimePeriod
         fields = ["description", "dateStart","dateEnd","category"]
