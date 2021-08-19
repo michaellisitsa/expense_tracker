@@ -118,38 +118,27 @@ def AjaxExpensePeriod(request):
     return JsonResponse({"error": ""}, status=400)
 
 @login_required
-def createExpenses(request, pk=None):
+def createExpenses(request, pk):
     """
         Create an expense entry under a time period
     """
-    if pk is None:
-        expensesPerCategory = Expense.objects.all()
-        expenseTimePeriod = None
-    else:
-        expensesPerCategory = Expense.objects.filter(expenseTimePeriod__pk=pk)
-        expenseTimePeriod = ExpenseTimePeriod.objects.get(id=pk)
-
+    expenseTimePeriod = ExpenseTimePeriod.objects.filter(category__user=request.user).get(id=pk)
     if request.method == "POST":
         if "formset" in request.POST:
             formset = CreateExpenseSet(data=request.POST, instance=expenseTimePeriod)
-            form = ExpenseForm(initial={'expenseTimePeriod':expenseTimePeriod})
             #Check if submitted forms are valid
             if formset.is_valid():
                 formset.save()
                 messages.success(request, "Expense submitted successfully.")
-                return HttpResponseRedirect(reverse('core:timeperiods'))
+                return HttpResponseRedirect(f"{reverse('core:timeperiods')}?category={expenseTimePeriod.category.id}")
             else:
                 messages.error(request, "Invalid Form Submission") 
     else:
-        # Use id to fill in the initial value of the foreign key
-        # https://youtu.be/MRWFg30FmZQ?t=128
-        form = ExpenseForm(initial={'expenseTimePeriod':expenseTimePeriod})
         # Use of formsets
         # https://www.brennantymrak.com/articles/django-dynamic-formsets-javascript.html
         formset = CreateExpenseSet(instance=expenseTimePeriod)
 
     context = {
-        "expenses": expensesPerCategory,
         "expenseTimePeriod": expenseTimePeriod,
         "formset":formset,
     }
