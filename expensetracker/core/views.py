@@ -79,7 +79,9 @@ def time_period (request, pk=None):
         form = ExpenseTimePeriodForm(initial={'category':expenseCategory}, prefix='add')
     
     #Re-instantiate that variable with the filtered query set using Django-filter
-    myFilter = ExpenseTimePeriodFilter(data=request.GET, queryset=timePeriodPerCategory)
+    #After lots of pain, finally found a post that the request needs to be passed in here
+    #https://stackoverflow.com/a/58055651/12462631
+    myFilter = ExpenseTimePeriodFilter(data=request.GET, request=request, queryset=timePeriodPerCategory)
     # myFilter.category.queryset = ExpenseTimePeriod.objects.filter(category__user=request.user)
     timePeriodPerCategory = myFilter.qs
 
