@@ -26,6 +26,8 @@ class IndexView(TemplateView):
 @login_required
 def app(request):
     category = ExpenseCategory.objects.filter(user=request.user)
+    timePeriod = ExpenseTimePeriod.objects.filter(category__user=request.user)
+    expenses = Expense.objects.filter(expenseTimePeriod__category__user=request.user)
     if request.method == "POST":
         # Create a form instance and populate with data from the request
         form = CategoryForm(request.POST)
@@ -39,7 +41,17 @@ def app(request):
             messages.error(request, "Invalid form submission.")
     else:
         form = CategoryForm()
+    expenses_wk, coverage_wk = summariseTimePeriod(timePeriod, expenses, 7)
+    expenses_mth, coverage_mth = summariseTimePeriod(timePeriod, expenses, 30)
+    expenses_yr, coverage_yr = summariseTimePeriod(timePeriod, expenses, 365)
+
     context = {
+        "expenses_wk": expenses_wk,
+        "coverage_wk": coverage_wk,
+        "expenses_mth": expenses_mth,
+        "coverage_mth": coverage_mth,
+        "expenses_yr": expenses_yr,
+        "coverage_yr": coverage_yr,
         "category": category,
         "form": form,
     }
@@ -77,17 +89,24 @@ def time_period (request):
             messages.error(request, "Invalid form submission.")
     else:
         form = ExpenseTimePeriodForm(initial={'category':expenseCategory}, prefix='add')
-    
-    summary = summariseTimePeriod('hello')
     #Re-instantiate that variable with the filtered query set using Django-filter
     #After lots of pain, finally found a post that the request needs to be passed in here
     #https://stackoverflow.com/a/58055651/12462631
     myFilter = ExpenseTimePeriodFilter(data=request.GET, request=request, queryset=timePeriodPerCategory)
     # myFilter.category.queryset = ExpenseTimePeriod.objects.filter(category__user=request.user)
     timePeriodPerCategory = myFilter.qs
+    expenses = Expense.objects.filter(expenseTimePeriod__category__user=request.user)
+    expenses_wk, coverage_wk = summariseTimePeriod(timePeriodPerCategory, expenses, 7)
+    expenses_mth, coverage_mth = summariseTimePeriod(timePeriodPerCategory, expenses, 30)
+    expenses_yr, coverage_yr = summariseTimePeriod(timePeriodPerCategory, expenses, 365)
 
     context = {
-        "summary": summary,
+        "expenses_wk": expenses_wk,
+        "coverage_wk": coverage_wk,
+        "expenses_mth": expenses_mth,
+        "coverage_mth": coverage_mth,
+        "expenses_yr": expenses_yr,
+        "coverage_yr": coverage_yr,
         "expenses": timePeriodPerCategory,
         "form": form,
         "expenseCategory": expenseCategory,
