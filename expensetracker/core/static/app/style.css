@@ -163,7 +163,7 @@ ul.categoryRadioSelect {
 }
 
 ul.categoryFilter {
-  margin: 10px 0;
+  margin: 10px;
   border-radius: 20px;
   box-shadow: 0 0 3px black;
   overflow: hidden;
