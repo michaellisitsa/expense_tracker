@@ -5,6 +5,37 @@
     <p>{% include 'core/includes/messages.html' %}</p>
   </div>
   <main>
+  <section class="topSummary">
+      <h1> SUMMARY GOES HERE </h1>
+      <table class="summaryTable">
+      <colgroup>
+      </colgroup>
+      <thead>
+        <tr>
+          <th class="summaryTableCells">PERIOD</th>
+          <th class="summaryTableCells">EXPENSES (/mth)</th>
+          <th class="summaryTableCells">DIFFERENCE (/mth)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="summaryTableCells">LAST WEEK</td>
+          <td class="summaryTableCells">$125</td>
+          <td class="summaryTableCells">$-25</td>
+        </tr>
+        <tr>
+          <td class="summaryTableCells">LAST MONTH</td>
+          <td class="summaryTableCells">$130</td>
+          <td class="summaryTableCells">$-30</td>
+        </tr>
+        <tr>
+          <td class="summaryTableCells">LAST YEAR</td>
+          <td class="summaryTableCells">$90</td>
+          <td class="summaryTableCells">$10</td>
+        </tr>
+      </tbody>
+      </table>
+    </section>
   <section class="formset">
     <h1>Add new Expenses</h1>
     <h2>{{expenseTimePeriod}}</h2>
