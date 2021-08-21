@@ -9,5 +9,5 @@ Visit the live website on:
 - [x] Connect to Django Database
 - [x] Allow deleting records without refreshing whole page
 - [x] Add formsets, to add multiple expenses at one time.
+- [x] Add logic to estimate your expenses per month, and a top summary bar.
 - [ ] Add diagrams showing history of expense
-- [ ] Add logic to estimate your budget.

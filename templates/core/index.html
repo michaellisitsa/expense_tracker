@@ -4,6 +4,18 @@
 {% if user.is_authenticated %} 
 <h1> Hi {{user.username}}!, welcome to the Expense Tracker App </h1>
 <p><a class="welcomeBtn" href="{%url 'core:app' %}">Enter App</a></p>
+<h2>How to use?</h2>
+<p>This website allows you to create categories of expenses, and then submit your expenses over some periods of time (which can be with gaps).<br>
+Then the website will work out how much you have spent (averaging over any missing periods) in the last week / month / year.</p>
+<ol class="instructionList">
+    <li>Add some new expenditure categories, and an approximate budget you have for each.</li>
+    <li>Click into the category you are interested in.</li>
+    <li>Create a new time expense period. This is sort of like an order, which will have one or more individual items inside it.</li>
+    <li>You'll be directed to a list where you can add as many individual expense items under the time period.</li>
+    <li>The top banner will always show an average of you expenditure for the last week / month / year, as well as what you budgetted.</li>
+</ol>
+
+Happy budgetting!
 {%else%}
 <h1> Welcome to the Expense Tracker App</h1>
 <p>Login or Sign Up to use this site!</p>

@@ -375,6 +375,11 @@ Right border set green or red in js for income vs expense */
   box-shadow: grey 1px 2px;
 }
 
+.instructionList {
+  list-style-type: decimal;
+  padding: 20px;
+}
+
 /* For narrow displays, sidebar is placed at top and sidebar no longer fixed in position */
 @media (max-width: 600px) {
   .sidebar {
