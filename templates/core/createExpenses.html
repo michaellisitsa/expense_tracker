@@ -6,39 +6,42 @@
   </div>
   <main>
   <section class="topSummary">
-      <h1> SUMMARY GOES HERE </h1>
+      <h1>{{expenseTimePeriod}} [{{expenseCategory.name}}, Budget = ${{expenseCategory.budget}} per month]</h1>
       <table class="summaryTable">
       <colgroup>
       </colgroup>
       <thead>
         <tr>
           <th class="summaryTableCells">PERIOD</th>
-          <th class="summaryTableCells">EXPENSES (/mth)</th>
-          <th class="summaryTableCells">DIFFERENCE (/mth)</th>
+          <th class="summaryTableCells">EXPENSES<br>(mth)</th>
+          <th class="summaryTableCells">DIFFERENCE<br>(mth)</th>
+          <th class="summaryTableCells">COVERAGE</th>
         </tr>
       </thead>
       <tbody>
         <tr>
           <td class="summaryTableCells">LAST WEEK</td>
-          <td class="summaryTableCells">$125</td>
-          <td class="summaryTableCells">$-25</td>
+          <td class="summaryTableCells">${{expenses_wk}}</td>
+          <td class="summaryTableCells"></td>
+          <td class="summaryTableCells">{{coverage_wk}}%</td>
         </tr>
         <tr>
           <td class="summaryTableCells">LAST MONTH</td>
-          <td class="summaryTableCells">$130</td>
-          <td class="summaryTableCells">$-30</td>
+          <td class="summaryTableCells">${{expenses_mth}}</td>
+          <td class="summaryTableCells"></td>
+          <td class="summaryTableCells">{{coverage_mth}}%</td>
         </tr>
         <tr>
           <td class="summaryTableCells">LAST YEAR</td>
-          <td class="summaryTableCells">$90</td>
-          <td class="summaryTableCells">$10</td>
+          <td class="summaryTableCells">${{expenses_yr}}</td>
+          <td class="summaryTableCells"></td>
+          <td class="summaryTableCells">{{coverage_yr}}%</td>
         </tr>
       </tbody>
       </table>
     </section>
   <section class="formset">
     <h1>Add new Expenses</h1>
-    <h2>{{expenseTimePeriod}}</h2>
     <form id='form-container' method="POST">
       {% csrf_token %}
       {{formset.management_form}}

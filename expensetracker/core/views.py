@@ -143,7 +143,9 @@ def createExpenses(request, pk):
     """
         Create an expense entry under a time period
     """
+    expenseTimePeriodList = ExpenseTimePeriod.objects.filter(category__user=request.user)
     expenseTimePeriod = ExpenseTimePeriod.objects.filter(category__user=request.user).get(id=pk)
+    expenseCategory = expenseTimePeriod.category
     if request.method == "POST":
         if "formset" in request.POST:
             formset = CreateExpenseSet(data=request.POST, instance=expenseTimePeriod)
@@ -158,8 +160,18 @@ def createExpenses(request, pk):
         # Use of formsets
         # https://www.brennantymrak.com/articles/django-dynamic-formsets-javascript.html
         formset = CreateExpenseSet(instance=expenseTimePeriod)
-
+    expenses = Expense.objects.filter(expenseTimePeriod__category__user=request.user)
+    expenses_wk, coverage_wk = summariseTimePeriod(expenseTimePeriodList, expenses, 7)
+    expenses_mth, coverage_mth = summariseTimePeriod(expenseTimePeriodList, expenses, 30)
+    expenses_yr, coverage_yr = summariseTimePeriod(expenseTimePeriodList, expenses, 365)
     context = {
+        "expenses_wk": expenses_wk,
+        "coverage_wk": coverage_wk,
+        "expenses_mth": expenses_mth,
+        "coverage_mth": coverage_mth,
+        "expenses_yr": expenses_yr,
+        "coverage_yr": coverage_yr,
+        "expenseCategory": expenseCategory,
         "expenseTimePeriod": expenseTimePeriod,
         "formset":formset,
     }

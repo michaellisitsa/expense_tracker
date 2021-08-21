@@ -26,6 +26,7 @@ def summariseTimePeriod(time_periods, expenses, days):
             
     # Convert to the average expenses per month. 
     expenses_rate = int(30. / sum(adjusted_dayDelta) * sum(adjusted_expense)) if sum(adjusted_dayDelta) != 0 else "-"
+    # TODO - Remove overlapping days
     coverage = int(sum(adjusted_dayDelta) / days * 100)
 
 
