@@ -12,6 +12,37 @@
     <p>{% include 'core/includes/messages.html' %}</p>
   </div>
   <main>
+    <section class="topSummary">
+      <h1> SUMMARY GOES HERE </h1>
+      <table class="summaryTable">
+      <colgroup>
+      </colgroup>
+      <thead>
+        <tr>
+          <th class="summaryTableCells">PERIOD</th>
+          <th class="summaryTableCells">EXPENSES (/mth)</th>
+          <th class="summaryTableCells">DIFFERENCE (/mth)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="summaryTableCells">LAST WEEK</td>
+          <td class="summaryTableCells">$125</td>
+          <td class="summaryTableCells">$-25</td>
+        </tr>
+        <tr>
+          <td class="summaryTableCells">LAST MONTH</td>
+          <td class="summaryTableCells">$130</td>
+          <td class="summaryTableCells">$-30</td>
+        </tr>
+        <tr>
+          <td class="summaryTableCells">LAST YEAR</td>
+          <td class="summaryTableCells">$90</td>
+          <td class="summaryTableCells">$10</td>
+        </tr>
+      </tbody>
+      </table>
+    </section>
     <section class="history-section">
       <h2>ADD EXPENSE PERIOD</h2>
       <div class="addExpensePeriod">
@@ -35,8 +66,9 @@
       <div class="history-card-container" id="history-card-container">
         {% for card in expenses %}
         <div class="history-card-wrapper" id="{{card.id}}-wrapper">
-        <a href="{% url 'core:createExpenses' card.id %}">
         <div class="history-card">
+        <a class="history-card-link" href="{% url 'core:createExpenses' card.id %}">
+        <div>
           <span>
           <strong>{{card.description}}</strong><br>
           <i>[{{card.category.name}}]</i>
@@ -44,6 +76,7 @@
           <p>{{card.dateStart}} to {{card.dateEnd}}</p>
         </div>
         </a>
+        </div>
           <div class="deleteBtn" id={{card.id}}>
             <img src="{% static 'app/images/trash.svg' %}" />
           </div>
