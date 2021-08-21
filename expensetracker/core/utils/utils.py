@@ -25,7 +25,7 @@ def summariseTimePeriod(time_periods, expenses, days):
         period_id.append(time_period.id)
             
     # Convert to the average expenses per month. 
-    expenses_rate = int(sum(adjusted_expense) / 30.)
+    expenses_rate = int(30. / sum(adjusted_dayDelta) * sum(adjusted_expense)) if sum(adjusted_dayDelta) != 0 else "-"
     coverage = int(sum(adjusted_dayDelta) / days * 100)
 
 
