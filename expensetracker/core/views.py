@@ -9,7 +9,7 @@ from .models import ExpenseTimePeriod, ExpenseCategory, Expense
 from .forms import CategoryForm, ExpenseTimePeriodForm, ExpenseForm, CreateExpenseSet
 from .filters import ExpenseTimePeriodFilter
 from .serializers import ExpenseTimePeriodSerializer, ExpenseCategorySerializer
-
+from .utils.utils import summariseTimePeriod
 from django.core import serializers
 
 from rest_framework import viewsets, permissions, authentication, status
@@ -78,6 +78,7 @@ def time_period (request):
     else:
         form = ExpenseTimePeriodForm(initial={'category':expenseCategory}, prefix='add')
     
+    summary = summariseTimePeriod('hello')
     #Re-instantiate that variable with the filtered query set using Django-filter
     #After lots of pain, finally found a post that the request needs to be passed in here
     #https://stackoverflow.com/a/58055651/12462631
@@ -86,6 +87,7 @@ def time_period (request):
     timePeriodPerCategory = myFilter.qs
 
     context = {
+        "summary": summary,
         "expenses": timePeriodPerCategory,
         "form": form,
         "expenseCategory": expenseCategory,
