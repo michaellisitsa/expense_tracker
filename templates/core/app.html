@@ -1,6 +1,7 @@
 {% extends "base.html" %} {% load static %} {% block content %}
 {% include "core/includes/tabs.html" with active_tab='app' %}
 {% load myfilters %} {% if user.is_authenticated %}
+<div class="container">
   <div class="sidebar">
     <h2>Add New Category</h2>
     <form method="post">
@@ -79,6 +80,8 @@
       </div>
     </section>
   </main>
+</div>
+
 {% else %}
 <p>You are not logged in</p>
 <a href="{% url 'account_login' %}">Log In</a> |

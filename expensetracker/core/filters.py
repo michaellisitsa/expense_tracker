@@ -21,7 +21,7 @@ class ExpenseTimePeriodFilter(django_filters.FilterSet):
     
     class Meta:
         model = ExpenseTimePeriod
-        fields = ['category']
+        fields = ['category','startDate']
 
     # def __init__(self, user, *args, **kwargs):
     #     super(ExpenseTimePeriodFilter, self).__init__(*args, **kwargs)
