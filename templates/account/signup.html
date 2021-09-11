@@ -1,8 +1,30 @@
-{% extends "base.html" %} {% load static %} {% block content %}
+<!-- Base html file for nav top bar -->
+{% extends "base.html" %}
+<!-- All static assets including images etc. -->
+{% load static %}
+<!-- Main content block -->
+{% block content %}
+<!-- Nav bar tabs -->
 {% include "core/includes/tabs.html" with active_tab='signup' %}
-<h2>Sign Up</h2>
-<form method="post">
-  {%csrf_token%} {{form.as_p}}
-  <button type="submit">Sign Up</button>
-</form>
-{% endblock %}
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="{% static 'users/userStyle.css' %}"
+/>
+
+<div class="container">
+  <div class="login-card">
+    <div
+      class="description-container"
+      style="background-image: url('{% static 'users/images/money.jpg' %}')"
+    ></div>
+    <div class="login-container">
+      <h2>Sign Up</h2>
+      <form method="post">
+        {%csrf_token%} {{form.as_p}}
+        <button type="submit">Sign Up</button>
+      </form>
+      {% endblock %}
+    </div>
+  </div>
+</div>

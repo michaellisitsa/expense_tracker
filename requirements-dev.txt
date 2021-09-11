@@ -1,1 +1,2 @@
 pip-tools==6.2.0
+djhtml==1.4.9
