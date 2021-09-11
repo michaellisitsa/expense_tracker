@@ -1,6 +1,7 @@
 {% extends "base.html" %} {% load static %} {% block content %}
 {% include "core/includes/tabs.html" with active_tab='timeperiods' %}
 {% if user.is_authenticated %}
+<div class="container">
   <div class="sidebar">
     <p>{% include 'core/includes/messages.html' %}</p>
   </div>
@@ -63,6 +64,7 @@
     </form>
   </section>
   </main>
+</div>
 {% else %}
 <p>You are not logged in</p>
 <a href="{% url 'account_login' %}">Log In</a> |

@@ -1,7 +1,8 @@
 {% extends "base.html" %} {% load static %} {% block content %}
 {% include "core/includes/tabs.html" with active_tab='timeperiods' %}
 {% load myfilters %} {% if user.is_authenticated %}
-  <div class="sidebar">
+<div class="container">
+<div class="sidebar">
   <h2>Filter By Category</h2>
         <section class="expensePeriodFilterForm">
       <form method="GET">
@@ -89,6 +90,7 @@
       </div>
     </section>
   </main>
+  </div>
 {% else %}
 <p>You are not logged in</p>
 <a href="{% url 'account_login' %}">Log In</a> |

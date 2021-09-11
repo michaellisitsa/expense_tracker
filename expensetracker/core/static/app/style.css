@@ -11,6 +11,12 @@ body {
   font-family: 'Open Sans', sans-serif;
 }
 
+.container {
+  display: flex;
+  align-items: stretch;
+  min-height: 100vh;
+}
+
 /* Taken from reset.css ensure that browser doesn't apply automatic margins to text */
 h1, h2, h3, p {
   margin: 0;
@@ -31,7 +37,7 @@ li {
   width:100%;
   height: var(--navHeight);
   display: block;
-  position: fixed;
+  position: sticky;
   top: 0;
   z-index: 10;
 }
@@ -104,20 +110,23 @@ li {
   width: 100%;
   background-color: darkgray;
   /* background-color: rgb(238, 238, 238);   */
-  position:fixed;
+  position:sticky;
   overflow-y:scroll;
   overflow-x:hidden;
 }
+
+/* TODO - get metaheaders for mobile, viewport meta tag on clearcalcs */
 
 /* Sidebar fixed to the top left, however media query will override when < 600px */
 .sidebar {
   background-color: white;
   padding: 0 20px;
-  position: fixed;
+  align-self: stretch;
+  /* position: fixed; */
   left: 0;
   bottom: 0px;
   width: var(--sidebarWidth);
-  height: calc(100% - var(--navHeight));
+  /* height: calc(100% - var(--navHeight)); */
   box-sizing: border-box;
 }
 
@@ -203,8 +212,8 @@ input.categoryFilter:checked {
 /* Main container including balance and history of transactions centered and offset from sidebar*/
 main {
   margin: 0;
-  margin-left: var(--sidebarWidth);
-  margin-top: calc(var(--navHeight) + var(--topSummary));
+  flex-grow: 1
+  /* margin-top: calc(var(--navHeight) + var(--topSummary)); */
 }
 
 /* Add transaction in sidebar (or top of page when media query < 600px) */
