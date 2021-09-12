@@ -23,7 +23,7 @@ def summariseTimePeriod(time_periods, expenses, days):
             ]
             or 0
         )
-        total_expense = float(total_expenses)
+        total_expenses = float(total_expenses)
         if time_period.dateStart < prevDate:
             adjusted_dayDelta.append((time_period.dateEnd - prevDate).days)
             adjusted_expense.append(
