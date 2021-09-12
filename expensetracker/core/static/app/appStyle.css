@@ -1,0 +1,319 @@
+.container {
+  display: flex;
+  align-items: stretch;
+  min-height: 100vh;
+}
+.topSummary {
+  top: var(--navHeight);
+  height: var(--topSummary);
+  width: 100%;
+  background-color: darkgray;
+  /* background-color: rgb(238, 238, 238);   */
+  position: sticky;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+/* TODO - get metaheaders for mobile, viewport meta tag on clearcalcs */
+
+/* Sidebar fixed to the top left, however media query will override when < 600px */
+.sidebar {
+  background-color: white;
+  padding: 0 20px;
+  align-self: stretch;
+  /* position: fixed; */
+  left: 0;
+  bottom: 0px;
+  width: var(--sidebarWidth);
+  /* height: calc(100% - var(--navHeight)); */
+  box-sizing: border-box;
+}
+
+/* Sections within main are stretched, however media query will override when < 600px */
+section {
+  width: 100%;
+}
+
+/* Headings in the main section to have a consistent styling with a grey border bottom */
+section h2 {
+  padding-bottom: 10px;
+  border-bottom: 1px solid grey;
+  text-align: left;
+  font-size: 1.25rem;
+}
+
+/* Copied from reset.css */
+input,
+select,
+textarea {
+  /* Makes sure that inputs are always on the next line  */
+  display: block;
+
+  /* Gives a bit more space for input fields */
+  line-height: 1.5;
+}
+
+/* From reset.css To hide the dot points and remove the space required for them */
+ul,
+ol {
+  list-style-type: none;
+  padding: 0;
+}
+
+/* From reset.css To avoid default user agent margin on radios */
+input[type='radio'] {
+  margin: 0;
+}
+
+/* Outer container for categories checkboxes */
+ul.categoryRadioSelect {
+  display: none;
+}
+
+ul.categoryFilter {
+  margin: 10px;
+  border-radius: 20px;
+  box-shadow: 0 0 3px black;
+  overflow: hidden;
+  /* background-color: rgba(0, 149, 120, 0.8); */
+}
+
+/* Instruction to create a clickable area https://ishadeed.com/article/clickable-area/
+  2nd inner container for categories checkboxes */
+ul.categoryFilter label {
+  display: block;
+  padding: 8px 0;
+  cursor: pointer;
+  position: relative;
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 14px;
+  text-align: center;
+  z-index: 10;
+}
+
+input.categoryFilter {
+  height: 100%;
+  width: 100%;
+  z-index: -1;
+  position: absolute;
+  top: 0;
+  left: 0;
+  appearance: none;
+  -webkit-appearance: none;
+  background: rgba(0, 149, 120, 0.8);
+}
+
+input.categoryFilter:checked {
+  transition: background-color 0.3s;
+  background: #006b56;
+}
+
+/* Main container including balance and history of transactions centered and offset from sidebar*/
+main {
+  margin: 0;
+  flex-grow: 1;
+  /* margin-top: calc(var(--navHeight) + var(--topSummary)); */
+}
+
+/* Add transaction in sidebar (or top of page when media query < 600px) */
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+form > label {
+  margin: 10px 0;
+  font-weight: 600;
+}
+
+.hidden {
+  display: none;
+}
+
+.error-message {
+  font-size: 0.85rem;
+  color: red;
+}
+
+/* Validation icons styling */
+.icon {
+  width: 24px;
+  height: 24px;
+  /* position: absolute; */
+  top: 32px;
+  right: 5px;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.icon-success {
+  fill: green;
+}
+
+.icon-error {
+  fill: red;
+}
+
+form > input[type='text'] {
+  padding: 5px;
+  outline: 0;
+  border: 1px solid lightgrey;
+}
+
+form > input[type='submit'] {
+  margin-top: 20px;
+  padding: 10px 10px;
+  border-radius: 5px;
+}
+
+form > input[type='submit']:disabled {
+  color: grey;
+}
+
+.expense-formset p {
+  display: inline-block;
+}
+
+.expense-formset label {
+  display: inline-block;
+}
+.expense-formset input {
+  display: inline-block;
+}
+
+.balance-section {
+  margin: 15px 0 15px;
+}
+
+/* Total Net Balance to be styled in large bold text */
+.balance {
+  font-size: 24px;
+  text-align: center;
+}
+
+/* Container showing income and expenses totals to be flex side-by-side display */
+.account-summary {
+  box-sizing: border-box;
+  box-shadow: 5px 5px 10px grey;
+  border-radius: 10px;
+  overflow: hidden;
+  background-color: white;
+  padding: 5px 0;
+}
+
+.account-summary > .income {
+  display: block;
+  box-sizing: inherit;
+  width: 50%;
+  border-right: 1px solid lightgrey;
+  float: left;
+}
+
+.account-summary > .expenses {
+  display: block;
+  box-sizing: inherit;
+  width: 50%;
+  float: left;
+}
+
+.income > p {
+  color: green;
+  font-size: 20px;
+}
+
+.expenses > p {
+  color: red;
+  font-size: 20px;
+}
+
+/* History of transactions in a column */
+.history-card-container {
+  margin: 0 30px;
+}
+
+/* Entire card is hyperlinked, prevent text looking like a link */
+.history-card-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Dynamically created cards for each added transaction
+  Right border set green or red in js for income vs expense */
+.history-card {
+  display: inline-block;
+  width: calc(100% - var(--deleteIconWidth) - 30px);
+  padding: 10px;
+  background-color: white;
+  border-left: 2px solid grey;
+  border-top: 2px solid grey;
+  border-bottom: 2px solid grey;
+}
+
+.history-card strong {
+  margin: auto;
+}
+
+.history-card span {
+  margin: auto;
+  text-align: justify;
+}
+
+.history-card i {
+  margin: auto;
+  font-size: 14px;
+}
+
+.history-card p {
+  text-align: right;
+  margin: 10px 0;
+}
+
+.deleteBtn {
+  display: inline-block;
+}
+
+.deleteBtn > img:hover {
+  background: white;
+  box-shadow: grey 4px 5px;
+}
+
+.deleteBtn > img:active {
+  background: white;
+  transform: translate(0, -50%) translate(+3px, +3px);
+  box-shadow: grey 1px 2px;
+}
+
+.instructionList {
+  list-style-type: decimal;
+  padding: 20px;
+}
+
+/* For narrow displays, sidebar is placed at top and sidebar no longer fixed in position */
+@media (max-width: 600px) {
+  .sidebar {
+    display: none;
+    background-color: none;
+    left: 0;
+    top: 0;
+    height: fit-content;
+    width: 100%;
+    transform: translateY(calc(var(--navHeight)+var(--topSummary)));
+  }
+
+  .topSummary {
+    height: var(--topSummary);
+    width: 100%;
+    position: static;
+    overflow: visible;
+  }
+
+  main {
+    margin-left: 0;
+    margin-top: var(--navHeight);
+  }
+
+  section {
+    width: 100%;
+  }
+}

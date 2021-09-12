@@ -1,75 +1,76 @@
-{% extends "base.html" %} {% load static %} {% block content %}
+<!-- Base html file for nav top bar -->
+{% extends "base.html" %}
+<!-- All static assets including images etc. -->
+{% load static %}
+<!-- Main content block -->
+{% block content %}
+<!-- Nav bar tabs -->
 {% include "core/includes/tabs.html" with active_tab='timeperiods' %}
+<link rel="stylesheet" type="text/css" href="{% static 'app/appStyle.css' %}" />
+<!-- Check if authenticated -->
 {% if user.is_authenticated %}
 <div class="container">
   <div class="sidebar">
     <p>{% include 'core/includes/messages.html' %}</p>
   </div>
   <main>
-  <section class="topSummary">
-      <h1>{{expenseTimePeriod}} [{{expenseCategory.name}}, Budget = ${{expenseCategory.budget}} per month]</h1>
+    <section class="topSummary">
+      <h1>
+        {{expenseTimePeriod}} [{{expenseCategory.name}}, Budget =
+        ${{expenseCategory.budget}} per month]
+      </h1>
       <table class="summaryTable">
-      <colgroup>
-      </colgroup>
-      <thead>
-        <tr>
-          <th class="summaryTableCells">PERIOD</th>
-          <th class="summaryTableCells">EXPENSES<br>(mth)</th>
-          <th class="summaryTableCells">DIFFERENCE<br>(mth)</th>
-          <th class="summaryTableCells">COVERAGE</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td class="summaryTableCells">LAST WEEK</td>
-          <td class="summaryTableCells">${{expenses_wk}}</td>
-          <td class="summaryTableCells"></td>
-          <td class="summaryTableCells">{{coverage_wk}}%</td>
-        </tr>
-        <tr>
-          <td class="summaryTableCells">LAST MONTH</td>
-          <td class="summaryTableCells">${{expenses_mth}}</td>
-          <td class="summaryTableCells"></td>
-          <td class="summaryTableCells">{{coverage_mth}}%</td>
-        </tr>
-        <tr>
-          <td class="summaryTableCells">LAST YEAR</td>
-          <td class="summaryTableCells">${{expenses_yr}}</td>
-          <td class="summaryTableCells"></td>
-          <td class="summaryTableCells">{{coverage_yr}}%</td>
-        </tr>
-      </tbody>
+        <colgroup></colgroup>
+        <thead>
+          <tr>
+            <th class="summaryTableCells">PERIOD</th>
+            <th class="summaryTableCells">EXPENSES<br />(mth)</th>
+            <th class="summaryTableCells">DIFFERENCE<br />(mth)</th>
+            <th class="summaryTableCells">COVERAGE</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="summaryTableCells">LAST WEEK</td>
+            <td class="summaryTableCells">${{expenses_wk}}</td>
+            <td class="summaryTableCells"></td>
+            <td class="summaryTableCells">{{coverage_wk}}%</td>
+          </tr>
+          <tr>
+            <td class="summaryTableCells">LAST MONTH</td>
+            <td class="summaryTableCells">${{expenses_mth}}</td>
+            <td class="summaryTableCells"></td>
+            <td class="summaryTableCells">{{coverage_mth}}%</td>
+          </tr>
+          <tr>
+            <td class="summaryTableCells">LAST YEAR</td>
+            <td class="summaryTableCells">${{expenses_yr}}</td>
+            <td class="summaryTableCells"></td>
+            <td class="summaryTableCells">{{coverage_yr}}%</td>
+          </tr>
+        </tbody>
       </table>
     </section>
-  <section class="formset">
-    <h1>Add new Expenses</h1>
-    <form id='form-container' method="POST">
-      {% csrf_token %}
-      {{formset.management_form}}
-        {{formset.non_form_errors}}
-      {% for form in formset %}
-      <div class="expense-formset">
-        {{form.as_p}}
-      </div>
-        {{ form.non_field_errors }}
-      {% endfor %}
-      <button id="add-form" type="button">Add Another Expense</button>
-      {% for dict in formset.errors %}
-          {% for error in dict.values %}
-              {{ error.values }}
-          {% endfor %}
-      {% endfor %}
-      <button type="submit" name="formset">Submit Changes</button>
-      <a href="/timeperiods/">Go Back Without Saving</a>
-    </form>
-  </section>
+    <section class="formset">
+      <h1>Add new Expenses</h1>
+      <form id="form-container" method="POST">
+        {% csrf_token %} {{formset.management_form}} {{formset.non_form_errors}}
+        {% for form in formset %}
+        <div class="expense-formset">{{form.as_p}}</div>
+        {{ form.non_field_errors }} {% endfor %}
+        <button id="add-form" type="button">Add Another Expense</button>
+        {% for dict in formset.errors %} {% for error in dict.values %} {{
+        error.values }} {% endfor %} {% endfor %}
+        <button type="submit" name="formset">Submit Changes</button>
+        <a href="/timeperiods/">Go Back Without Saving</a>
+      </form>
+    </section>
   </main>
 </div>
 {% else %}
 <p>You are not logged in</p>
 <a href="{% url 'account_login' %}">Log In</a> |
 <a href="{% url 'account_signup' %}">Sign Up</a>
-{% endif %} {% endblock %}
-{% block page_scripts %}
-  <script src="{% static 'app/createExpenses.js' %}"></script>
+{% endif %} {% endblock %} {% block page_scripts %}
+<script src="{% static 'app/createExpenses.js' %}"></script>
 {% endblock %}

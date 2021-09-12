@@ -1,6 +1,16 @@
-{% extends "base.html" %} {% load static %} {% block content %}
+<!-- Base html file for nav top bar -->
+{% extends "base.html" %}
+<!-- All static assets including images etc. -->
+{% load static %}
+<!-- Main content block -->
+{% block content %}
+<!-- Nav bar tabs -->
 {% include "core/includes/tabs.html" with active_tab='app' %}
-{% load myfilters %} {% if user.is_authenticated %}
+<!-- Filter for Category -->
+{% load myfilters%}
+<!-- Check if authenticated -->
+{% if user.is_authenticated %}
+<link rel="stylesheet" type="text/css" href="{% static 'app/appStyle.css' %}" />
 <div class="container">
   <div class="sidebar">
     <h2>Add New Category</h2>
@@ -21,61 +31,63 @@
     <p>{% include 'core/includes/messages.html' %}</p>
   </div>
   <main>
-      <section class="topSummary">
-      <h1> SUMMARY </h1>
+    <section class="topSummary">
+      <h1>SUMMARY</h1>
       <table class="summaryTable">
-      <colgroup>
-      </colgroup>
-      <thead>
-        <tr>
-          <th class="summaryTableCells">PERIOD</th>
-          <th class="summaryTableCells">EXPENSES<br>(mth)</th>
-          <th class="summaryTableCells">DIFFERENCE<br>(mth)</th>
-          <th class="summaryTableCells">COVERAGE</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td class="summaryTableCells">LAST WEEK</td>
-          <td class="summaryTableCells">${{expenses_wk}}</td>
-          <td class="summaryTableCells"></td>
-          <td class="summaryTableCells">{{coverage_wk}}%</td>
-        </tr>
-        <tr>
-          <td class="summaryTableCells">LAST MONTH</td>
-          <td class="summaryTableCells">${{expenses_mth}}</td>
-          <td class="summaryTableCells"></td>
-          <td class="summaryTableCells">{{coverage_mth}}%</td>
-        </tr>
-        <tr>
-          <td class="summaryTableCells">LAST YEAR</td>
-          <td class="summaryTableCells">${{expenses_yr}}</td>
-          <td class="summaryTableCells"></td>
-          <td class="summaryTableCells">{{coverage_yr}}%</td>
-        </tr>
-      </tbody>
+        <colgroup></colgroup>
+        <thead>
+          <tr>
+            <th class="summaryTableCells">PERIOD</th>
+            <th class="summaryTableCells">EXPENSES<br />(mth)</th>
+            <th class="summaryTableCells">DIFFERENCE<br />(mth)</th>
+            <th class="summaryTableCells">COVERAGE</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="summaryTableCells">LAST WEEK</td>
+            <td class="summaryTableCells">${{expenses_wk}}</td>
+            <td class="summaryTableCells"></td>
+            <td class="summaryTableCells">{{coverage_wk}}%</td>
+          </tr>
+          <tr>
+            <td class="summaryTableCells">LAST MONTH</td>
+            <td class="summaryTableCells">${{expenses_mth}}</td>
+            <td class="summaryTableCells"></td>
+            <td class="summaryTableCells">{{coverage_mth}}%</td>
+          </tr>
+          <tr>
+            <td class="summaryTableCells">LAST YEAR</td>
+            <td class="summaryTableCells">${{expenses_yr}}</td>
+            <td class="summaryTableCells"></td>
+            <td class="summaryTableCells">{{coverage_yr}}%</td>
+          </tr>
+        </tbody>
       </table>
     </section>
     <section class="history-section">
       <h2>HISTORY</h2>
       <div class="history-card-container" id="history-card-container">
         {% for card in category %}
-          <div class="history-card-wrapper" id="{{card.id}}-wrapper">
+        <div class="history-card-wrapper" id="{{card.id}}-wrapper">
           <div class="history-card">
-            <a class="history-card-link" href="{% url 'core:timeperiods' %}?category={{card.id}}">
+            <a
+              class="history-card-link"
+              href="{% url 'core:timeperiods' %}?category={{card.id}}"
+            >
               <div>
                 <span>
-                  <strong>{{card.name}}</strong><br>
+                  <strong>{{card.name}}</strong><br />
                   <i>[{{card.description}}]</i>
                 </span>
-                <p>{{card.assignee}}
+                <p>{{card.assignee}}</p>
               </div>
             </a>
-            </div>
-            <div class="deleteBtn" id={{card.id}}>
-              <img src="{% static 'app/images/trash.svg' %}" />
-            </div>
           </div>
+          <div class="deleteBtn" id="{{card.id}}">
+            <img src="{% static 'app/images/trash.svg' %}" />
+          </div>
+        </div>
         {% endfor %}
       </div>
     </section>
@@ -86,7 +98,6 @@
 <p>You are not logged in</p>
 <a href="{% url 'account_login' %}">Log In</a> |
 <a href="{% url 'account_signup' %}">Sign Up</a>
-{% endif %} {% endblock %}
-{% block page_scripts %}
-  <script src="{% static 'app/expenseCategory.js' %}"></script>
+{% endif %} {% endblock %} {% block page_scripts %}
+<script src="{% static 'app/expenseCategory.js' %}"></script>
 {% endblock %}
