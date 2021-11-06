@@ -36,7 +36,6 @@ class ExpenseTracker extends React.Component {
           <h1>Expense Category Form</h1>
         </header>
         <CategoryForm setOutput={this.setOutput} />
-        <Output output={this.state.outputEquation} />
       </div>
     );
   }

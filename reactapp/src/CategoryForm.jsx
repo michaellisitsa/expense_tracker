@@ -4,23 +4,18 @@ import { getCookie } from "./utils/cookieUtils";
 
 export class CategoryForm extends Component {
   state = {
-    number1: "0",
-    number2: "0",
-    operator: "+",
+    name: "",
+    assignee: "",
+    budget: "",
+    description: "",
     csrftoken: "unset",
-    postData: JSON.stringify({
-      name: "API Category",
-      assignee: "API Assignee",
-      budget: "100",
-      description: "API description",
-      // user: "1",
-    }),
   };
 
   // Making a post request
   // Stack Overflow:
   // https://stackoverflow.com/questions/45308153/posting-data-to-django-rest-framework-using-javascript-fetch
   asyncFormSubmit = (e) => {
+    const { name, assignee, budget, description } = this.state;
     fetch("/api/expenseCategory/", {
       method: "post",
       headers: {
@@ -28,7 +23,12 @@ export class CategoryForm extends Component {
         "Content-Type": "application/json",
         "X-CSRFToken": this.state.csrftoken,
       },
-      body: this.state.postData,
+      body: JSON.stringify({
+        name,
+        assignee,
+        budget,
+        description,
+      }),
     })
       .then((res) => res.json())
       .then((res) => console.log(res));
@@ -57,50 +57,53 @@ export class CategoryForm extends Component {
   }
 
   handleChange = (event) => {
-    this.setState(
-      {
-        [event.target.name]: event.target.value,
-      },
-      () =>
-        this.props.setOutput(
-          this.state.number1,
-          this.state.number2,
-          this.state.operator
-        )
-    );
+    this.setState({
+      [event.target.name]: event.target.value,
+    });
   };
 
   render() {
     return (
       <form className="form1" id="form1">
         <fieldset className="inputs-wrapper">
+          <label htmlFor="name">Name:</label>
           <input
             type="text"
-            name="number1"
-            id="number1"
-            className="number-input"
-            placeholder="Enter Number..."
-            value={this.state.number1}
+            name="name"
+            id="name"
+            className="category-input"
+            placeholder="Enter Name..."
+            value={this.state.name}
             onChange={this.handleChange}
           />
-          <select
-            name="operator"
-            id="operator"
-            defaultValue={this.state.operator}
-            onChange={this.handleChange}
-          >
-            <option value="+">+</option>
-            <option value="-">-</option>
-            <option value="×">×</option>
-            <option value="÷">÷</option>
-          </select>
+          <label htmlFor="assignee">Assignee:</label>
           <input
             type="text"
-            name="number2"
-            id="number2"
-            className="number-input"
-            placeholder="Enter Number..."
-            value={this.state.number2}
+            name="assignee"
+            id="assignee"
+            className="category-input"
+            placeholder="Enter Assignee..."
+            value={this.state.assignee}
+            onChange={this.handleChange}
+          />
+          <label htmlFor="budget">Budget:</label>
+          <input
+            type="text"
+            name="budget"
+            id="budget"
+            className="category-input"
+            placeholder="Enter Budget..."
+            value={this.state.budget}
+            onChange={this.handleChange}
+          />
+          <label htmlFor="description">Description:</label>
+          <input
+            type="text"
+            name="description"
+            id="description"
+            className="category-input"
+            placeholder="Enter Description..."
+            value={this.state.description}
             onChange={this.handleChange}
           />
         </fieldset>
