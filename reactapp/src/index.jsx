@@ -1,11 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
-import Calculator from "./Calculator";
+import ExpenseTracker from "./ExpenseTracker";
 
 ReactDOM.render(
   <React.StrictMode>
-    <Calculator />
+    <ExpenseTracker />
   </React.StrictMode>,
   document.getElementById("root")
 );

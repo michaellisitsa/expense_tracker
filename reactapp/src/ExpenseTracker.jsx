@@ -1,9 +1,10 @@
-import "./Calculator.css";
+import "./ExpenseTracker.css";
 import React from "react";
-import Form from "./Form";
+import CategoryForm from "./CategoryForm";
 import Output from "./Output";
+import { getCookie } from "./utils/cookieUtils";
 
-class Calculator extends React.Component {
+class ExpenseTracker extends React.Component {
   state = {
     outputEquation: "",
     csrftoken: "unset",
@@ -14,24 +15,6 @@ class Calculator extends React.Component {
       description: "API description",
       user: "1",
     }),
-  };
-
-  // Get the cookie for the csrf token, needed for API POST requests
-  // https://docs.djangoproject.com/en/dev/ref/csrf/#ajax
-  getCookie = (name) => {
-    let cookieValue = null;
-    if (document.cookie && document.cookie !== "") {
-      const cookies = document.cookie.split(";");
-      for (let i = 0; i < cookies.length; i++) {
-        const cookie = cookies[i].trim();
-        // Does this cookie string begin with the name we want?
-        if (cookie.substring(0, name.length + 1) === name + "=") {
-          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-          break;
-        }
-      }
-    }
-    return cookieValue;
   };
 
   // Making a post request
@@ -89,7 +72,7 @@ class Calculator extends React.Component {
   };
 
   componentDidMount() {
-    this.setState({ csrftoken: this.getCookie("csrftoken") });
+    this.setState({ csrftoken: getCookie("csrftoken") });
   }
 
   render() {
@@ -99,7 +82,7 @@ class Calculator extends React.Component {
         <header>
           <h1>Expense Category Form</h1>
         </header>
-        <Form setOutput={this.setOutput} />
+        <CategoryForm setOutput={this.setOutput} />
         <Output output={this.state.outputEquation} />
         <button className="post-request" onClick={this.postRequest}>
           Post expenseCategory
@@ -112,4 +95,4 @@ class Calculator extends React.Component {
   }
 }
 
-export default Calculator;
+export default ExpenseTracker;

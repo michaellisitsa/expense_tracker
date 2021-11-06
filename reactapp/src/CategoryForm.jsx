@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import "./Form.css";
+import "./CategoryForm.css";
 
-export class Form extends Component {
+export class CategoryForm extends Component {
   state = {
     number1: "0",
     number2: "0",
@@ -61,4 +61,4 @@ export class Form extends Component {
   }
 }
 
-export default Form;
+export default CategoryForm;
