@@ -13,7 +13,7 @@ export class CategoryForm extends Component {
       assignee: "API Assignee",
       budget: "100",
       description: "API description",
-      user: "1",
+      // user: "1",
     }),
   };
 
