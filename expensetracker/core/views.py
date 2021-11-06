@@ -193,4 +193,13 @@ class ExpenseCategoryViewSet(viewsets.ModelViewSet):
     serializer_class = ExpenseCategorySerializer
     permission_classes = [permissions.IsAuthenticated]
 
+    def get_queryset(self):
+        req = self.request
+        if req:
+            self.queryset = ExpenseCategory.objects.filter(user=req.user)
+            print('request accessed')
+            return self.queryset
+        else:
+            print('request not accessed')
+            return self.queryset
 
