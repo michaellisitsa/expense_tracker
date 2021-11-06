@@ -122,3 +122,6 @@ resources/
 # JavaScript
 node_modules/
 static/site.css
+
+# VS Code
+.vscode

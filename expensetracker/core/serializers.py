@@ -38,4 +38,4 @@ class ExpenseCategorySerializer(serializers.ModelSerializer):
         # The last item is name for the foreign key applied to the ExpenseTimePeriod field
         # This allows you to nest the children of the ExpenseCategory
         # https://www.django-rest-framework.org/api-guide/relations/
-        fields = ["name", "assignee", "description","groupTransactions","expenseTimePeriod"]
+        fields = ["name", "assignee", "budget", "description","user","expenseTimePeriod"]
