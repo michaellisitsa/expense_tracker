@@ -1,0 +1,50 @@
+.form1 {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap-reverse;
+  align-items: center;
+  gap: 1em;
+}
+
+.inputs-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  margin: 0 1em;
+  border-radius: 0.25em;
+}
+
+.category-input {
+  padding: 0.5em 1em;
+  border: solid 1px grey;
+  border-radius: 0.5em;
+  margin: 0 1em;
+}
+
+.addClearBtns {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  border-radius: 0.5em;
+}
+
+.addBtn {
+  padding: 1em 1em;
+  background: rgb(200, 200, 0, 0.5);
+  margin: 0 1em;
+  border-radius: 0.25em;
+  flex: 1;
+}
+
+.clearBtn {
+  color: red;
+  background: white;
+  border: 0;
+}
+
+.clearBtn:hover {
+  text-decoration: underline;
+}
