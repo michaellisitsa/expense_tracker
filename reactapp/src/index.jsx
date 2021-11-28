@@ -1,11 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
-import ExpenseTracker from "./ExpenseTracker";
+import App from "./App";
+import { HashRouter as Router } from "react-router-dom";
 
 ReactDOM.render(
   <React.StrictMode>
-    <ExpenseTracker />
+    <App />
   </React.StrictMode>,
   document.getElementById("root")
 );
