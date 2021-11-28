@@ -19,7 +19,7 @@ export class CategoryForm extends Component {
     fetch("/api/expenseCategory/", {
       method: "post",
       headers: {
-        Accept: "application/json, text/plain, */*",
+        Accept: "application/json, */*",
         "Content-Type": "application/json",
         "X-CSRFToken": this.state.csrftoken,
       },

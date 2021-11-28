@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     # https://www.csestack.org/display-messages-form-submit-django/
     # https://www.ordinarycoders.com/blog/article/django-messages-framework
     "django.contrib.messages",
+    'whitenoise.runserver_nostatic',
     "django.contrib.staticfiles",
     "expensetracker.core",
     # 3rd Party
@@ -171,7 +172,7 @@ USE_TZ = True
 STATIC_URL = "/static/"
 
 # The absolute path to the directory where collectstatic will collect static files for deployment.
-STATIC_ROOT = BASE_DIR / "staticfiles"
+STATIC_ROOT = os.path.join(BASE_DIR, 'build', "staticfiles")
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

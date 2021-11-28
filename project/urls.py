@@ -17,12 +17,13 @@ from django.conf import settings
 from django.urls import include, path
 from django.contrib import admin
 from django.views.generic import TemplateView
+from django.views.decorators.cache import never_cache
 
 urlpatterns = [
     path("", include("expensetracker.core.urls")),
     path("admin/", admin.site.urls),
     path("accounts/", include("allauth.urls")),
-    path('reactapp/',TemplateView.as_view(template_name='index.html'))
+    path('reactapp/',never_cache(TemplateView.as_view(template_name='index.html')))
 ]
 
 if settings.DEBUG:
