@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./CategoryForm.css";
-import { getCookie } from "./utils/cookieUtils";
+import { getCookie } from "../utils/cookieUtils";
 
 export class CategoryForm extends Component {
   state = {
