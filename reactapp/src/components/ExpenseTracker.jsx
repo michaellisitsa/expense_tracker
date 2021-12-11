@@ -2,6 +2,7 @@ import "./ExpenseTracker.css";
 import React from "react";
 import CategoryForm from "./CategoryForm";
 import { HashRouter as Router, Link } from "react-router-dom";
+import ExpensePeriodForm from "./ExpensePeriodForm";
 
 class ExpenseTracker extends React.Component {
   render() {
@@ -14,6 +15,7 @@ class ExpenseTracker extends React.Component {
           <h1>Expense Category Form</h1>
         </header>
         <CategoryForm />
+        <ExpensePeriodForm />
       </div>
     );
   }
