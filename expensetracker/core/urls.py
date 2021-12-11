@@ -3,9 +3,9 @@ from rest_framework import routers
 from expensetracker.core import views
 
 router = routers.DefaultRouter()
-router.register(r'expenseTimePeriod', views.ExpenseTimePeriodViewSet)
-router.register(r'expenseCategory', views.ExpenseCategoryViewSet)
-
+router.register(r"expenseTimePeriod", views.ExpenseTimePeriodViewSet)
+router.register(r"expenseCategory", views.ExpenseCategoryViewSet)
+router.register(r"expense", views.ExpenseViewSet)
 
 app_name = "core"
 urlpatterns = [
@@ -14,5 +14,5 @@ urlpatterns = [
     path("timeperiods/", views.time_period, name="timeperiods"),
     # https://www.pluralsight.com/guides/work-with-ajax-django
     path("createExpenses/<str:pk>", views.createExpenses, name="createExpenses"),
-    path('api/',include(router.urls)),
+    path("api/", include(router.urls)),
 ]

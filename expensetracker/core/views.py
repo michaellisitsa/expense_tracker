@@ -8,7 +8,11 @@ from django.views.generic.base import TemplateView
 from .models import ExpenseTimePeriod, ExpenseCategory, Expense
 from .forms import CategoryForm, ExpenseTimePeriodForm, ExpenseForm, CreateExpenseSet
 from .filters import ExpenseTimePeriodFilter
-from .serializers import ExpenseTimePeriodSerializer, ExpenseCategorySerializer
+from .serializers import (
+    ExpenseTimePeriodSerializer,
+    ExpenseCategorySerializer,
+    ExpenseSerializer,
+)
 from .utils.utils import summariseTimePeriod
 from django.core import serializers
 
@@ -36,7 +40,7 @@ def app(request):
             event.user = request.user
             event.save()
             messages.success(request, "Category created successfully.")
-            return HttpResponseRedirect(reverse('core:app'))
+            return HttpResponseRedirect(reverse("core:app"))
         else:
             messages.error(request, "Invalid form submission.")
     else:
@@ -57,24 +61,31 @@ def app(request):
     }
     return render(request, "core/app.html", context)
 
+
 @login_required
-def time_period (request):
+def time_period(request):
     """
-        Create a time period.
+    Create a time period.
     """
-    if request.GET.get('category','') == '':
-        timePeriodPerCategory = ExpenseTimePeriod.objects.filter(category__user=request.user)
+    if request.GET.get("category", "") == "":
+        timePeriodPerCategory = ExpenseTimePeriod.objects.filter(
+            category__user=request.user
+        )
         expenseCategory = None
     else:
-        timePeriodPerCategory = ExpenseTimePeriod.objects.filter(category__user=request.user)
-        expenseCategory = ExpenseCategory.objects.filter(user=request.user).get(id=request.GET.get('category'))
+        timePeriodPerCategory = ExpenseTimePeriod.objects.filter(
+            category__user=request.user
+        )
+        expenseCategory = ExpenseCategory.objects.filter(user=request.user).get(
+            id=request.GET.get("category")
+        )
     if request.method == "POST":
         # Create a form instance and populate with data from the request
-        form = ExpenseTimePeriodForm(request.POST, prefix='add')
+        form = ExpenseTimePeriodForm(request.POST, prefix="add")
         if form.is_valid():
             # You can obtain the id of the record just created, and then pass it into the url inside HttpResponseRedirect
             # https://stackoverflow.com/questions/41700796/how-to-get-id-in-the-url-after-submission-of-form
-            instance = form.save(commit = False)
+            instance = form.save(commit=False)
             # instance.user = ExpenseTimePeriod.objects.get(id=request.user.id)
             instance.save()
             messages.success(request, "Expense Time Period submitted successfully.")
@@ -84,20 +95,28 @@ def time_period (request):
             # https://docs.djangoproject.com/en/3.2/ref/urlresolvers/
             # >>> reverse('admin:app_list', kwargs={'app_label': 'auth'})
             # '/admin/auth/'
-            return HttpResponseRedirect(reverse('core:createExpenses',kwargs={'pk': instance.id}))
+            return HttpResponseRedirect(
+                reverse("core:createExpenses", kwargs={"pk": instance.id})
+            )
         else:
             messages.error(request, "Invalid form submission.")
     else:
-        form = ExpenseTimePeriodForm(initial={'category':expenseCategory}, prefix='add')
-    #Re-instantiate that variable with the filtered query set using Django-filter
-    #After lots of pain, finally found a post that the request needs to be passed in here
-    #https://stackoverflow.com/a/58055651/12462631
-    myFilter = ExpenseTimePeriodFilter(data=request.GET, request=request, queryset=timePeriodPerCategory)
+        form = ExpenseTimePeriodForm(
+            initial={"category": expenseCategory}, prefix="add"
+        )
+    # Re-instantiate that variable with the filtered query set using Django-filter
+    # After lots of pain, finally found a post that the request needs to be passed in here
+    # https://stackoverflow.com/a/58055651/12462631
+    myFilter = ExpenseTimePeriodFilter(
+        data=request.GET, request=request, queryset=timePeriodPerCategory
+    )
     # myFilter.category.queryset = ExpenseTimePeriod.objects.filter(category__user=request.user)
     timePeriodPerCategory = myFilter.qs
     expenses = Expense.objects.filter(expenseTimePeriod__category__user=request.user)
     expenses_wk, coverage_wk = summariseTimePeriod(timePeriodPerCategory, expenses, 7)
-    expenses_mth, coverage_mth = summariseTimePeriod(timePeriodPerCategory, expenses, 30)
+    expenses_mth, coverage_mth = summariseTimePeriod(
+        timePeriodPerCategory, expenses, 30
+    )
     expenses_yr, coverage_yr = summariseTimePeriod(timePeriodPerCategory, expenses, 365)
 
     context = {
@@ -110,59 +129,72 @@ def time_period (request):
         "expenses": timePeriodPerCategory,
         "form": form,
         "expenseCategory": expenseCategory,
-        'myFilter': myFilter,
+        "myFilter": myFilter,
     }
     return render(request, "core/timePeriod.html", context)
+
 
 # Not used
 def AjaxExpensePeriod(request):
     """
-        First attempt at an ajax request.
-        https://www.pluralsight.com/guides/work-with-ajax-django
+    First attempt at an ajax request.
+    https://www.pluralsight.com/guides/work-with-ajax-django
     """
     # request should be ajax and method POST
     if request.method == "POST":
         # get the form data
-        form = ExpenseTimePeriodForm(request.POST, prefix='ajax')
+        form = ExpenseTimePeriodForm(request.POST, prefix="ajax")
         if form.is_valid():
             instance = form.save()
             # serialize in new friend object in json
-            ser_instance = serializers.serialize('json', [ instance, ])
+            ser_instance = serializers.serialize(
+                "json",
+                [
+                    instance,
+                ],
+            )
             # send to client side.
             return JsonResponse({"instance": ser_instance}, status=200)
         else:
-            #Some form error occurs
-            return JsonResponse({
-                "error": form.errors
-            }, status=400)
+            # Some form error occurs
+            return JsonResponse({"error": form.errors}, status=400)
     # some error occured
     return JsonResponse({"error": ""}, status=400)
+
 
 @login_required
 def createExpenses(request, pk):
     """
-        Create an expense entry under a time period
+    Create an expense entry under a time period
     """
-    expenseTimePeriodList = ExpenseTimePeriod.objects.filter(category__user=request.user)
-    expenseTimePeriod = ExpenseTimePeriod.objects.filter(category__user=request.user).get(id=pk)
+    expenseTimePeriodList = ExpenseTimePeriod.objects.filter(
+        category__user=request.user
+    )
+    expenseTimePeriod = ExpenseTimePeriod.objects.filter(
+        category__user=request.user
+    ).get(id=pk)
     expenseCategory = expenseTimePeriod.category
     if request.method == "POST":
         if "formset" in request.POST:
             formset = CreateExpenseSet(data=request.POST, instance=expenseTimePeriod)
-            #Check if submitted forms are valid
+            # Check if submitted forms are valid
             if formset.is_valid():
                 formset.save()
                 messages.success(request, "Expense submitted successfully.")
-                return HttpResponseRedirect(f"{reverse('core:timeperiods')}?category={expenseTimePeriod.category.id}")
+                return HttpResponseRedirect(
+                    f"{reverse('core:timeperiods')}?category={expenseTimePeriod.category.id}"
+                )
             else:
-                messages.error(request, "Invalid Form Submission") 
+                messages.error(request, "Invalid Form Submission")
     else:
         # Use of formsets
         # https://www.brennantymrak.com/articles/django-dynamic-formsets-javascript.html
         formset = CreateExpenseSet(instance=expenseTimePeriod)
     expenses = Expense.objects.filter(expenseTimePeriod__category__user=request.user)
     expenses_wk, coverage_wk = summariseTimePeriod(expenseTimePeriodList, expenses, 7)
-    expenses_mth, coverage_mth = summariseTimePeriod(expenseTimePeriodList, expenses, 30)
+    expenses_mth, coverage_mth = summariseTimePeriod(
+        expenseTimePeriodList, expenses, 30
+    )
     expenses_yr, coverage_yr = summariseTimePeriod(expenseTimePeriodList, expenses, 365)
     context = {
         "expenses_wk": expenses_wk,
@@ -173,22 +205,59 @@ def createExpenses(request, pk):
         "coverage_yr": coverage_yr,
         "expenseCategory": expenseCategory,
         "expenseTimePeriod": expenseTimePeriod,
-        "formset":formset,
+        "formset": formset,
     }
     return render(request, "core/createExpenses.html", context)
+
+
+class ExpenseViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows Expenses to be viewed or editted.
+    """
+
+    queryset = Expense.objects.all()  # gets filtered in get_queryset
+    serializer_class = ExpenseSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        req = self.request
+        if req:
+            self.queryset = Expense.objects.filter(
+                expenseTimePeriod__category__user=req.user
+            )
+            print("request accessed")
+            return self.queryset
+        else:
+            print("request not accessed")
+            return self.queryset
+
 
 class ExpenseTimePeriodViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows Expense Time Periods to be viewed or editted.
     """
-    queryset = ExpenseTimePeriod.objects.all()
+
+    # queryset = ExpenseTimePeriod.objects.filter(category__user=request.user)
+    queryset = ExpenseTimePeriod.objects.all()  # gets filtered in get_queryset
     serializer_class = ExpenseTimePeriodSerializer
     permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        req = self.request
+        if req:
+            self.queryset = ExpenseTimePeriod.objects.filter(category__user=req.user)
+            print("request accessed")
+            return self.queryset
+        else:
+            print("request not accessed")
+            return self.queryset
+
 
 class ExpenseCategoryViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows Expense Time Periods to be viewed or editted.
     """
+
     queryset = ExpenseCategory.objects.all()
     serializer_class = ExpenseCategorySerializer
     permission_classes = [permissions.IsAuthenticated]
@@ -197,9 +266,8 @@ class ExpenseCategoryViewSet(viewsets.ModelViewSet):
         req = self.request
         if req:
             self.queryset = ExpenseCategory.objects.filter(user=req.user)
-            print('request accessed')
+            print("request accessed")
             return self.queryset
         else:
-            print('request not accessed')
+            print("request not accessed")
             return self.queryset
-
