@@ -54,7 +54,7 @@ INSTALLED_APPS = [
     # https://www.csestack.org/display-messages-form-submit-django/
     # https://www.ordinarycoders.com/blog/article/django-messages-framework
     "django.contrib.messages",
-    'whitenoise.runserver_nostatic',
+    "whitenoise.runserver_nostatic",
     "django.contrib.staticfiles",
     "expensetracker.core",
     # 3rd Party
@@ -172,7 +172,7 @@ USE_TZ = True
 STATIC_URL = "/static/"
 
 # The absolute path to the directory where collectstatic will collect static files for deployment.
-STATIC_ROOT = os.path.join(BASE_DIR, 'build', "staticfiles")
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -223,6 +223,9 @@ REST_FRAMEWORK = {
     "PAGE_SIZE": 10,
 }
 
+# Set up Django and React together and deploy on Heroku
+# https://dev.to/shakib609/deploy-your-django-react-js-app-to-heroku-2bck
+# https://librenepal.com/article/django-and-create-react-app-together-on-heroku/
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "reactapp/build/static"),
 ]

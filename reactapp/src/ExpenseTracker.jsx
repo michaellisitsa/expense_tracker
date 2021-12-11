@@ -1,41 +1,19 @@
 import "./ExpenseTracker.css";
 import React from "react";
 import CategoryForm from "./CategoryForm";
-import Output from "./Output";
+import { HashRouter as Router, Link } from "react-router-dom";
 
 class ExpenseTracker extends React.Component {
-  state = {
-    outputEquation: "",
-  };
-
-  setOutput = (number1, number2, operator) => {
-    let outputString = `${number1} ${operator} ${number2} = `;
-    if (operator == "+") {
-      console.log(typeof outputString);
-      outputString = outputString.concat(
-        parseFloat(number1) + parseFloat(number2)
-      );
-    } else if (operator == "-") {
-      outputString = outputString.concat(+number1 - +number2);
-    } else if (operator === "×") {
-      outputString = outputString.concat(+number1 * +number2);
-    } else if (operator === "÷") {
-      outputString = outputString.concat(+number1 / +number2);
-    } else {
-      console.log("passed through");
-    }
-    this.setState({
-      outputEquation: outputString,
-    });
-  };
-
   render() {
+    // Using routes within a django react app and 404 status is described in below link:
+    // https://farhanghazi17.medium.com/configuring-react-router-with-django-urls-ba3d918e8c10
     return (
-      <div className="calculator-wrapper">
+      <div className="wrapper">
         <header>
+          <Link to="/invoices">Invoices</Link>
           <h1>Expense Category Form</h1>
         </header>
-        <CategoryForm setOutput={this.setOutput} />
+        <CategoryForm />
       </div>
     );
   }
