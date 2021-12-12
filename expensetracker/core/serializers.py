@@ -79,7 +79,7 @@ class ExpenseTimePeriodSerializer(serializers.ModelSerializer):
         """
 
         model = ExpenseTimePeriod
-        fields = ["description", "dateStart", "dateEnd", "category"]
+        fields = "__all__"
         # exclude = ["category"]
 
 

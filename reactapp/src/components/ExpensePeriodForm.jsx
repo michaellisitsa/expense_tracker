@@ -8,7 +8,6 @@ function ExpensePeriodForm(props) {
     dateStart: "",
     dateEnd: "",
   });
-  const [category, setCategory] = useState(13);
   const [csrfToken, setCsrfToken] = useState("unset");
 
   // Making a post request
@@ -27,11 +26,14 @@ function ExpensePeriodForm(props) {
         description,
         dateStart,
         dateEnd,
-        category,
+        category: props.selectedCategory,
       }),
     })
       .then((res) => res.json())
-      .then((res) => console.log(res));
+      .then((res) => {
+        console.log(res);
+        props.onSubmit(res.id);
+      });
   };
 
   const asyncFormGet = () => {

@@ -31,25 +31,15 @@ function CategoryForm(props) {
       }),
     })
       .then((res) => res.json())
-      .then((res) => console.log(res));
-  };
-
-  const asyncFormGet = () => {
-    fetch("/api/expenseCategory/", {
-      method: "get",
-    })
-      .then((res) => res.json())
-      .then((res) => console.table(res.results));
+      .then((res) => {
+        console.log(res);
+        props.onSubmit(res.id);
+      });
   };
 
   const postRequest = (e) => {
     e.preventDefault();
     asyncFormSubmit();
-  };
-
-  const getRequest = (e) => {
-    e.preventDefault();
-    asyncFormGet();
   };
 
   useEffect(() => {
@@ -116,9 +106,6 @@ function CategoryForm(props) {
       </fieldset>
       <button className="post-request" onClick={postRequest}>
         Post expenseCategory
-      </button>
-      <button className="get-request" onClick={getRequest}>
-        Get expenseCategory
       </button>
     </form>
   );
