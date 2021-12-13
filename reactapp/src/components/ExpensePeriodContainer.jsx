@@ -3,7 +3,7 @@ import ExpensePeriodForm from "./ExpensePeriodForm";
 import ExpensePeriodFilter from "./ExpensePeriodFilter";
 
 function ExpensePeriodContainer(props) {
-  const [selectedExpensePeriodId, setSelectedExpensePeriodId] = useState("");
+  const [selectedExpensePeriod, setSelectedExpensePeriod] = useState("");
   const [expensePeriods, setExpensePeriods] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -17,15 +17,16 @@ function ExpensePeriodContainer(props) {
         setExpensePeriods(res.results);
         setIsLoaded(true);
       });
-  }, [selectedExpensePeriodId]);
+  }, [selectedExpensePeriod]);
 
   function handleSelectExpensePeriod(event, id) {
     event.preventDefault();
     props.handleExpensePeriodFormSubmit(id);
+    handleFormSubmit(id);
   }
 
   function handleFormSubmit(id) {
-    setSelectedExpensePeriodId(id);
+    setSelectedExpensePeriod(id);
   }
 
   return (
@@ -37,9 +38,17 @@ function ExpensePeriodContainer(props) {
       <ExpensePeriodFilter
         expensePeriods={expensePeriods}
         handleSelectExpensePeriod={handleSelectExpensePeriod}
-        selectedExpensePeriodId={selectedExpensePeriodId}
+        selectedExpensePeriod={selectedExpensePeriod}
         isLoaded={isLoaded}
       />
+      {selectedExpensePeriod !== "" ? (
+        <p>
+          You have selected ExpensePeriod Id: {selectedExpensePeriod}, which
+          will be used when creating an Expense
+        </p>
+      ) : (
+        <p>Select Expense Period...</p>
+      )}
     </div>
   );
 }

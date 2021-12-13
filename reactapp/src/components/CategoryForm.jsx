@@ -55,9 +55,6 @@ function CategoryForm(props) {
       ...data,
       [event.target.name]: event.target.value,
     }));
-    // this.setState({
-    //   [event.target.name]: event.target.value,
-    // });
   };
 
   return (
@@ -105,7 +102,7 @@ function CategoryForm(props) {
         />
       </fieldset>
       <button className="post-request" onClick={postRequest}>
-        Post expenseCategory
+        Post expense Category Form
       </button>
     </form>
   );
