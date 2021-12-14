@@ -7,7 +7,7 @@ import CategoryContainer from "./CategoryContainer";
 import ExpenseContainer from "./ExpenseContainer";
 
 function ExpenseTracker(props) {
-  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState({});
   const [selectedExpensePeriod, setSelectedExpensePeriod] = useState("");
   const [selectedExpense, setSelectedExpense] = useState("");
 

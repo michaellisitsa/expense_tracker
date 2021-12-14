@@ -8,7 +8,7 @@ function ExpensePeriodContainer(props) {
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    fetch("/api/expenseTimePeriod/", {
+    fetch(`/api/expenseTimePeriod/?category=${props.selectedCategory.id}`, {
       method: "get",
     })
       .then((res) => res.json())
@@ -17,7 +17,7 @@ function ExpensePeriodContainer(props) {
         setExpensePeriods(res.results);
         setIsLoaded(true);
       });
-  }, [selectedExpensePeriod]);
+  }, [selectedExpensePeriod, props.selectedCategory.id]);
 
   function handleSelectExpensePeriod(event, id) {
     event.preventDefault();

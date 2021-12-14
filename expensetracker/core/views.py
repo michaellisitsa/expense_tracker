@@ -244,9 +244,12 @@ class ExpenseTimePeriodViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         req = self.request
+        category = self.request.query_params.get("category")
         if req:
             self.queryset = ExpenseTimePeriod.objects.filter(category__user=req.user)
             print("request accessed")
+            if category:
+                self.queryset = self.queryset.filter(category=category)
             return self.queryset
         else:
             print("request not accessed")

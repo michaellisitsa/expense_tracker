@@ -26,7 +26,7 @@ function ExpensePeriodForm(props) {
         description,
         dateStart,
         dateEnd,
-        category: props.selectedCategory,
+        category: props.selectedCategory.id,
       }),
     })
       .then((res) => res.json())

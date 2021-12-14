@@ -19,14 +19,14 @@ function CategoryContainer(props) {
       });
   }, [selectedCategory]);
 
-  function handleSelectCategory(event, id) {
+  function handleSelectCategory(event, category) {
     event.preventDefault();
-    props.handleCategoryFormSubmit(id);
-    handleFormSubmit(id);
+    props.handleCategoryFormSubmit(category);
+    setSelectedCategory(category);
   }
 
-  function handleFormSubmit(id) {
-    setSelectedCategory(id);
+  function handleFormSubmit(category) {
+    setSelectedCategory(category);
   }
 
   return (
@@ -37,10 +37,11 @@ function CategoryContainer(props) {
         handleSelectCategory={handleSelectCategory}
         isLoaded={isLoaded}
       />
-      {selectedCategory !== "" ? (
+      {Object.keys(selectedCategory).length !== 0 ? (
         <p>
-          You have selected Category Id: {selectedCategory}, which will be used
-          when creating an Expense Period
+          You have selected Category Id: {selectedCategory.id}:{" "}
+          {selectedCategory.name}, which will be used when creating an Expense
+          Period
         </p>
       ) : (
         <p>Select Expense Category...</p>

@@ -13,7 +13,8 @@ function ExpensePeriodFilter(props) {
                   props.handleSelectExpensePeriod(event, expensePeriod.id)
                 }
               >
-                {expensePeriod.id}: {expensePeriod.description}
+                {expensePeriod.id}: {expensePeriod.description} from{" "}
+                {expensePeriod.category}
               </button>
             </li>
           ))
