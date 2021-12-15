@@ -3,7 +3,7 @@ import CategoryForm from "./CategoryForm";
 import CategoryFilter from "./CategoryFilter";
 
 function CategoryContainer(props) {
-  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState({});
   const [categories, setCategories] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -17,7 +17,7 @@ function CategoryContainer(props) {
         setCategories(res.results);
         setIsLoaded(true);
       });
-  }, [selectedCategory]);
+  }, []);
 
   function handleSelectCategory(event, category) {
     event.preventDefault();
@@ -26,6 +26,7 @@ function CategoryContainer(props) {
   }
 
   function handleFormSubmit(category) {
+    props.handleCategoryFormSubmit(category);
     setSelectedCategory(category);
   }
 

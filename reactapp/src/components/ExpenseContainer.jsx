@@ -3,8 +3,9 @@ import ExpenseForm from "./ExpenseForm";
 import ExpenseFilter from "./ExpenseFilter";
 
 function ExpenseContainer(props) {
-  const [selectedExpense, setSelectedExpense] = useState("");
+  const [selectedExpense, setSelectedExpense] = useState({});
   const [expenses, setExpenses] = useState([]);
+  const [filteredExpenses, setFilteredExpenses] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
@@ -17,16 +18,28 @@ function ExpenseContainer(props) {
         setExpenses(res.results);
         setIsLoaded(true);
       });
-  }, [selectedExpense]);
+  }, []);
 
-  function handleSelectExpense(event, id) {
+  useEffect(() => {
+    if (props.selectedExpensePeriod?.id) {
+      setFilteredExpenses(
+        expenses.filter(
+          (expense) =>
+            expense.expenseTimePeriod === props.selectedExpensePeriod.id
+        )
+      );
+    }
+    setSelectedExpense({});
+  }, [props.selectedExpensePeriod]);
+
+  function handleSelectExpense(event, expense) {
     event.preventDefault();
-    props.handleExpenseFormSubmit(id);
-    handleFormSubmit(id);
+    props.handleExpenseFormSubmit(expense);
+    handleFormSubmit(expense);
   }
 
-  function handleFormSubmit(id) {
-    setSelectedExpense(id);
+  function handleFormSubmit(expense) {
+    setSelectedExpense(expense);
   }
 
   return (
@@ -36,12 +49,15 @@ function ExpenseContainer(props) {
         onSubmit={handleFormSubmit}
       />
       <ExpenseFilter
-        expenses={expenses}
+        expenses={filteredExpenses}
         handleSelectExpense={handleSelectExpense}
         isLoaded={isLoaded}
       />
-      {selectedExpense !== "" ? (
-        <p>You have selected Expense Id: {selectedExpense}</p>
+      {Object.keys(selectedExpense).length !== 0 ? (
+        <p>
+          You have selected Expense Id:{selectedExpense.id}:{" "}
+          {selectedExpense.description}
+        </p>
       ) : (
         <p>Select Expense...</p>
       )}

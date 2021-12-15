@@ -3,12 +3,13 @@ import ExpensePeriodForm from "./ExpensePeriodForm";
 import ExpensePeriodFilter from "./ExpensePeriodFilter";
 
 function ExpensePeriodContainer(props) {
-  const [selectedExpensePeriod, setSelectedExpensePeriod] = useState("");
+  const [selectedExpensePeriod, setSelectedExpensePeriod] = useState({});
   const [expensePeriods, setExpensePeriods] = useState([]);
+  const [filteredExpensePeriods, setFilteredExpensePeriods] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    fetch(`/api/expenseTimePeriod/?category=${props.selectedCategory.id}`, {
+    fetch(`/api/expenseTimePeriod/`, {
       method: "get",
     })
       .then((res) => res.json())
@@ -17,17 +18,32 @@ function ExpensePeriodContainer(props) {
         setExpensePeriods(res.results);
         setIsLoaded(true);
       });
-  }, [selectedExpensePeriod, props.selectedCategory.id]);
+  }, []);
 
-  function handleSelectExpensePeriod(event, id) {
+  useEffect(() => {
+    if (props.selectedCategory?.id) {
+      setFilteredExpensePeriods(
+        expensePeriods.filter(
+          (expensePeriod) =>
+            expensePeriod.category === props.selectedCategory.id
+        )
+      );
+    }
+    setSelectedExpensePeriod({});
+  }, [props.selectedCategory]);
+
+  function handleSelectExpensePeriod(event, expensePeriod) {
     event.preventDefault();
-    props.handleExpensePeriodFormSubmit(id);
-    handleFormSubmit(id);
+    props.handleExpensePeriodFormSubmit(expensePeriod);
+    setSelectedExpensePeriod(expensePeriod);
   }
 
-  function handleFormSubmit(id) {
-    setSelectedExpensePeriod(id);
+  function handleFormSubmit(expensePeriod) {
+    setSelectedExpensePeriod(expensePeriod);
   }
+
+  // TODO: When Expense Period changes, the expenses that are shown should be filtered to only the available values,
+  // unless there is a selectedExpensePeriod, in which case just filter to that.
 
   return (
     <div>
@@ -36,15 +52,16 @@ function ExpensePeriodContainer(props) {
         onSubmit={handleFormSubmit}
       />
       <ExpensePeriodFilter
-        expensePeriods={expensePeriods}
+        expensePeriods={filteredExpensePeriods}
         handleSelectExpensePeriod={handleSelectExpensePeriod}
         selectedExpensePeriod={selectedExpensePeriod}
         isLoaded={isLoaded}
       />
-      {selectedExpensePeriod !== "" ? (
+      {Object.keys(selectedExpensePeriod).length !== 0 ? (
         <p>
-          You have selected ExpensePeriod Id: {selectedExpensePeriod}, which
-          will be used when creating an Expense
+          You have selected ExpensePeriod Id: {selectedExpensePeriod.id}:{" "}
+          {selectedExpensePeriod.description}, which will be used when creating
+          an Expense
         </p>
       ) : (
         <p>Select Expense Period...</p>

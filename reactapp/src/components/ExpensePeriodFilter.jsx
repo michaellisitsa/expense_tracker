@@ -10,7 +10,7 @@ function ExpensePeriodFilter(props) {
             <li key={expensePeriod.id}>
               <button
                 onClick={(event) =>
-                  props.handleSelectExpensePeriod(event, expensePeriod.id)
+                  props.handleSelectExpensePeriod(event, expensePeriod)
                 }
               >
                 {expensePeriod.id}: {expensePeriod.description} from{" "}

@@ -8,8 +8,8 @@ import ExpenseContainer from "./ExpenseContainer";
 
 function ExpenseTracker(props) {
   const [selectedCategory, setSelectedCategory] = useState({});
-  const [selectedExpensePeriod, setSelectedExpensePeriod] = useState("");
-  const [selectedExpense, setSelectedExpense] = useState("");
+  const [selectedExpensePeriod, setSelectedExpensePeriod] = useState({});
+  const [selectedExpense, setSelectedExpense] = useState({});
 
   function handleCategoryFormSubmit(category) {
     setSelectedCategory(category);
