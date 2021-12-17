@@ -12,6 +12,11 @@ function CategoryFilter(props) {
               >
                 {category.id}: {category.name}
               </button>
+              <button
+                onClick={(event) => props.onDeleteCategory(event, category)}
+              >
+                Delete
+              </button>
             </li>
           ))
         ) : (

@@ -236,7 +236,6 @@ class ExpenseTimePeriodViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows Expense Time Periods to be viewed or editted.
     """
-
     # queryset = ExpenseTimePeriod.objects.filter(category__user=request.user)
     queryset = ExpenseTimePeriod.objects.all()  # gets filtered in get_queryset
     serializer_class = ExpenseTimePeriodSerializer

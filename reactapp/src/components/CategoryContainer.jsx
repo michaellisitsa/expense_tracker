@@ -1,11 +1,17 @@
 import { useState, useEffect } from "react";
 import CategoryForm from "./CategoryForm";
 import CategoryFilter from "./CategoryFilter";
+import { getCookie } from "../utils/cookieUtils";
 
 function CategoryContainer(props) {
   const [selectedCategory, setSelectedCategory] = useState({});
   const [categories, setCategories] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [csrfToken, setCsrfToken] = useState("unset");
+
+  useEffect(() => {
+    setCsrfToken(getCookie("csrftoken"));
+  }, []);
 
   useEffect(() => {
     fetch("/api/expenseCategory/", {
@@ -18,6 +24,31 @@ function CategoryContainer(props) {
         setIsLoaded(true);
       });
   }, []);
+
+  // Making a delete request
+  function handleDeleteCategory(event, category) {
+    event.preventDefault();
+    fetch(`/api/expenseCategory/${category.id}`, {
+      method: "delete",
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        "Content-Type": "application/json",
+        "X-CSRFToken": csrfToken,
+      },
+    })
+      .then((res) => res.text())
+      .then((res) => {
+        console.log(res);
+        setCategories((prevCategories) =>
+          prevCategories.filter(
+            (categoryInCategories) => categoryInCategories !== category
+          )
+        );
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  }
 
   function handleSelectCategory(event, category) {
     event.preventDefault();
@@ -36,6 +67,7 @@ function CategoryContainer(props) {
       <CategoryFilter
         categories={categories}
         handleSelectCategory={handleSelectCategory}
+        onDeleteCategory={handleDeleteCategory}
         isLoaded={isLoaded}
       />
       {Object.keys(selectedCategory).length !== 0 ? (
