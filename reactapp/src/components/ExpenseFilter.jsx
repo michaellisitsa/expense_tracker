@@ -9,7 +9,7 @@ function ExpenseFilter(props) {
           props.expenses.map((expense) => (
             <li key={expense.id}>
               <button
-                onClick={(event) => props.handleSelectExpense(event, expense)}
+                onClick={(event) => props.onSelectExpense(event, expense)}
               >
                 {expense.id}: {expense.description}
               </button>

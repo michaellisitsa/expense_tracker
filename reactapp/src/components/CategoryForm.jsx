@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import "./CategoryForm.css";
-import { getCookie } from "../utils/cookieUtils";
+import CSRFTOKEN from "../utils/csrftoken";
 
 function CategoryForm(props) {
   const [formData, setFormData] = useState({
@@ -9,19 +9,19 @@ function CategoryForm(props) {
     budget: "",
     description: "",
   });
-  const [csrfToken, setCsrfToken] = useState("unset");
 
   // Making a post request
   // Stack Overflow:
   // https://stackoverflow.com/questions/45308153/posting-data-to-django-rest-framework-using-javascript-fetch
-  const asyncFormSubmit = (e) => {
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
     const { name, assignee, budget, description } = formData;
     fetch("/api/expenseCategory/", {
       method: "post",
       headers: {
         Accept: "application/json, */*",
         "Content-Type": "application/json",
-        "X-CSRFToken": csrfToken,
+        "X-CSRFToken": CSRFTOKEN,
       },
       body: JSON.stringify({
         name,
@@ -36,19 +36,6 @@ function CategoryForm(props) {
         props.onSubmit(res);
       });
   };
-
-  const postRequest = (e) => {
-    e.preventDefault();
-    asyncFormSubmit();
-  };
-
-  useEffect(() => {
-    setCsrfToken(getCookie("csrftoken"));
-  }, []);
-
-  // componentDidMount() {
-  //   this.setState({ csrfToken: getCookie("csrfToken") });
-  // }
 
   const handleChange = (event) => {
     setFormData((data) => ({
@@ -101,7 +88,7 @@ function CategoryForm(props) {
           onChange={handleChange}
         />
       </fieldset>
-      <button className="post-request" onClick={postRequest}>
+      <button className="post-request" onClick={handleFormSubmit}>
         Post expense Category Form
       </button>
     </form>

@@ -34,7 +34,7 @@ function ExpensePeriodContainer(props) {
 
   function handleSelectExpensePeriod(event, expensePeriod) {
     event.preventDefault();
-    props.handleExpensePeriodFormSubmit(expensePeriod);
+    props.onExpensePeriodFormSubmit(expensePeriod);
     setSelectedExpensePeriod(expensePeriod);
   }
 
@@ -52,10 +52,10 @@ function ExpensePeriodContainer(props) {
         onSubmit={handleFormSubmit}
       />
       <ExpensePeriodFilter
-        expensePeriods={filteredExpensePeriods}
-        handleSelectExpensePeriod={handleSelectExpensePeriod}
-        selectedExpensePeriod={selectedExpensePeriod}
         isLoaded={isLoaded}
+        expensePeriods={filteredExpensePeriods}
+        selectedExpensePeriod={selectedExpensePeriod}
+        onSelectExpensePeriod={handleSelectExpensePeriod}
       />
       {Object.keys(selectedExpensePeriod).length !== 0 ? (
         <p>

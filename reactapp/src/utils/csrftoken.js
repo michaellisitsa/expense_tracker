@@ -16,4 +16,10 @@ const getCookie = (name) => {
   return cookieValue;
 };
 
-export { getCookie };
+const CSRFTOKEN = getCookie("csrftoken");
+
+// // below method only valid when you are "POSTING" the form, not React's paradigm of separate fetch request.
+// function CSRFTOKEN() {
+//   return <input name="csrfmiddlewaretoken" value={csrftoken} type="hidden" />;
+// }
+export default CSRFTOKEN;

@@ -1,17 +1,12 @@
 import { useState, useEffect } from "react";
 import CategoryForm from "./CategoryForm";
 import CategoryFilter from "./CategoryFilter";
-import { getCookie } from "../utils/cookieUtils";
+import CSRFTOKEN from "../utils/csrftoken";
 
 function CategoryContainer(props) {
   const [selectedCategory, setSelectedCategory] = useState({});
   const [categories, setCategories] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [csrfToken, setCsrfToken] = useState("unset");
-
-  useEffect(() => {
-    setCsrfToken(getCookie("csrftoken"));
-  }, []);
 
   useEffect(() => {
     fetch("/api/expenseCategory/", {
@@ -33,7 +28,7 @@ function CategoryContainer(props) {
       headers: {
         Accept: "application/json, text/plain, */*",
         "Content-Type": "application/json",
-        "X-CSRFToken": csrfToken,
+        "X-CSRFToken": CSRFTOKEN,
       },
     })
       .then((res) => res.text())
@@ -52,12 +47,12 @@ function CategoryContainer(props) {
 
   function handleSelectCategory(event, category) {
     event.preventDefault();
-    props.handleCategoryFormSubmit(category);
+    props.onCategoryFormSubmit(category);
     setSelectedCategory(category);
   }
 
   function handleFormSubmit(category) {
-    props.handleCategoryFormSubmit(category);
+    props.onCategoryFormSubmit(category);
     setSelectedCategory(category);
   }
 
@@ -65,10 +60,10 @@ function CategoryContainer(props) {
     <div>
       <CategoryForm onSubmit={handleFormSubmit} />
       <CategoryFilter
-        categories={categories}
-        handleSelectCategory={handleSelectCategory}
-        onDeleteCategory={handleDeleteCategory}
         isLoaded={isLoaded}
+        categories={categories}
+        onSelectCategory={handleSelectCategory}
+        onDeleteCategory={handleDeleteCategory}
       />
       {Object.keys(selectedCategory).length !== 0 ? (
         <p>

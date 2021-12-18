@@ -23,7 +23,7 @@ function ExpenseTracker(props) {
     setSelectedExpense(expense);
   }
 
-  // Using routes within a django react app and 404 status is described in below link:
+  // Using routes within a django react app and 404 status is described in below link:     1
   // https://farhanghazi17.medium.com/configuring-react-router-with-django-urls-ba3d918e8c10
   return (
     <div className="wrapper">
@@ -31,14 +31,14 @@ function ExpenseTracker(props) {
         <Link to="/invoices">Invoices</Link>
         <h1>Expense Category Form</h1>
       </header>
-      <CategoryContainer handleCategoryFormSubmit={handleCategoryFormSubmit} />
+      <CategoryContainer onCategoryFormSubmit={handleCategoryFormSubmit} />
       <ExpensePeriodContainer
-        handleExpensePeriodFormSubmit={handleExpensePeriodFormSubmit}
         selectedCategory={selectedCategory}
+        onExpensePeriodFormSubmit={handleExpensePeriodFormSubmit}
       />
       <ExpenseContainer
-        handleExpenseFormSubmit={handleExpenseFormSubmit}
         selectedExpensePeriod={selectedExpensePeriod}
+        onExpenseFormSubmit={handleExpenseFormSubmit}
       />
     </div>
   );

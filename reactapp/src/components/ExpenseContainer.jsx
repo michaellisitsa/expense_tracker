@@ -34,7 +34,7 @@ function ExpenseContainer(props) {
 
   function handleSelectExpense(event, expense) {
     event.preventDefault();
-    props.handleExpenseFormSubmit(expense);
+    props.onExpenseFormSubmit(expense);
     handleFormSubmit(expense);
   }
 
@@ -49,9 +49,9 @@ function ExpenseContainer(props) {
         onSubmit={handleFormSubmit}
       />
       <ExpenseFilter
-        expenses={filteredExpenses}
-        handleSelectExpense={handleSelectExpense}
         isLoaded={isLoaded}
+        expenses={filteredExpenses}
+        onSelectExpense={handleSelectExpense}
       />
       {Object.keys(selectedExpense).length !== 0 ? (
         <p>

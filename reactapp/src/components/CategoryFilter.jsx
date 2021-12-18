@@ -8,7 +8,7 @@ function CategoryFilter(props) {
           props.categories.map((category) => (
             <li key={category.id}>
               <button
-                onClick={(event) => props.handleSelectCategory(event, category)}
+                onClick={(event) => props.onSelectCategory(event, category)}
               >
                 {category.id}: {category.name}
               </button>
