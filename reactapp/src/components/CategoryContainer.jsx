@@ -51,6 +51,7 @@ function CategoryContainer(props) {
 
   function handleFormSubmit(category) {
     props.onCategoryFormSubmit(category);
+    setCategories((prevCategories) => [...prevCategories, category]);
   }
 
   return (

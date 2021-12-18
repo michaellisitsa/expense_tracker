@@ -13,6 +13,11 @@ function ExpenseFilter(props) {
               >
                 {expense.id}: {expense.description}
               </button>
+              <button
+                onClick={(event) => props.onDeleteExpense(event, expense)}
+              >
+                Delete
+              </button>
             </li>
           ))
         ) : (

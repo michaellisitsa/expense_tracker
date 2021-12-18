@@ -32,7 +32,7 @@ function ExpensePeriodForm(props) {
       .then((res) => res.json())
       .then((res) => {
         console.log(res);
-        props.onSubmit(res.id);
+        props.onSubmit(res);
       });
   };
 

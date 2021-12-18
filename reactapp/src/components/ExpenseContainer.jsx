@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import ExpenseForm from "./ExpenseForm";
 import ExpenseFilter from "./ExpenseFilter";
+import CSRFTOKEN from "../utils/csrftoken";
 
 function ExpenseContainer(props) {
   const [expenses, setExpenses] = useState([]);
@@ -18,6 +19,34 @@ function ExpenseContainer(props) {
         setIsLoaded(true);
       });
   }, []);
+
+  // Making a delete request
+  function handleDeleteExpense(event, expense) {
+    event.preventDefault();
+    fetch(`/api/expense/${expense.id}`, {
+      method: "delete",
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        "Content-Type": "application/json",
+        "X-CSRFToken": CSRFTOKEN,
+      },
+    })
+      .then((res) => res.text())
+      .then((res) => {
+        console.log(res);
+        setExpenses((prevExpenses) =>
+          prevExpenses.filter(
+            (expenseInExpenses) => expenseInExpenses !== expense
+          )
+        );
+        setFilteredExpenses((prevFilteredExpenses) =>
+          prevFilteredExpenses.filter((prev) => prev !== expense)
+        );
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  }
 
   useEffect(() => {
     if (props.selectedExpensePeriod?.id) {
@@ -38,6 +67,11 @@ function ExpenseContainer(props) {
 
   function handleFormSubmit(expense) {
     props.onExpenseFormSubmit(expense);
+    setExpenses((prevExpense) => [...prevExpense, expense]);
+    setFilteredExpenses((prevFilteredExpense) => [
+      ...prevFilteredExpense,
+      expense,
+    ]);
   }
 
   return (
@@ -50,6 +84,7 @@ function ExpenseContainer(props) {
         isLoaded={isLoaded}
         expenses={filteredExpenses}
         onSelectExpense={handleSelectExpense}
+        onDeleteExpense={handleDeleteExpense}
       />
       {Object.keys(props.selectedExpense).length !== 0 ? (
         <p>

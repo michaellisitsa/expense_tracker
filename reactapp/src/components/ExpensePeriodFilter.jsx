@@ -16,6 +16,13 @@ function ExpensePeriodFilter(props) {
                 {expensePeriod.id}: {expensePeriod.description} from{" "}
                 {expensePeriod.category}
               </button>
+              <button
+                onClick={(event) =>
+                  props.onDeleteExpensePeriod(event, expensePeriod)
+                }
+              >
+                Delete
+              </button>
             </li>
           ))
         ) : (

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import ExpensePeriodForm from "./ExpensePeriodForm";
 import ExpensePeriodFilter from "./ExpensePeriodFilter";
+import CSRFTOKEN from "../utils/csrftoken";
 
 function ExpensePeriodContainer(props) {
   const [expensePeriods, setExpensePeriods] = useState([]);
@@ -18,6 +19,32 @@ function ExpensePeriodContainer(props) {
         setIsLoaded(true);
       });
   }, []);
+
+  // Making a delete request
+  function handleDeleteExpensePeriod(event, expensePeriod) {
+    event.preventDefault();
+    fetch(`/api/expenseTimePeriod/${expensePeriod.id}`, {
+      method: "delete",
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        "Content-Type": "application/json",
+        "X-CSRFToken": CSRFTOKEN,
+      },
+    })
+      .then((res) => res.text())
+      .then((res) => {
+        console.log(res);
+        setExpensePeriods((prevExpensePeriods) =>
+          prevExpensePeriods.filter((prev) => prev !== expensePeriod)
+        );
+        setFilteredExpensePeriods((prevFilteredExpensePeriods) =>
+          prevFilteredExpensePeriods.filter((prev) => prev !== expensePeriod)
+        );
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  }
 
   useEffect(() => {
     if (props.selectedCategory?.id) {
@@ -38,6 +65,14 @@ function ExpensePeriodContainer(props) {
 
   function handleFormSubmit(expensePeriod) {
     props.onExpensePeriodFormSubmit(expensePeriod);
+    setExpensePeriods((prevExpensePeriods) => [
+      ...prevExpensePeriods,
+      expensePeriod,
+    ]);
+    setFilteredExpensePeriods((prevFilteredExpensePeriods) => [
+      ...prevFilteredExpensePeriods,
+      expensePeriod,
+    ]);
   }
 
   // TODO: When Expense Period changes, the expenses that are shown should be filtered to only the available values,
@@ -54,6 +89,7 @@ function ExpensePeriodContainer(props) {
         expensePeriods={filteredExpensePeriods}
         selectedExpensePeriod={props.selectedExpensePeriod}
         onSelectExpensePeriod={handleSelectExpensePeriod}
+        onDeleteExpensePeriod={handleDeleteExpensePeriod}
       />
       {Object.keys(props.selectedExpensePeriod).length !== 0 ? (
         <p>
