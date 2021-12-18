@@ -3,7 +3,6 @@ import ExpenseForm from "./ExpenseForm";
 import ExpenseFilter from "./ExpenseFilter";
 
 function ExpenseContainer(props) {
-  const [selectedExpense, setSelectedExpense] = useState({});
   const [expenses, setExpenses] = useState([]);
   const [filteredExpenses, setFilteredExpenses] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -29,17 +28,16 @@ function ExpenseContainer(props) {
         )
       );
     }
-    setSelectedExpense({});
+    props.onExpenseFormSubmit({});
   }, [props.selectedExpensePeriod]);
 
   function handleSelectExpense(event, expense) {
     event.preventDefault();
     props.onExpenseFormSubmit(expense);
-    handleFormSubmit(expense);
   }
 
   function handleFormSubmit(expense) {
-    setSelectedExpense(expense);
+    props.onExpenseFormSubmit(expense);
   }
 
   return (
@@ -53,10 +51,10 @@ function ExpenseContainer(props) {
         expenses={filteredExpenses}
         onSelectExpense={handleSelectExpense}
       />
-      {Object.keys(selectedExpense).length !== 0 ? (
+      {Object.keys(props.selectedExpense).length !== 0 ? (
         <p>
-          You have selected Expense Id:{selectedExpense.id}:{" "}
-          {selectedExpense.description}
+          You have selected Expense Id:{props.selectedExpense.id}:{" "}
+          {props.selectedExpense.description}
         </p>
       ) : (
         <p>Select Expense...</p>

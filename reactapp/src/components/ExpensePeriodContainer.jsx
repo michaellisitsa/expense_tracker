@@ -3,7 +3,6 @@ import ExpensePeriodForm from "./ExpensePeriodForm";
 import ExpensePeriodFilter from "./ExpensePeriodFilter";
 
 function ExpensePeriodContainer(props) {
-  const [selectedExpensePeriod, setSelectedExpensePeriod] = useState({});
   const [expensePeriods, setExpensePeriods] = useState([]);
   const [filteredExpensePeriods, setFilteredExpensePeriods] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -29,17 +28,16 @@ function ExpensePeriodContainer(props) {
         )
       );
     }
-    setSelectedExpensePeriod({});
+    props.onExpensePeriodFormSubmit({});
   }, [props.selectedCategory]);
 
   function handleSelectExpensePeriod(event, expensePeriod) {
     event.preventDefault();
     props.onExpensePeriodFormSubmit(expensePeriod);
-    setSelectedExpensePeriod(expensePeriod);
   }
 
   function handleFormSubmit(expensePeriod) {
-    setSelectedExpensePeriod(expensePeriod);
+    props.onExpensePeriodFormSubmit(expensePeriod);
   }
 
   // TODO: When Expense Period changes, the expenses that are shown should be filtered to only the available values,
@@ -54,14 +52,14 @@ function ExpensePeriodContainer(props) {
       <ExpensePeriodFilter
         isLoaded={isLoaded}
         expensePeriods={filteredExpensePeriods}
-        selectedExpensePeriod={selectedExpensePeriod}
+        selectedExpensePeriod={props.selectedExpensePeriod}
         onSelectExpensePeriod={handleSelectExpensePeriod}
       />
-      {Object.keys(selectedExpensePeriod).length !== 0 ? (
+      {Object.keys(props.selectedExpensePeriod).length !== 0 ? (
         <p>
-          You have selected ExpensePeriod Id: {selectedExpensePeriod.id}:{" "}
-          {selectedExpensePeriod.description}, which will be used when creating
-          an Expense
+          You have selected ExpensePeriod Id: {props.selectedExpensePeriod.id}:{" "}
+          {props.selectedExpensePeriod.description}, which will be used when
+          creating an Expense
         </p>
       ) : (
         <p>Select Expense Period...</p>

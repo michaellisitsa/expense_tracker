@@ -4,7 +4,6 @@ import CategoryFilter from "./CategoryFilter";
 import CSRFTOKEN from "../utils/csrftoken";
 
 function CategoryContainer(props) {
-  const [selectedCategory, setSelectedCategory] = useState({});
   const [categories, setCategories] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -48,12 +47,10 @@ function CategoryContainer(props) {
   function handleSelectCategory(event, category) {
     event.preventDefault();
     props.onCategoryFormSubmit(category);
-    setSelectedCategory(category);
   }
 
   function handleFormSubmit(category) {
     props.onCategoryFormSubmit(category);
-    setSelectedCategory(category);
   }
 
   return (
@@ -65,11 +62,11 @@ function CategoryContainer(props) {
         onSelectCategory={handleSelectCategory}
         onDeleteCategory={handleDeleteCategory}
       />
-      {Object.keys(selectedCategory).length !== 0 ? (
+      {Object.keys(props.selectedCategory).length !== 0 ? (
         <p>
-          You have selected Category Id: {selectedCategory.id}:{" "}
-          {selectedCategory.name}, which will be used when creating an Expense
-          Period
+          You have selected Category Id: {props.selectedCategory.id}:{" "}
+          {props.selectedCategory.name}, which will be used when creating an
+          Expense Period
         </p>
       ) : (
         <p>Select Expense Category...</p>
