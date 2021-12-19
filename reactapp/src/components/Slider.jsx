@@ -1,4 +1,4 @@
-import React from "react";
+import { useState } from "react";
 import { format, set } from "date-fns";
 import TimeRange from "react-timeline-range-slider";
 
@@ -6,60 +6,57 @@ import "./Slider.css";
 
 const now = new Date();
 
-const getTodayAtSpecificHour = (hour = 12) =>
-  set(now, { hours: hour, minutes: 0, seconds: 0, milliseconds: 0 });
+const getDaysFromToday = (days = 0) =>
+  set(now, { date: days, hours: 0, minutes: 0, seconds: 0, milliseconds: 0 });
 
-class Slider extends React.Component {
-  state = {
-    error: false,
-    selectedInterval: [getTodayAtSpecificHour(-48), getTodayAtSpecificHour(0)],
-  };
+function Slider(props) {
+  const [error, setError] = useState(false);
+  const [selectedInterval, setSelectedInterval] = useState([
+    getDaysFromToday(-48 / 24),
+    getDaysFromToday(0),
+  ]);
 
-  errorHandler = ({ error }) => {
+  const timelineInterval = [
+    getDaysFromToday(-100 / 24),
+    getDaysFromToday(100 / 24),
+  ];
+
+  const disabledIntervals = [
+    { start: getDaysFromToday(0 / 24), end: getDaysFromToday(40 / 24) },
+  ];
+
+  const errorHandler = ({ error }) => {
     console.log(error);
-    this.setState({ error });
+    setError(error);
   };
 
-  onChangeCallback = (selectedInterval) => {
-    console.log("start", format(this.state.selectedInterval[0], "yyyy-LL-dd"));
-    console.log("end", format(this.state.selectedInterval[1], "yyyy-LL-dd"));
-    this.setState({ selectedInterval });
+  const onChangeCallback = (selectedInterval) => {
+    console.log("start", format(selectedInterval[0], "yyyy-LL-dd"));
+    console.log("end", format(selectedInterval[1], "yyyy-LL-dd"));
+    setSelectedInterval(selectedInterval);
   };
 
-  render() {
-    const timelineInterval = [
-      getTodayAtSpecificHour(-100),
-      getTodayAtSpecificHour(100),
-    ];
-
-    const disabledIntervals = [
-      { start: getTodayAtSpecificHour(30), end: getTodayAtSpecificHour(40) },
-    ];
-
-    // console.log(disabledIntervals);
-    const { selectedInterval, error } = this.state;
-    return (
-      <div className="container">
-        <div className="info">
-          <span>Selected Interval: </span>
-          {selectedInterval.map((d, i) => (
-            <span key={i}>{format(d, "dd MMM")}</span>
-          ))}
-        </div>
-
-        <TimeRange
-          error={error}
-          ticksNumber={10}
-          formatTick={(ms) => format(new Date(ms), "dd MMM")}
-          selectedInterval={selectedInterval}
-          timelineInterval={timelineInterval}
-          onUpdateCallback={this.errorHandler}
-          onChangeCallback={this.onChangeCallback}
-          disabledIntervals={disabledIntervals}
-        />
+  return (
+    <div className="container">
+      <div className="info">
+        <span>Selected Interval: </span>
+        {selectedInterval.map((d, i) => (
+          <span key={i}>{format(d, "dd MMM")}</span>
+        ))}
       </div>
-    );
-  }
+
+      <TimeRange
+        error={error}
+        ticksNumber={10}
+        formatTick={(ms) => format(new Date(ms), "dd MMM")}
+        selectedInterval={selectedInterval}
+        timelineInterval={timelineInterval}
+        onUpdateCallback={errorHandler}
+        onChangeCallback={onChangeCallback}
+        disabledIntervals={disabledIntervals}
+      />
+    </div>
+  );
 }
 
 export default Slider;

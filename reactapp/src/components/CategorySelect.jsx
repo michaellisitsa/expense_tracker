@@ -27,9 +27,10 @@ function CategorySelect(props) {
   }
   // https://www.pluralsight.com/guides/how-to-get-selected-value-from-a-mapped-select-input-in-react
   return (
-    <div>
+    <div className="categorySelect">
       {isLoaded ? (
         <select
+          className="categorySelect__select"
           value={props.selectedCategory.id}
           onChange={handleSelectCategory}
         >
@@ -43,7 +44,7 @@ function CategorySelect(props) {
         <p>Loading Categories...</p>
       )}
       {Object.keys(props.selectedCategory).length !== 0 ? (
-        <p>
+        <p className="categorySelect__Text">
           You have selected Category Id: {props.selectedCategory.id}:{" "}
           {props.selectedCategory.name}, which will be used when creating an
           Expense Period
@@ -51,7 +52,7 @@ function CategorySelect(props) {
       ) : (
         <p>Select Expense Category...</p>
       )}
-      <Slider />
+      <Slider className="categorySelect__Slider" />
     </div>
   );
 }
