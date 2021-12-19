@@ -18,7 +18,7 @@ defusedxml==0.7.1
     # via python3-openid
 dj-database-url==0.5.0
     # via django-heroku
-django==3.2.5
+django==4.0
     # via
     #   -r requirements.in
     #   django-allauth
@@ -26,29 +26,31 @@ django==3.2.5
     #   django-filter
     #   django-heroku
     #   djangorestframework
-django-allauth==0.44.0
+django-allauth==0.47.0
     # via -r requirements.in
-django-debug-toolbar==3.2.1
+django-debug-toolbar==3.2.4
     # via -r requirements.in
-django-environ==0.4.5
+django-environ==0.8.1
     # via -r requirements.in
-django-filter==2.4.0
+django-filter==21.1
     # via -r requirements.in
 django-heroku==0.3.1
     # via -r requirements.in
-djangorestframework==3.12.4
+djangorestframework==3.13.1
     # via -r requirements.in
 gunicorn==20.1.0
     # via -r requirements.in
 idna==2.10
     # via requests
-markdown==3.3.4
+importlib-metadata==4.9.0
+    # via markdown
+markdown==3.3.6
     # via -r requirements.in
 oauthlib==3.1.1
     # via requests-oauthlib
 psycopg2==2.9.1
     # via django-heroku
-psycopg2-binary==2.9.1
+psycopg2-binary==2.9.2
     # via -r requirements.in
 pycparser==2.20
     # via cffi
@@ -57,7 +59,7 @@ pyjwt[crypto]==2.1.0
 python3-openid==3.2.0
     # via django-allauth
 pytz==2021.1
-    # via django
+    # via djangorestframework
 requests==2.25.1
     # via
     #   django-allauth
@@ -66,12 +68,15 @@ requests-oauthlib==1.3.0
     # via django-allauth
 sqlparse==0.4.2
     # via
+    #   -r requirements.in
     #   django
     #   django-debug-toolbar
 urllib3==1.26.6
     # via requests
 whitenoise==5.2.0
     # via django-heroku
+zipp==3.6.0
+    # via importlib-metadata
 
 # The following packages are considered to be unsafe in a requirements file:
 # setuptools
