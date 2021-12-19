@@ -1,16 +1,27 @@
 import { useState, useEffect } from "react";
 import ExpensePeriodForm from "./ExpensePeriodForm";
 import ExpensePeriodFilter from "./ExpensePeriodFilter";
-import CSRFTOKEN from "../utils/csrftoken";
+import CSRFTOKEN from "../utils/csrftoken"; // utility function to request the csrf token for create/delete requests to django
 import Slider from "./Slider";
 
+// Component takes care of posting/rendering expense periods
+// Also it renders the slider to filter the expense periods by time range
+// Each expense period has a FK category which is passed down and filters the inputs
+// as well as appended when form is submitted.
 function ExpensePeriodContainer(props) {
+  // States below store each level of progressive filter
+  // 1. raw data from fetch request
+  // 2. filtered by category FK
+  // 3. filtered by category FK and time range - passed into xxxFilter component.
+  // QUESTION: Is there any way to improve this selective filtering state storage.
+  //           As seen below we have to duplicate setting the info several times.
   const [expensePeriods, setExpensePeriods] = useState([]);
   const [filteredExpensePeriods, setFilteredExpensePeriods] = useState([]);
   const [
     filteredExpensePeriodsByDateRange,
     setFilteredExpensePeriodsByDateRange,
   ] = useState([]);
+  // The isLoaded state here is passed down to the "xxxFilter" components once the fetch is completed.
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
@@ -19,7 +30,6 @@ function ExpensePeriodContainer(props) {
     })
       .then((res) => res.json())
       .then((res) => {
-        console.table(res.results);
         setExpensePeriods(res.results);
         setIsLoaded(true);
       });
@@ -38,7 +48,8 @@ function ExpensePeriodContainer(props) {
     })
       .then((res) => res.text())
       .then((res) => {
-        console.log(res);
+        // QUESTION: Is there any way to improve this selective filtering state storage.
+        //           As seen below we have to duplicate setting the info several times.
         setExpensePeriods((prevState) =>
           prevState.filter((period) => period !== expensePeriod)
         );
@@ -50,10 +61,14 @@ function ExpensePeriodContainer(props) {
         );
       })
       .catch((err) => {
+        // Filter out the delete category.
+        // Comparison is on the entire object rather than just the id.
         console.log(err.message);
       });
   }
 
+  // Whenever a different category is selected, reset all filtered results
+  // because the expense periods will all change, and the filters are now irrelevant.
   useEffect(() => {
     if (props.selectedCategory?.id) {
       setFilteredExpensePeriods(
@@ -69,6 +84,7 @@ function ExpensePeriodContainer(props) {
         )
       );
     }
+    // Pass the selected Category up to the ExpenseTracker component
     props.onExpensePeriodFormSubmit({});
   }, [props.selectedCategory]);
 
@@ -77,6 +93,7 @@ function ExpensePeriodContainer(props) {
     props.onExpensePeriodFormSubmit(expensePeriod);
   }
 
+  // Add the new submitted value to all expense period arrays, and reset filters
   function handleFormSubmit(expensePeriod) {
     props.onExpensePeriodFormSubmit(expensePeriod);
     setExpensePeriods((prevState) => [...prevState, expensePeriod]);
@@ -87,6 +104,8 @@ function ExpensePeriodContainer(props) {
     ]);
   }
 
+  // The slider component will send back a filtered list of expense periods
+  // This function sets these in the state so that it can be passed down to the xxxFilter component.
   function handleSliderChange(ExpensePeriodsByDate) {
     console.log(ExpensePeriodsByDate);
     setFilteredExpensePeriodsByDateRange(ExpensePeriodsByDate);

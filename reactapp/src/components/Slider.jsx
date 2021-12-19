@@ -54,6 +54,7 @@ function Slider(props) {
         new Date(expensePeriod.dateStart + "T00:00") <= selectedDateEnd &&
         new Date(expensePeriod.dateEnd + "T00:00") >= selectedDateStart
     );
+    // Send the filtered list of expense periods back up to the ExpensePeriodContainer component.
     props.onSliderChange(filteredByDate);
   };
 

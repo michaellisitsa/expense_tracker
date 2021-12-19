@@ -5,6 +5,9 @@ function CategorySelect(props) {
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
+    // repeating the get request here, even though its also in CategoryContainer
+    // because CategoryContainer will be in a separate Route.
+    // QUESTION: Would there be a better way to do the fetch request once and store it up in "ExpenseTracker" component
     fetch("/api/expenseCategory/", {
       method: "get",
     })
@@ -16,13 +19,19 @@ function CategorySelect(props) {
       });
   }, []);
 
+  // When the select dropdown changes, do this.
+  // Need to use event.target.value to access what is the currently selected value
+  // rather than the pure HTML selected attribute on each option.
   function handleSelectCategory(event) {
     event.preventDefault();
     const selectedCategory = props.categories.find(
       (category) => category.id === parseFloat(event.target.value)
     );
+    // pass selected category up to the top leve.
     props.onCategoryFormSubmit(selectedCategory);
   }
+
+  // The select controlled component logic following this link:
   // https://www.pluralsight.com/guides/how-to-get-selected-value-from-a-mapped-select-input-in-react
   return (
     <div className="categorySelect">

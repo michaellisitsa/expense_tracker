@@ -1,11 +1,18 @@
 import { useState, useEffect } from "react";
 import ExpenseForm from "./ExpenseForm";
 import ExpenseFilter from "./ExpenseFilter";
-import CSRFTOKEN from "../utils/csrftoken";
+import CSRFTOKEN from "../utils/csrftoken"; // utility function to request the csrf token for create/delete requests to django
 
+// Component takes care of posting/rendering expenses
+// Each expense has a FK expense period which is passed down and filters the inputs
+// as well as appended when form is submitted.
 function ExpenseContainer(props) {
+  // States below store each level of progressive filter
+  // 1. raw data from fetch request
+  // 2. filtered by category FK
   const [expenses, setExpenses] = useState([]);
   const [filteredExpenses, setFilteredExpenses] = useState([]);
+  // The isLoaded state here is passed down to the "xxxFilter" components once the fetch is completed.
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
@@ -48,6 +55,8 @@ function ExpenseContainer(props) {
       });
   }
 
+  // Whenever a different expense Period is selected, reset all filtered results
+  // because the expense periods will all change, and the filters are now irrelevant.
   useEffect(() => {
     if (props.selectedExpensePeriod?.id) {
       setFilteredExpenses(
@@ -57,6 +66,8 @@ function ExpenseContainer(props) {
         )
       );
     }
+    // Pass the selected Category up to the ExpenseTracker component
+
     props.onExpenseFormSubmit({});
   }, [props.selectedExpensePeriod]);
 
@@ -65,6 +76,7 @@ function ExpenseContainer(props) {
     props.onExpenseFormSubmit(expense);
   }
 
+  // Add the new submitted value to all expense period arrays, and reset filter
   function handleFormSubmit(expense) {
     props.onExpenseFormSubmit(expense);
     setExpenses((prevExpense) => [...prevExpense, expense]);
