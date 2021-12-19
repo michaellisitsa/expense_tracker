@@ -4,7 +4,6 @@ import CategoryFilter from "./CategoryFilter";
 import CSRFTOKEN from "../utils/csrftoken";
 
 function CategoryContainer(props) {
-  const [categories, setCategories] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
@@ -14,7 +13,7 @@ function CategoryContainer(props) {
       .then((res) => res.json())
       .then((res) => {
         console.table(res.results);
-        setCategories(res.results);
+        props.onCategoriesUpdate(res.results);
         setIsLoaded(true);
       });
   }, []);
@@ -33,7 +32,7 @@ function CategoryContainer(props) {
       .then((res) => res.text())
       .then((res) => {
         console.log(res);
-        setCategories((prevCategories) =>
+        props.onCategoriesUpdate((prevCategories) =>
           prevCategories.filter(
             (categoryInCategories) => categoryInCategories !== category
           )
@@ -51,7 +50,7 @@ function CategoryContainer(props) {
 
   function handleFormSubmit(category) {
     props.onCategoryFormSubmit(category);
-    setCategories((prevCategories) => [...prevCategories, category]);
+    props.onCategoriesUpdate((prevCategories) => [...prevCategories, category]);
   }
 
   return (
@@ -59,7 +58,7 @@ function CategoryContainer(props) {
       <CategoryForm onSubmit={handleFormSubmit} />
       <CategoryFilter
         isLoaded={isLoaded}
-        categories={categories}
+        categories={props.categories}
         onSelectCategory={handleSelectCategory}
         onDeleteCategory={handleDeleteCategory}
       />

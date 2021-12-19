@@ -11,9 +11,14 @@ function ExpenseTracker(props) {
   // The entries selected for each table are tracked in top-level containers.
   // This allows passing data down to foreign key relations, for auto-filling
   // the FK field in forms or filtering by that foreign key.
+  const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState({});
   const [selectedExpensePeriod, setSelectedExpensePeriod] = useState({});
   const [selectedExpense, setSelectedExpense] = useState({});
+
+  function handleCategoriesUpdate(receivedCategories) {
+    setCategories(receivedCategories);
+  }
 
   function handleCategoryFormSubmit(category) {
     setSelectedCategory(category);
@@ -36,11 +41,15 @@ function ExpenseTracker(props) {
         <h1>Expense Category Form</h1>
       </header>
       <CategoryContainer
+        categories={categories}
         selectedCategory={selectedCategory}
+        onCategoriesUpdate={handleCategoriesUpdate}
         onCategoryFormSubmit={handleCategoryFormSubmit}
       />
       <CategorySelect
+        categories={categories}
         selectedCategory={selectedCategory}
+        onCategoriesUpdate={handleCategoriesUpdate}
         onCategoryFormSubmit={handleCategoryFormSubmit}
       />
       <ExpensePeriodContainer

@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import "./CategorySelect.css";
 
 function CategorySelect(props) {
-  const [categories, setCategories] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
@@ -12,14 +11,14 @@ function CategorySelect(props) {
       .then((res) => res.json())
       .then((res) => {
         console.table(res.results);
-        setCategories(res.results);
+        props.onCategoriesUpdate(res.results);
         setIsLoaded(true);
       });
   }, []);
 
   function handleSelectCategory(event) {
     event.preventDefault();
-    const selectedCategory = categories.find(
+    const selectedCategory = props.categories.find(
       (category) => category.id === parseFloat(event.target.value)
     );
     props.onCategoryFormSubmit(selectedCategory);
@@ -33,7 +32,7 @@ function CategorySelect(props) {
           value={props.selectedCategory.id}
           onChange={handleSelectCategory}
         >
-          {categories.map((category) => (
+          {props.categories.map((category) => (
             <option key={category.id} value={category.id}>
               {category.id}: {category.name}
             </option>
