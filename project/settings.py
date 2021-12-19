@@ -149,7 +149,7 @@ AUTH_PASSWORD_VALIDATORS = [
 AUTH_USER_MODEL = "users.User"
 
 
-LOGIN_REDIRECT_URL = "core:app"
+LOGIN_REDIRECT_URL = "/reactapp"
 ACCOUNT_LOGOUT_REDIRECT_URL = "core:index"
 
 # Internationalization

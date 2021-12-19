@@ -37,7 +37,7 @@ function ExpenseTracker(props) {
   return (
     <div className="wrapper">
       <header>
-        <Link to="/invoices">Invoices</Link>
+        <Link to="/">Invoices</Link>
         <h1>Expense Category Form</h1>
       </header>
       <CategoryContainer

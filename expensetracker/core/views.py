@@ -25,6 +25,7 @@ class IndexView(TemplateView):
     template_name = "core/index.html"
 
 
+# NOT USED FOR REACT APP
 # decorator login_required is a shortcut to checking request.user.is_authenticated == True and
 # redirect to a login page or display an error rather than take you to the "app.html" page
 @login_required
@@ -62,6 +63,7 @@ def app(request):
     return render(request, "core/app.html", context)
 
 
+# NOT USED FOR REACT APP
 @login_required
 def time_period(request):
     """
@@ -134,7 +136,7 @@ def time_period(request):
     return render(request, "core/timePeriod.html", context)
 
 
-# Not used
+# NOT USED FOR REACT APP
 def AjaxExpensePeriod(request):
     """
     First attempt at an ajax request.
@@ -162,6 +164,7 @@ def AjaxExpensePeriod(request):
     return JsonResponse({"error": ""}, status=400)
 
 
+# NOT USED FOR REACT APP
 @login_required
 def createExpenses(request, pk):
     """
@@ -236,6 +239,7 @@ class ExpenseTimePeriodViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows Expense Time Periods to be viewed or editted.
     """
+
     # queryset = ExpenseTimePeriod.objects.filter(category__user=request.user)
     queryset = ExpenseTimePeriod.objects.all()  # gets filtered in get_queryset
     serializer_class = ExpenseTimePeriodSerializer
