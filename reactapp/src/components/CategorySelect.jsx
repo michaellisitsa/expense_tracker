@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import "./CategorySelect.css";
+import Slider from "./Slider";
 
 function CategorySelect(props) {
   const [categories, setCategories] = useState([]);
@@ -50,6 +51,7 @@ function CategorySelect(props) {
       ) : (
         <p>Select Expense Category...</p>
       )}
+      <Slider />
     </div>
   );
 }
