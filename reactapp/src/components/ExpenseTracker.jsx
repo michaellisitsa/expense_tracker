@@ -5,6 +5,7 @@ import "./ExpenseTracker.css";
 import ExpensePeriodContainer from "./ExpensePeriodContainer";
 import CategoryContainer from "./CategoryContainer";
 import ExpenseContainer from "./ExpenseContainer";
+import CategorySelect from "./CategorySelect";
 
 function ExpenseTracker(props) {
   // The entries selected for each table are tracked in top-level containers.
@@ -35,8 +36,12 @@ function ExpenseTracker(props) {
         <h1>Expense Category Form</h1>
       </header>
       <CategoryContainer
-        onCategoryFormSubmit={handleCategoryFormSubmit}
         selectedCategory={selectedCategory}
+        onCategoryFormSubmit={handleCategoryFormSubmit}
+      />
+      <CategorySelect
+        selectedCategory={selectedCategory}
+        onCategoryFormSubmit={handleCategoryFormSubmit}
       />
       <ExpensePeriodContainer
         selectedExpensePeriod={selectedExpensePeriod}
