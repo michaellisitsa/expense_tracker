@@ -1,39 +1,60 @@
-import { useState } from "react";
-import { format, set } from "date-fns";
+import { useState, useEffect } from "react";
+import { format, set, differenceInDays, addDays } from "date-fns";
 import TimeRange from "react-timeline-range-slider";
 
 import "./Slider.css";
 
 const now = new Date();
-
-const getDaysFromToday = (days = 0) =>
-  set(now, { date: days, hours: 0, minutes: 0, seconds: 0, milliseconds: 0 });
+const getDaysFromToday = (days = 0) => addDays(now, days);
 
 function Slider(props) {
-  const [error, setError] = useState(false);
-  const [selectedInterval, setSelectedInterval] = useState([
-    getDaysFromToday(-48 / 24),
-    getDaysFromToday(0),
-  ]);
+  const [selectedInterval, setSelectedInterval] = useState([]);
+  const [timelineInterval, setTimelineInterval] = useState([]);
 
-  const timelineInterval = [
-    getDaysFromToday(-100 / 24),
-    getDaysFromToday(100 / 24),
-  ];
+  const [filteredExpensePeriodIntervals, setfilteredExpensePeriodIntervals] =
+    useState([]);
 
-  const disabledIntervals = [
-    { start: getDaysFromToday(0 / 24), end: getDaysFromToday(40 / 24) },
-  ];
+  // Map all expense Periods onto timeline
+  // Adjust the extents of the timeline
+  useEffect(() => {
+    const filteredIntervals = props.filteredExpensePeriods.map((period) => {
+      return {
+        start: new Date(period.dateStart + "T00:00"),
+        end: new Date(period.dateEnd + "T00:00"),
+      };
+    });
+    setfilteredExpensePeriodIntervals(filteredIntervals);
 
-  const errorHandler = ({ error }) => {
-    console.log(error);
-    setError(error);
-  };
+    // Find extents of expense periods
+    if (filteredIntervals.length !== 0) {
+      // Find the date extents of all filteredExpensePeriods
+      const maxDate = new Date(
+        Math.max(...filteredIntervals.map((t) => t.end))
+      );
+      const minDate = new Date(
+        Math.min(...filteredIntervals.map((t) => t.start))
+      );
+      // Whenever filteredExpensePeriods changes, user has selected a different category or posted a form
+      // In both cases, the timeline is re-adjusted to the new extent of periods.
+      setTimelineInterval([minDate, maxDate]);
+      setSelectedInterval([minDate, maxDate]);
+    } else {
+      // Reset timeline when expense periods array is empty
+      setSelectedInterval([]);
+      setTimelineInterval([]);
+    }
+  }, [props.filteredExpensePeriods]);
 
+  // When changing selected extents, send new filteredByDate list up to Container component
   const onChangeCallback = (selectedInterval) => {
-    console.log("start", format(selectedInterval[0], "yyyy-LL-dd"));
-    console.log("end", format(selectedInterval[1], "yyyy-LL-dd"));
+    const [selectedDateStart, selectedDateEnd] = selectedInterval;
     setSelectedInterval(selectedInterval);
+    const filteredByDate = props.filteredExpensePeriods.filter(
+      (expensePeriod) =>
+        new Date(expensePeriod.dateStart + "T00:00") <= selectedDateEnd &&
+        new Date(expensePeriod.dateEnd + "T00:00") >= selectedDateStart
+    );
+    props.onSliderChange(filteredByDate);
   };
 
   return (
@@ -46,14 +67,13 @@ function Slider(props) {
       </div>
 
       <TimeRange
-        error={error}
         ticksNumber={10}
         formatTick={(ms) => format(new Date(ms), "dd MMM")}
         selectedInterval={selectedInterval}
         timelineInterval={timelineInterval}
-        onUpdateCallback={errorHandler}
+        onUpdateCallback={() => {}}
         onChangeCallback={onChangeCallback}
-        disabledIntervals={disabledIntervals}
+        disabledIntervals={filteredExpensePeriodIntervals}
       />
     </div>
   );

@@ -2,10 +2,15 @@ import { useState, useEffect } from "react";
 import ExpensePeriodForm from "./ExpensePeriodForm";
 import ExpensePeriodFilter from "./ExpensePeriodFilter";
 import CSRFTOKEN from "../utils/csrftoken";
+import Slider from "./Slider";
 
 function ExpensePeriodContainer(props) {
   const [expensePeriods, setExpensePeriods] = useState([]);
   const [filteredExpensePeriods, setFilteredExpensePeriods] = useState([]);
+  const [
+    filteredExpensePeriodsByDateRange,
+    setFilteredExpensePeriodsByDateRange,
+  ] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
@@ -34,11 +39,14 @@ function ExpensePeriodContainer(props) {
       .then((res) => res.text())
       .then((res) => {
         console.log(res);
-        setExpensePeriods((prevExpensePeriods) =>
-          prevExpensePeriods.filter((prev) => prev !== expensePeriod)
+        setExpensePeriods((prevState) =>
+          prevState.filter((period) => period !== expensePeriod)
         );
-        setFilteredExpensePeriods((prevFilteredExpensePeriods) =>
-          prevFilteredExpensePeriods.filter((prev) => prev !== expensePeriod)
+        setFilteredExpensePeriods((prevState) =>
+          prevState.filter((period) => period !== expensePeriod)
+        );
+        setFilteredExpensePeriodsByDateRange((prevState) =>
+          prevState.filter((period) => period !== expensePeriod)
         );
       })
       .catch((err) => {
@@ -49,6 +57,12 @@ function ExpensePeriodContainer(props) {
   useEffect(() => {
     if (props.selectedCategory?.id) {
       setFilteredExpensePeriods(
+        expensePeriods.filter(
+          (expensePeriod) =>
+            expensePeriod.category === props.selectedCategory.id
+        )
+      );
+      setFilteredExpensePeriodsByDateRange(
         expensePeriods.filter(
           (expensePeriod) =>
             expensePeriod.category === props.selectedCategory.id
@@ -65,28 +79,33 @@ function ExpensePeriodContainer(props) {
 
   function handleFormSubmit(expensePeriod) {
     props.onExpensePeriodFormSubmit(expensePeriod);
-    setExpensePeriods((prevExpensePeriods) => [
-      ...prevExpensePeriods,
-      expensePeriod,
-    ]);
-    setFilteredExpensePeriods((prevFilteredExpensePeriods) => [
-      ...prevFilteredExpensePeriods,
+    setExpensePeriods((prevState) => [...prevState, expensePeriod]);
+    setFilteredExpensePeriods((prevState) => [...prevState, expensePeriod]);
+    setFilteredExpensePeriodsByDateRange((prevState) => [
+      ...prevState,
       expensePeriod,
     ]);
   }
 
-  // TODO: When Expense Period changes, the expenses that are shown should be filtered to only the available values,
-  // unless there is a selectedExpensePeriod, in which case just filter to that.
+  function handleSliderChange(ExpensePeriodsByDate) {
+    console.log(ExpensePeriodsByDate);
+    setFilteredExpensePeriodsByDateRange(ExpensePeriodsByDate);
+  }
 
   return (
     <div>
+      <Slider
+        className="categorySelect__Slider"
+        onSliderChange={handleSliderChange}
+        filteredExpensePeriods={filteredExpensePeriods}
+      />
       <ExpensePeriodForm
         selectedCategory={props.selectedCategory}
         onSubmit={handleFormSubmit}
       />
       <ExpensePeriodFilter
         isLoaded={isLoaded}
-        expensePeriods={filteredExpensePeriods}
+        expensePeriods={filteredExpensePeriodsByDateRange}
         selectedExpensePeriod={props.selectedExpensePeriod}
         onSelectExpensePeriod={handleSelectExpensePeriod}
         onDeleteExpensePeriod={handleDeleteExpensePeriod}
