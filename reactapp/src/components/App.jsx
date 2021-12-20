@@ -1,6 +1,6 @@
 import React from "react";
 import ExpenseTracker from "./ExpenseTracker";
-import { BrowserRouter as Router } from "react-router-dom";
+import { HashRouter as Router } from "react-router-dom";
 
 export default function App(props) {
   return (

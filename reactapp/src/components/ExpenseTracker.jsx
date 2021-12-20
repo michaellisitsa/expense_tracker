@@ -1,11 +1,5 @@
 import { useState } from "react";
-import {
-  BrowserRouter as Router,
-  Link,
-  Routes,
-  Route,
-  Navigate,
-} from "react-router-dom";
+import { Link, Routes, Route, Navigate } from "react-router-dom";
 import "./ExpenseTracker.css";
 
 import CategoryPage from "./category/CategoryPage";
