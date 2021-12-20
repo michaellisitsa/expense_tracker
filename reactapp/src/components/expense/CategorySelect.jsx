@@ -1,8 +1,11 @@
 import { useState, useEffect } from "react";
 import "./CategorySelect.css";
+import { useParams } from "react-router-dom";
 
 function CategorySelect(props) {
+  const [categories, setCategories] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
+  const params = useParams();
 
   useEffect(() => {
     // repeating the get request here, even though its also in CategoryContainer
@@ -13,9 +16,16 @@ function CategorySelect(props) {
     })
       .then((res) => res.json())
       .then((res) => {
-        console.table(res.results);
-        props.onCategoriesUpdate(res.results);
         setIsLoaded(true);
+        setCategories(res.results);
+        // console.log(res.results.find);
+        const selectedCategory = res.results.find(
+          (result) => result.id === parseFloat(params.id)
+        );
+        if (selectedCategory) {
+          props.onCategoryFormSubmit(selectedCategory);
+        }
+        // );
       });
   }, []);
 
@@ -24,7 +34,7 @@ function CategorySelect(props) {
   // rather than the pure HTML selected attribute on each option.
   function handleSelectCategory(event) {
     event.preventDefault();
-    const selectedCategory = props.categories.find(
+    const selectedCategory = categories.find(
       (category) => category.id === parseFloat(event.target.value)
     );
     // pass selected category up to the top leve.
@@ -41,7 +51,7 @@ function CategorySelect(props) {
           value={props.selectedCategory.id}
           onChange={handleSelectCategory}
         >
-          {props.categories.map((category) => (
+          {categories.map((category) => (
             <option key={category.id} value={category.id}>
               {category.id}: {category.name}
             </option>

@@ -5,7 +5,9 @@ import { CSRFTOKEN } from "../../utils/csrftoken"; // utility function to reques
 
 // Component will live in a separate route in future (to allow adding and deleting categories
 // which is a less frequent activity that adding expense periods & expenses so doesn't need to be on the main SPA)
-function CategoryContainer(props) {
+function CategoryPage(props) {
+  const [categories, setCategories] = useState([]);
+
   // The isLoaded state here is passed down to the "xxxFilter" components once the fetch is completed.
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -16,16 +18,15 @@ function CategoryContainer(props) {
     })
       .then((res) => res.json())
       .then((res) => {
-        console.table(res.results);
-        props.onCategoriesUpdate(res.results);
+        setCategories(res.results);
         setIsLoaded(true);
       });
   }, []);
 
   // Making a delete request
-  function handleDeleteCategory(event, category) {
+  function handleDeleteCategory(event, categoryToDelete) {
     event.preventDefault();
-    fetch(`/api/expenseCategory/${category.id}`, {
+    fetch(`/api/expenseCategory/${categoryToDelete.id}`, {
       method: "delete",
       headers: {
         Accept: "application/json, text/plain, */*",
@@ -37,10 +38,8 @@ function CategoryContainer(props) {
       .then((res) => {
         // Filter out the delete category.
         // Comparison is on the entire object rather than just the id.
-        props.onCategoriesUpdate((prevCategories) =>
-          prevCategories.filter(
-            (categoryInCategories) => categoryInCategories !== category
-          )
+        setCategories((prev) =>
+          prev.filter((category) => category.id !== categoryToDelete.id)
         );
       })
       .catch((err) => {
@@ -57,21 +56,12 @@ function CategoryContainer(props) {
       });
   }
 
-  // Selection can be made from CategoryFilter.
-  // Once CategoryContainer (this component) is moved to a separate Route,
-  // A selection will navigate to the main page route as well as selecting the select route.
-  function handleSelectCategory(event, category) {
-    event.preventDefault();
-    props.onCategoryFormSubmit(category);
-  }
-
   // When a post request is made:
   // 1. pass the selected category up to ExpenseTracker
   // 2. pass the updated list of all categories up to ExpenseTracker
   //    in future will rationalise so the concatenation could be done up within the ExpenseTracker function, rather than duplicating here.
   function handleFormSubmit(category) {
-    props.onCategoryFormSubmit(category);
-    props.onCategoriesUpdate((prevCategories) => [...prevCategories, category]);
+    setCategories((prevCategories) => [...prevCategories, category]);
   }
 
   return (
@@ -79,21 +69,11 @@ function CategoryContainer(props) {
       <CategoryForm onSubmit={handleFormSubmit} />
       <CategoryFilter
         isLoaded={isLoaded}
-        categories={props.categories}
-        onSelectCategory={handleSelectCategory}
+        categories={categories}
         onDeleteCategory={handleDeleteCategory}
       />
-      {Object.keys(props.selectedCategory).length !== 0 ? (
-        <p>
-          You have selected Category Id: {props.selectedCategory.id}:{" "}
-          {props.selectedCategory.name}, which will be used when creating an
-          Expense Period
-        </p>
-      ) : (
-        <p>Select Expense Category...</p>
-      )}
     </div>
   );
 }
 
-export default CategoryContainer;
+export default CategoryPage;

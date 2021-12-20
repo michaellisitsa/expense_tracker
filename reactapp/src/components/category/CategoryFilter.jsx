@@ -1,6 +1,15 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 function CategoryFilter(props) {
+  const navigate = useNavigate();
+
+  function handleSelectCategory(event, category) {
+    event.preventDefault();
+    // console.log(category);
+    navigate(`/expenses/${category.id}`);
+  }
+
   return (
     <div>
       <ul>
@@ -8,7 +17,7 @@ function CategoryFilter(props) {
           props.categories.map((category) => (
             <li key={category.id}>
               <button
-                onClick={(event) => props.onSelectCategory(event, category)}
+                onClick={(event) => handleSelectCategory(event, category)}
               >
                 {category.id}: {category.name}
               </button>

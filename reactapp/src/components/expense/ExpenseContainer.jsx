@@ -8,6 +8,10 @@ import "./ExpenseContainer.css";
 // Each expense has a FK expense period which is passed down and filters the inputs
 // as well as appended when form is submitted.
 function ExpenseContainer(props) {
+  // List of fetched categories is stored here as needs to be passed
+  // to both CategorySelect and CategoryContainer, which will be in different routes.
+  const [categories, setCategories] = useState([]);
+
   // States below store each level of progressive filter
   // 1. raw data from fetch request
   // 2. filtered by category FK
@@ -41,7 +45,6 @@ function ExpenseContainer(props) {
     })
       .then((res) => res.text())
       .then((res) => {
-        console.log(res);
         setExpenses((prevExpenses) =>
           prevExpenses.filter(
             (expenseInExpenses) => expenseInExpenses !== expense
