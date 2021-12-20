@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import ExpenseForm from "./ExpenseForm";
 import ExpenseFilter from "./ExpenseFilter";
-import CSRFTOKEN from "../utils/csrftoken"; // utility function to request the csrf token for create/delete requests to django
+import { CSRFTOKEN } from "../../utils/csrftoken"; // utility function to request the csrf token for create/delete requests to django
+import "./ExpenseContainer.css";
 
 // Component takes care of posting/rendering expenses
 // Each expense has a FK expense period which is passed down and filters the inputs

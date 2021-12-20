@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import "./CategoryForm.css";
-import CSRFTOKEN from "../utils/csrftoken";
+import { CSRFTOKEN } from "../../utils/csrftoken";
 
 function CategoryForm(props) {
   const [formData, setFormData] = useState({

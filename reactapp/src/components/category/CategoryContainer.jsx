@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import CategoryForm from "./CategoryForm";
 import CategoryFilter from "./CategoryFilter";
-import CSRFTOKEN from "../utils/csrftoken"; // utility function to request the csrf token for create/delete requests to django
+import { CSRFTOKEN } from "../../utils/csrftoken"; // utility function to request the csrf token for create/delete requests to django
 
 // Component will live in a separate route in future (to allow adding and deleting categories
 // which is a less frequent activity that adding expense periods & expenses so doesn't need to be on the main SPA)

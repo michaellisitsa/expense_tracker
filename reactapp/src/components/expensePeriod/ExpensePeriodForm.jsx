@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
-import CSRFTOKEN from "../utils/csrftoken";
-import "./ExpenseForm.css";
+import "./ExpensePeriodForm.css";
+import { CSRFTOKEN } from "../../utils/csrftoken";
 
-function ExpenseForm(props) {
+function ExpensePeriodForm(props) {
   const [formData, setFormData] = useState({
     description: "",
-    cost: "",
+    dateStart: "",
+    dateEnd: "",
   });
 
   // Making a post request
@@ -13,8 +14,8 @@ function ExpenseForm(props) {
   // https://stackoverflow.com/questions/45308153/posting-data-to-django-rest-framework-using-javascript-fetch
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    const { description, cost } = formData;
-    fetch("/api/expense/", {
+    const { description, dateStart, dateEnd } = formData;
+    fetch("/api/expenseTimePeriod/", {
       method: "post",
       headers: {
         Accept: "application/json, */*",
@@ -23,8 +24,9 @@ function ExpenseForm(props) {
       },
       body: JSON.stringify({
         description,
-        cost,
-        expenseTimePeriod: props.selectedExpensePeriod.id,
+        dateStart,
+        dateEnd,
+        category: props.selectedCategory.id,
       }),
     })
       .then((res) => res.json())
@@ -49,26 +51,35 @@ function ExpenseForm(props) {
           type="text"
           name="description"
           id="description"
-          className="Expense-input"
+          className="expensePeriod-input"
           placeholder="Enter Description..."
           value={formData.description}
           onChange={handleChange}
         />
-        <label htmlFor="cost">Cost $:</label>
+        <label htmlFor="description">Start Date:</label>
         <input
-          type="number"
-          name="cost"
-          id="cost"
-          className="Expense-input"
-          value={formData.cost}
+          type="date"
+          name="dateStart"
+          id="dateStart"
+          className="expensePeriod-input"
+          value={formData.dateStart}
+          onChange={handleChange}
+        />
+        <label htmlFor="description">End Date:</label>
+        <input
+          type="date"
+          name="dateEnd"
+          id="dateEnd"
+          className="expensePeriod-input"
+          value={formData.dateEnd}
           onChange={handleChange}
         />
       </fieldset>
       <button className="post-request" onClick={handleFormSubmit}>
-        Post Expense Form
+        Post expenseTimePeriod
       </button>
     </form>
   );
 }
 
-export default ExpenseForm;
+export default ExpensePeriodForm;

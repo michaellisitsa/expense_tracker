@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { format, set, differenceInDays, addDays } from "date-fns";
 import TimeRange from "react-timeline-range-slider";
-
 import "./Slider.css";
 
 const now = new Date();

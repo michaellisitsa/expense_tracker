@@ -2,10 +2,11 @@ import { useState } from "react";
 import { HashRouter as Router, Link } from "react-router-dom";
 import "./ExpenseTracker.css";
 
-import ExpensePeriodContainer from "./ExpensePeriodContainer";
-import CategoryContainer from "./CategoryContainer";
-import ExpenseContainer from "./ExpenseContainer";
-import CategorySelect from "./CategorySelect";
+import ExpensePeriodContainer from "./expensePeriod/ExpensePeriodContainer";
+import CategoryContainer from "./category/CategoryContainer";
+import ExpenseContainer from "./expense/ExpenseContainer";
+import CategorySelect from "./expensePeriod/CategorySelect";
+import { CSRFTOKEN } from "../utils/csrftoken";
 
 function ExpenseTracker(props) {
   // List of fetched categories is stored here as needs to be passed
@@ -47,7 +48,7 @@ function ExpenseTracker(props) {
   return (
     <div className="wrapper">
       <header>
-        <Link to="/">Invoices</Link>
+        <a to="http://localhost:8000/">Invoices</a>
         <h1>Expense Category Form</h1>
       </header>
       <CategoryContainer
