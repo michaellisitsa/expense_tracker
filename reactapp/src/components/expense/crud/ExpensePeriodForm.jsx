@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import "./ExpensePeriodForm.css";
-import { CSRFTOKEN } from "../../utils/csrftoken";
+import { CSRFTOKEN } from "../../../utils/csrftoken";
 
 function ExpensePeriodForm(props) {
   const [formData, setFormData] = useState({

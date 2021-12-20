@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import ExpenseForm from "./ExpenseForm";
 import ExpenseFilter from "./ExpenseFilter";
-import { CSRFTOKEN } from "../../utils/csrftoken"; // utility function to request the csrf token for create/delete requests to django
+import { CSRFTOKEN } from "../../../utils/csrftoken"; // utility function to request the csrf token for create/delete requests to django
 import "./ExpenseContainer.css";
 
 // Component takes care of posting/rendering expenses
@@ -91,7 +91,7 @@ function ExpenseContainer(props) {
   }
 
   return (
-    <div>
+    <div className="expenses">
       <ExpenseForm
         selectedExpensePeriod={props.selectedExpensePeriod}
         onSubmit={handleFormSubmit}
