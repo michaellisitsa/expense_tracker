@@ -11,10 +11,5 @@
   },
   "cacheDirectories": [
     "reactapp/node_modules"
-  ],
-  "dependencies": {
-    "chartjs-adapter-date-fns": "^2.0.0",
-    "chartjs-adapter-moment": "^1.0.0",
-    "moment": "^2.29.1"
-  }
+  ]
 }
