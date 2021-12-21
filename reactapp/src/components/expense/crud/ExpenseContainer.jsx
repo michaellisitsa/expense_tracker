@@ -21,7 +21,6 @@ function ExpenseContainer(props) {
     })
       .then((res) => res.json())
       .then((res) => {
-        console.table(res.results);
         props.setExpenses(res.results);
         setIsLoaded(true);
       });

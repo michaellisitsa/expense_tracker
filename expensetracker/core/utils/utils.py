@@ -3,20 +3,26 @@ from django.db.models import Q, Sum
 
 # Utility to generate Summary table
 def summariseTimePeriod(time_periods, expenses, days):
+    # Get current date, and get a timedelta by number of days
     currentDate = datetime.now().date()
     dayDelta = timedelta(days)
+
+    # Get the date offset backwards from now by the number of days
     prevDate = currentDate - dayDelta
+
+    # Filter expensePeriods that fit between X days ago and now.
     filtered_time_periods = time_periods.filter(
         Q(dateStart__range=[prevDate, currentDate])
         | Q(dateEnd__range=[prevDate, currentDate])
     )
 
-    # Get number of days within last week/month/year falling into a time period
+    # Get expenses within falling into the time period queried above
     adjusted_dayDelta = []
     orig_dayDelta = []
     period_id = []
     adjusted_expense = []
     for time_period in filtered_time_periods:
+        # Sum up all the expenses within each time period separately
         total_expenses = (
             expenses.filter(expenseTimePeriod=time_period).aggregate(Sum("cost"))[
                 "cost__sum"
@@ -24,6 +30,8 @@ def summariseTimePeriod(time_periods, expenses, days):
             or 0
         )
         total_expenses = float(total_expenses)
+
+        # Get fraction of each expense total based on whether it fits fully, or partially into the time period.
         if time_period.dateStart < prevDate:
             adjusted_dayDelta.append((time_period.dateEnd - prevDate).days)
             adjusted_expense.append(
