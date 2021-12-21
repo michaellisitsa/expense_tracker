@@ -16,7 +16,7 @@ def summariseTimePeriod(time_periods, expenses, days):
         | Q(dateEnd__range=[prevDate, currentDate])
     )
 
-    # Get expenses within falling into the time period queried above
+    # Get expenses falling within the time period queried above
     adjusted_dayDelta = []
     orig_dayDelta = []
     period_id = []

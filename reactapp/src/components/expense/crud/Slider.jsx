@@ -4,7 +4,6 @@ import TimeRange from "react-timeline-range-slider";
 import "./Slider.css";
 
 const now = new Date();
-const getDaysFromToday = (days = 0) => addDays(now, days);
 
 function Slider(props) {
   const [selectedInterval, setSelectedInterval] = useState([]);
