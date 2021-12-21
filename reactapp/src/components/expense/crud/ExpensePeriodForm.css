@@ -4,3 +4,7 @@
   border-radius: 0.5em;
   margin: 0 1em;
 }
+
+.post-errormsg {
+  color: red;
+}

@@ -17,6 +17,13 @@ import {
   getElementsAtEvent,
 } from "react-chartjs-2";
 import { summariseTimePeriod } from "./summariseTimePeriod";
+import {
+  subDays,
+  getOverlappingDaysInIntervals,
+  eachDayOfInterval,
+  isWithinInterval,
+  eachMonthOfInterval,
+} from "date-fns";
 
 ChartJS.register(
   LinearScale,
@@ -55,6 +62,14 @@ function Chart(props) {
 
   // Labels for x-axis.
   // TODO: Create an array of elements for the total extent of dates
+  const currentDate = new Date();
+  const prevDate = subDays(currentDate, 365);
+  const result = eachMonthOfInterval({
+    start: prevDate,
+    end: currentDate,
+  });
+  console.log(result);
+  // eachMonthOfInterval
 
   const labels = [
     "January",
@@ -64,6 +79,11 @@ function Chart(props) {
     "May",
     "June",
     "August",
+    "September",
+    "October",
+    "November",
+    "December",
+    "January",
   ];
 
   //
@@ -76,7 +96,7 @@ function Chart(props) {
         borderColor: "rgb(255, 99, 132)",
         borderWidth: 1,
         fill: false,
-        data: [65, 59, 80, 81, 56, 80, 30], // get y-axis data from moving average expenditure
+        data: [65, 59, 80, 81, 56, 80, 30, 18, 59, 20, 10, 44, 11], // get y-axis data from moving average expenditure
       },
       {
         type: "line",
@@ -84,7 +104,7 @@ function Chart(props) {
         borderColor: "rgb(0, 128, 0)",
         borderWidth: 1,
         fill: false,
-        data: Array(7).fill(selectedCategory.budget), // get y-axis data from moving average expenditure
+        data: Array(result.length).fill(selectedCategory.budget), // get y-axis data from moving average expenditure
       },
     ],
   };
