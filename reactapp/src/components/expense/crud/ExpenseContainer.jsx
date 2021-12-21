@@ -4,18 +4,13 @@ import ExpenseFilter from "./ExpenseFilter";
 import { CSRFTOKEN } from "../../../utils/csrftoken"; // utility function to request the csrf token for create/delete requests to django
 import "./ExpenseContainer.css";
 
-// Component takes care of posting/rendering expenses
+// Component takes care of posting/rendering props.expenses
 // Each expense has a FK expense period which is passed down and filters the inputs
 // as well as appended when form is submitted.
 function ExpenseContainer(props) {
-  // List of fetched categories is stored here as needs to be passed
-  // to both CategorySelect and CategoryContainer, which will be in different routes.
-  const [categories, setCategories] = useState([]);
-
   // States below store each level of progressive filter
   // 1. raw data from fetch request
   // 2. filtered by category FK
-  const [expenses, setExpenses] = useState([]);
   const [filteredExpenses, setFilteredExpenses] = useState([]);
   // The isLoaded state here is passed down to the "xxxFilter" components once the fetch is completed.
   const [isLoaded, setIsLoaded] = useState(false);
@@ -27,15 +22,15 @@ function ExpenseContainer(props) {
       .then((res) => res.json())
       .then((res) => {
         console.table(res.results);
-        setExpenses(res.results);
+        props.setExpenses(res.results);
         setIsLoaded(true);
       });
   }, []);
 
   // Making a delete request
-  function handleDeleteExpense(event, expense) {
+  function handleDeleteExpense(event, expenseToDelete) {
     event.preventDefault();
-    fetch(`/api/expense/${expense.id}`, {
+    fetch(`/api/expense/${expenseToDelete.id}`, {
       method: "delete",
       headers: {
         Accept: "application/json, text/plain, */*",
@@ -45,13 +40,11 @@ function ExpenseContainer(props) {
     })
       .then((res) => res.text())
       .then((res) => {
-        setExpenses((prevExpenses) =>
-          prevExpenses.filter(
-            (expenseInExpenses) => expenseInExpenses !== expense
-          )
+        props.setExpenses((prev) =>
+          prev.filter((expense) => expense.id !== expenseToDelete.id)
         );
-        setFilteredExpenses((prevFilteredExpenses) =>
-          prevFilteredExpenses.filter((prev) => prev !== expense)
+        setFilteredExpenses((prev) =>
+          prev.filter((expense) => expense.id !== expenseToDelete.id)
         );
       })
       .catch((err) => {
@@ -64,14 +57,12 @@ function ExpenseContainer(props) {
   useEffect(() => {
     if (props.selectedExpensePeriod?.id) {
       setFilteredExpenses(
-        expenses.filter(
+        props.expenses.filter(
           (expense) =>
             expense.expenseTimePeriod === props.selectedExpensePeriod.id
         )
       );
     }
-    // Pass the selected Category up to the ExpenseTracker component
-
     props.onExpenseFormSubmit({});
   }, [props.selectedExpensePeriod]);
 
@@ -83,7 +74,7 @@ function ExpenseContainer(props) {
   // Add the new submitted value to all expense period arrays, and reset filter
   function handleFormSubmit(expense) {
     props.onExpenseFormSubmit(expense);
-    setExpenses((prevExpense) => [...prevExpense, expense]);
+    props.setExpenses((prevExpense) => [...prevExpense, expense]);
     setFilteredExpenses((prevFilteredExpense) => [
       ...prevFilteredExpense,
       expense,
@@ -91,7 +82,7 @@ function ExpenseContainer(props) {
   }
 
   return (
-    <div className="expenses">
+    <div className="props.expenses">
       <ExpenseForm
         selectedExpensePeriod={props.selectedExpensePeriod}
         onSubmit={handleFormSubmit}

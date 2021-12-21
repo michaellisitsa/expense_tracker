@@ -5,6 +5,8 @@ function ExpensePage(props) {
   // The selectedCategory needs to be known at the ExpensePage (top) level
   // because it is used for visualisation.
   const [selectedCategory, setSelectedCategory] = useState({});
+  const [expensePeriods, setExpensePeriods] = useState([]);
+  const [expenses, setExpenses] = useState([]);
 
   function handleCategoryFormSubmit(category) {
     setSelectedCategory(category);
@@ -17,6 +19,10 @@ function ExpensePage(props) {
         <CRUD
           selectedCategory={selectedCategory}
           onCategoryFormSubmit={handleCategoryFormSubmit}
+          expensePeriods={expensePeriods}
+          setExpensePeriods={setExpensePeriods}
+          expenses={expenses}
+          setExpenses={setExpenses}
         />
       </section>
     </div>

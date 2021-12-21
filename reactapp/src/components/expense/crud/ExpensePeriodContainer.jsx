@@ -15,7 +15,6 @@ function ExpensePeriodContainer(props) {
   // 3. filtered by category FK and time range - passed into xxxFilter component.
   // QUESTION: Is there any way to improve this selective filtering state storage.
   //           As seen below we have to duplicate setting the info several times.
-  const [expensePeriods, setExpensePeriods] = useState([]);
   const [filteredExpensePeriods, setFilteredExpensePeriods] = useState([]);
   const [
     filteredExpensePeriodsByDateRange,
@@ -30,15 +29,15 @@ function ExpensePeriodContainer(props) {
     })
       .then((res) => res.json())
       .then((res) => {
-        setExpensePeriods(res.results);
+        props.setExpensePeriods(res.results);
         setIsLoaded(true);
       });
   }, []);
 
   // Making a delete request
-  function handleDeleteExpensePeriod(event, expensePeriod) {
+  function handleDeleteExpensePeriod(event, expensePeriodToDelete) {
     event.preventDefault();
-    fetch(`/api/expenseTimePeriod/${expensePeriod.id}`, {
+    fetch(`/api/expenseTimePeriod/${expensePeriodToDelete.id}`, {
       method: "delete",
       headers: {
         Accept: "application/json, text/plain, */*",
@@ -50,14 +49,20 @@ function ExpensePeriodContainer(props) {
       .then((res) => {
         // QUESTION: Is there any way to improve this selective filtering state storage.
         //           As seen below we have to duplicate setting the info several times.
-        setExpensePeriods((prevState) =>
-          prevState.filter((period) => period !== expensePeriod)
+        props.setExpensePeriods((prev) =>
+          prev.filter(
+            (expensePeriod) => expensePeriod.id !== expensePeriodToDelete.id
+          )
         );
-        setFilteredExpensePeriods((prevState) =>
-          prevState.filter((period) => period !== expensePeriod)
+        setFilteredExpensePeriods((prev) =>
+          prev.filter(
+            (expensePeriod) => expensePeriod.id !== expensePeriodToDelete.id
+          )
         );
-        setFilteredExpensePeriodsByDateRange((prevState) =>
-          prevState.filter((period) => period !== expensePeriod)
+        setFilteredExpensePeriodsByDateRange((prev) =>
+          prev.filter(
+            (expensePeriod) => expensePeriod.id !== expensePeriodToDelete.id
+          )
         );
       })
       .catch((err) => {
@@ -72,13 +77,13 @@ function ExpensePeriodContainer(props) {
   useEffect(() => {
     if (props.selectedCategory?.id) {
       setFilteredExpensePeriods(
-        expensePeriods.filter(
+        props.expensePeriods.filter(
           (expensePeriod) =>
             expensePeriod.category === props.selectedCategory.id
         )
       );
       setFilteredExpensePeriodsByDateRange(
-        expensePeriods.filter(
+        props.expensePeriods.filter(
           (expensePeriod) =>
             expensePeriod.category === props.selectedCategory.id
         )
@@ -96,7 +101,7 @@ function ExpensePeriodContainer(props) {
   // Add the new submitted value to all expense period arrays, and reset filters
   function handleFormSubmit(expensePeriod) {
     props.onExpensePeriodFormSubmit(expensePeriod);
-    setExpensePeriods((prevState) => [...prevState, expensePeriod]);
+    props.setExpensePeriods((prevState) => [...prevState, expensePeriod]);
     setFilteredExpensePeriods((prevState) => [...prevState, expensePeriod]);
     setFilteredExpensePeriodsByDateRange((prevState) => [
       ...prevState,
@@ -112,7 +117,7 @@ function ExpensePeriodContainer(props) {
   }
 
   return (
-    <div className="expensePeriods">
+    <div className="props.expensePeriods">
       <Slider
         className="categorySelect__Slider"
         onSliderChange={handleSliderChange}

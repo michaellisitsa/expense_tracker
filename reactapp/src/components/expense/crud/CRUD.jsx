@@ -35,6 +35,8 @@ function CRUD(props) {
           selectedExpensePeriod={selectedExpensePeriod}
           selectedCategory={props.selectedCategory}
           onExpensePeriodFormSubmit={handleExpensePeriodFormSubmit}
+          expensePeriods={props.expensePeriods}
+          setExpensePeriods={props.setExpensePeriods}
         />
       </section>
       <section className="expenses-container">
@@ -42,6 +44,8 @@ function CRUD(props) {
           selectedExpense={selectedExpense}
           selectedExpensePeriod={selectedExpensePeriod}
           onExpenseFormSubmit={handleExpenseFormSubmit}
+          expenses={props.expenses}
+          setExpenses={props.setExpenses}
         />
       </section>
     </>
