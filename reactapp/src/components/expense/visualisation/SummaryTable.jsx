@@ -14,14 +14,6 @@ function SummaryTable(props) {
   const [filteredExpenses, setFilteredExpenses] = useState([]);
   const [expensesPerMonth, setExpensesPerMonth] = useState([]);
   const { selectedCategory, expensePeriods, expenses } = props;
-  // console.log(
-  //   "selectedCategory",
-  //   selectedCategory,
-  //   "expensePeriods",
-  //   expensePeriods,
-  //   "expenses",
-  //   expenses
-  // );
 
   function summariseTimePeriod(filteredExpensePeriods, filteredExpenses, days) {
     const now = new Date();
