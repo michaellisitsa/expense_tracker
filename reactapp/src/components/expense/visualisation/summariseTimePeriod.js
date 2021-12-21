@@ -3,6 +3,7 @@ import {
   getOverlappingDaysInIntervals,
   eachDayOfInterval,
   isWithinInterval,
+  differenceInDays,
 } from "date-fns";
 
 export function summariseTimePeriod(
@@ -11,6 +12,7 @@ export function summariseTimePeriod(
   prevDate,
   currentDate
 ) {
+  // debugger;
   // Filter expensePeriods that fit between X days ago and currentDate.
   const filteredExpensePeriodsByDays = filteredExpensePeriods.filter(
     (expensePeriod) =>
@@ -31,18 +33,29 @@ export function summariseTimePeriod(
       )
   );
 
+  const intervalPerExpensePeriod = filteredExpensePeriodsByDays.map(
+    (expense, index) => {
+      return {
+        start: new Date(
+          filteredExpensePeriodsByDays[index].dateStart + "T00:00"
+        ),
+        end: new Date(filteredExpensePeriodsByDays[index].dateEnd + "T00:00"),
+      };
+    }
+  );
+
   // Adjust the expensePeriod sum totals for when expensePeriod
   // partially overlaps the specified time period
   const slicedFilteredExpensesByDay = filteredExpensesByDay.map(
     (expense, index) =>
-      getOverlappingDaysInIntervals(
-        {
-          start: new Date(
-            filteredExpensePeriodsByDays[index].dateStart + "T00:00"
-          ),
-          end: new Date(filteredExpensePeriodsByDays[index].dateEnd + "T00:00"),
-        },
-        { start: prevDate, end: currentDate }
+      (expense *
+        getOverlappingDaysInIntervals(intervalPerExpensePeriod[index], {
+          start: prevDate,
+          end: currentDate,
+        })) /
+      differenceInDays(
+        intervalPerExpensePeriod[index]["end"],
+        intervalPerExpensePeriod[index]["start"]
       )
   );
 

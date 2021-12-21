@@ -28,6 +28,7 @@ function ExpensePeriodForm(props) {
       new Date(dateEnd + "T00:00"),
       new Date(dateStart + "T00:00")
     );
+    console.log(result);
     if (result > 0) {
       setError(false);
       setErrorMsg("");

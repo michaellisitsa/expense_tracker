@@ -79,8 +79,15 @@ function Chart(props) {
 
   const monthEndDates = monthStartDates.map((month) => endOfMonth(month));
 
+  console.log(
+    "monthEndDates",
+    monthEndDates,
+    "monthStartDates",
+    monthStartDates
+  );
   const labels = monthStartDates.map((month) => format(month, "MMM"));
 
+  // TODO Check why adding large expense doesn't change average
   const monthlyAverages = monthStartDates.map((startDate, index) =>
     summariseTimePeriod(
       filteredExpensePeriods,
