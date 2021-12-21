@@ -5,6 +5,7 @@ import {
   LinearScale,
   CategoryScale,
   LineElement,
+  LineController,
   PointElement,
   Legend,
   Tooltip,
@@ -21,34 +22,11 @@ ChartJS.register(
   LinearScale,
   CategoryScale,
   LineElement,
+  LineController,
   PointElement,
   Legend,
   Tooltip
 );
-
-export const options = {
-  legend: {
-    display: false,
-  },
-  response: true, // responds to size of page
-  maintainAspectRatio: false, // when scaling, stretch width not height respectively
-  scales: {
-    y: {
-      beginAtZero: true,
-    },
-  },
-};
-
-// Labels for x-axis. Create an array of elements for the total extent of dates
-const labels = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "August",
-];
 
 // Presents a tooltip with the label of the line, and the X-value and Y-value
 // Could use this to take the median date of each range.
@@ -60,6 +38,33 @@ function Chart(props) {
   const { selectedCategory, expensePeriods, expenses } = props;
   // Below methods are to print to console the properties of the clicked point.
   // We could use these to instead update something in future. Will leave in to plot to console.
+
+  // Configuration options
+  const options = {
+    legend: {
+      display: false,
+    },
+    response: true, // responds to size of page
+    maintainAspectRatio: false, // when scaling, stretch width not height respectively
+    scales: {
+      y: {
+        beginAtZero: true,
+      },
+    },
+  };
+
+  // Labels for x-axis.
+  // TODO: Create an array of elements for the total extent of dates
+
+  const labels = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "August",
+  ];
 
   //
   const data = {
