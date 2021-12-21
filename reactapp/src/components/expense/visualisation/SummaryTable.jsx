@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { summariseTimePeriod } from "./summariseTimePeriod";
-
+import { subDays } from "date-fns";
 const currentDate = new Date();
 
 function SummaryTable(props) {
@@ -31,7 +31,7 @@ function SummaryTable(props) {
           expense: summariseTimePeriod(
             filteredExpensePeriodsTemp,
             filteredExpensesTemp,
-            7,
+            subDays(currentDate, 7),
             currentDate
           ),
         },
@@ -40,7 +40,7 @@ function SummaryTable(props) {
           expense: summariseTimePeriod(
             filteredExpensePeriodsTemp,
             filteredExpensesTemp,
-            30,
+            subDays(currentDate, 30),
             currentDate
           ),
         },
@@ -49,7 +49,7 @@ function SummaryTable(props) {
           expense: summariseTimePeriod(
             filteredExpensePeriodsTemp,
             filteredExpensesTemp,
-            365,
+            subDays(currentDate, 365),
             currentDate
           ),
         },

@@ -1,5 +1,5 @@
 import "./Chart.css";
-import React, { MouseEvent, useRef } from "react";
+import React, { MouseEvent, useRef, useState, useEffect } from "react";
 import {
   Chart as ChartJS,
   LinearScale,
@@ -23,6 +23,9 @@ import {
   eachDayOfInterval,
   isWithinInterval,
   eachMonthOfInterval,
+  getMonth,
+  format,
+  endOfMonth,
 } from "date-fns";
 
 ChartJS.register(
@@ -42,6 +45,8 @@ ChartJS.register(
 // To simplify initially could do a fixed 12 month timeline
 // Then show a vertical strip for areas of the graph that actually have data.
 function Chart(props) {
+  const [filteredExpensePeriods, setFilteredExpensePeriods] = useState([]);
+  const [filteredExpenses, setFilteredExpenses] = useState([]);
   const { selectedCategory, expensePeriods, expenses } = props;
   // Below methods are to print to console the properties of the clicked point.
   // We could use these to instead update something in future. Will leave in to plot to console.
@@ -51,6 +56,7 @@ function Chart(props) {
     legend: {
       display: false,
     },
+    spanGaps: true,
     response: true, // responds to size of page
     maintainAspectRatio: false, // when scaling, stretch width not height respectively
     scales: {
@@ -64,27 +70,41 @@ function Chart(props) {
   // TODO: Create an array of elements for the total extent of dates
   const currentDate = new Date();
   const prevDate = subDays(currentDate, 365);
-  const result = eachMonthOfInterval({
+
+  const monthStartDates = eachMonthOfInterval({
     start: prevDate,
     end: currentDate,
   });
-  console.log(result);
-  // eachMonthOfInterval
+  console.log(monthStartDates);
 
-  const labels = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-    "January",
-  ];
+  const monthEndDates = monthStartDates.map((month) => endOfMonth(month));
+
+  const labels = monthStartDates.map((month) => format(month, "MMM"));
+
+  const monthlyAverages = monthStartDates.map((startDate, index) =>
+    summariseTimePeriod(
+      filteredExpensePeriods,
+      filteredExpenses,
+      startDate,
+      monthEndDates[index]
+    )
+  );
+  console.log(monthlyAverages);
+
+  // const labels = [
+  //   "January",
+  //   "February",
+  //   "March",
+  //   "April",
+  //   "May",
+  //   "June",
+  //   "August",
+  //   "September",
+  //   "October",
+  //   "November",
+  //   "December",
+  //   "January",
+  // ];
 
   //
   const data = {
@@ -96,7 +116,8 @@ function Chart(props) {
         borderColor: "rgb(255, 99, 132)",
         borderWidth: 1,
         fill: false,
-        data: [65, 59, 80, 81, 56, 80, 30, 18, 59, 20, 10, 44, 11], // get y-axis data from moving average expenditure
+        data: monthlyAverages,
+        // data: [65, 59, 80, 81, 56, 80, 30, 18, 59, 20, 10, 44, 11], // get y-axis data from moving average expenditure
       },
       {
         type: "line",
@@ -104,7 +125,7 @@ function Chart(props) {
         borderColor: "rgb(0, 128, 0)",
         borderWidth: 1,
         fill: false,
-        data: Array(result.length).fill(selectedCategory.budget), // get y-axis data from moving average expenditure
+        data: Array(monthStartDates.length).fill(selectedCategory.budget), // get y-axis data from moving average expenditure
       },
     ],
   };
@@ -144,6 +165,28 @@ function Chart(props) {
     printElementAtEvent(getElementAtEvent(chart, event)); // logs the x, y values
     printElementsAtEvent(getElementsAtEvent(chart, event)); // logs "1", maybe the dataset number
   };
+
+  // Whenever a different category is selected, reset all filtered results
+  // because the expense periods will all change, and the filters are now irrelevant.
+  useEffect(() => {
+    if (selectedCategory?.id) {
+      const filteredExpensePeriodsTemp = expensePeriods.filter(
+        (expensePeriod) => expensePeriod.category === selectedCategory.id
+      );
+      setFilteredExpensePeriods(filteredExpensePeriodsTemp);
+      const filteredExpensesTemp = expenses.filter((expense) =>
+        filteredExpensePeriodsTemp.find(
+          (filteredExpensePeriod) =>
+            filteredExpensePeriod.id === expense.expenseTimePeriod
+        )
+      );
+      setFilteredExpenses(filteredExpensesTemp);
+      // Get the cumulative cost of all expenses within the recent period
+    } else {
+      setFilteredExpensePeriods(expensePeriods);
+      setFilteredExpenses(expenses);
+    }
+  }, [selectedCategory]);
 
   return (
     <div className="graph">

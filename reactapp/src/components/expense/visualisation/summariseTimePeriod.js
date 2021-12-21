@@ -8,11 +8,9 @@ import {
 export function summariseTimePeriod(
   filteredExpensePeriods,
   filteredExpenses,
-  days,
+  prevDate,
   currentDate
 ) {
-  const prevDate = addDays(currentDate, -days);
-
   // Filter expensePeriods that fit between X days ago and currentDate.
   const filteredExpensePeriodsByDays = filteredExpensePeriods.filter(
     (expensePeriod) =>
@@ -86,24 +84,22 @@ export function summariseTimePeriod(
   // Average monthly expense
   const expensesPerMonth = (30 / overlappingDays.length) * expensesTotal;
 
-  console.log(
-    `expensePeriods in last `,
-    days,
-    " days:",
-    filteredExpensePeriodsByDays,
-    "with following totals per period",
-    filteredExpensesByDay,
-    "and taking into account slices",
-    slicedFilteredExpensesByDay,
-    "for a total of $",
-    expensesTotal,
-    "over",
-    overlappingDays.length,
-    "unique days. Averaged over the full",
-    days,
-    "d gives an average of ",
-    expensesPerMonth,
-    "per month"
-  );
+  // console.log(
+  //   `expensePeriods in last `,
+  //   " days:",
+  //   filteredExpensePeriodsByDays,
+  //   "with following totals per period",
+  //   filteredExpensesByDay,
+  //   "and taking into account slices",
+  //   slicedFilteredExpensesByDay,
+  //   "for a total of $",
+  //   expensesTotal,
+  //   "over",
+  //   overlappingDays.length,
+  //   "unique days. Averaged over the full",
+  //   "d gives an average of ",
+  //   expensesPerMonth,
+  //   "per month"
+  // );
   return parseInt(expensesPerMonth);
 }
