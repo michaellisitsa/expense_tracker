@@ -15,6 +15,7 @@ import {
   getElementAtEvent,
   getElementsAtEvent,
 } from "react-chartjs-2";
+import { summariseTimePeriod } from "./summariseTimePeriod";
 
 ChartJS.register(
   LinearScale,
