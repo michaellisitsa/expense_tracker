@@ -1,26 +1,25 @@
-import { useState } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import "./TopNav.css";
 
 function TopNav(props) {
-  const [activeTab, setActiveTab] = useState();
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  function onClickTabItem(tab) {
-    if (location.pathname.startsWith("/expenses")) {
-      setActiveTab("expenses");
-    } else if (location.pathname.startsWith("/categories")) {
-      setActiveTab("categories");
-    } else {
-      console.log("invalid tab selection");
-    }
-  }
+  const tabs = [
+    { label: "Categories", id: "categories" },
+    { label: "Expenses", id: "expenses" },
+  ];
 
   return (
     <nav className="topnav">
-      <a className="index">Categories</a>
-      <a className="index active">Expenses</a>
+      {tabs.map((tab) => (
+        <NavLink
+          className={(navData) =>
+            navData.isActive ? "nav-link active" : "nav-link"
+          }
+          key={tab.id}
+          to={`/${tab.id}`}
+        >
+          {tab.label}
+        </NavLink>
+      ))}
       <div className="topnav-right">
         <button className="logoutBtn">Logout</button>
       </div>

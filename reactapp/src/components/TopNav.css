@@ -54,6 +54,7 @@
   width: 100%;
   font-size: 16px;
   border: 0;
+  cursor: pointer;
 }
 
 /* Change the color of links on hover */

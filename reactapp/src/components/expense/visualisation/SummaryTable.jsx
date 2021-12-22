@@ -63,6 +63,11 @@ function SummaryTable(props) {
     }
   }, [selectedCategory]);
 
+  // Don't show table before a user has selected a Category
+  if (Object.keys(selectedCategory).length === 0) {
+    return <h2>Select a Category Below:</h2>;
+  }
+
   return (
     <div>
       <h1>
@@ -73,7 +78,11 @@ function SummaryTable(props) {
           <tr>
             <th scope="col" className="summaryTableCells"></th>
             {expensesPerMonth.map((expense) => (
-              <th scope="col" className="summaryTableCells">
+              <th
+                key={expense.duration}
+                scope="col"
+                className="summaryTableCells"
+              >
                 {expense.duration}
               </th>
             ))}
@@ -86,6 +95,7 @@ function SummaryTable(props) {
             </th>
             {expensesPerMonth.map((expense) => (
               <td
+                key={expense.duration}
                 className={`summaryTableCells diff-${
                   (isNaN(expense.amount) ||
                     selectedCategory.budget - expense.amount === 0) &&
@@ -102,6 +112,7 @@ function SummaryTable(props) {
             </th>
             {expensesPerMonth.map((expense) => (
               <td
+                key={expense.duration}
                 className={`summaryTableCells diff-${
                   isNaN(expense.amount)
                     ? "grey"
