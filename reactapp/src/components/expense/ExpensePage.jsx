@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import CRUD from "./crud/CRUD";
 import Visualisation from "./visualisation/Visualisation";
+import "./ExpensePage.css";
 
 function ExpensePage(props) {
   // The selectedCategory needs to be known at the ExpensePage (top) level
@@ -17,13 +18,11 @@ function ExpensePage(props) {
 
   return (
     <div className="wrapper">
-      <section className="visualisation-container">
-        <Visualisation
-          selectedCategory={selectedCategory}
-          expensePeriods={expensePeriods}
-          expenses={expenses}
-        />
-      </section>
+      <Visualisation
+        selectedCategory={selectedCategory}
+        expensePeriods={expensePeriods}
+        expenses={expenses}
+      />
       <section className="crud-container">
         <CRUD
           selectedCategory={selectedCategory}

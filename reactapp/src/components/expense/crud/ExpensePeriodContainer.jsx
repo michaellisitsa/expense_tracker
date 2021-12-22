@@ -112,7 +112,6 @@ function ExpensePeriodContainer(props) {
   // The slider component will send back a filtered list of expense periods
   // This function sets these in the state so that it can be passed down to the xxxFilter component.
   function handleSliderChange(ExpensePeriodsByDate) {
-    console.log(ExpensePeriodsByDate);
     setFilteredExpensePeriodsByDateRange(ExpensePeriodsByDate);
   }
 

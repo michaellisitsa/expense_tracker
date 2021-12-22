@@ -81,7 +81,6 @@ const updateDeletedUI = (id) => {
 const selectElement = document.querySelector("#categoryField");
 
 selectElement.addEventListener("change", (event) => {
-  console.log(event.target.value);
   const categorySelectedDynamic = document.querySelector(
     `input.categoryRadioSelect[value='${event.target.value}']`
   );
@@ -98,5 +97,4 @@ if (queryString != "") {
     `input.categoryRadioSelect[value='${category}']`
   );
   categorySelected.checked = true;
-  console.log(categorySelected);
 }

@@ -1,10 +1,11 @@
 import { useState } from "react";
 import Chart from "./Chart";
 import SummaryTable from "./SummaryTable";
+import "./Visualisation.css";
 
 function Visualisation(props) {
   return (
-    <div>
+    <section className="visualisation-container">
       <SummaryTable
         selectedCategory={props.selectedCategory}
         expensePeriods={props.expensePeriods}
@@ -15,7 +16,7 @@ function Visualisation(props) {
         expensePeriods={props.expensePeriods}
         expenses={props.expenses}
       />
-    </div>
+    </section>
   );
 }
 

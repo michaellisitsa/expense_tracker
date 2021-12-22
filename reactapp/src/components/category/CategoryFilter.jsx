@@ -6,7 +6,6 @@ function CategoryFilter(props) {
 
   function handleSelectCategory(event, category) {
     event.preventDefault();
-    // console.log(category);
     navigate(`/expenses/${category.id}`);
   }
 

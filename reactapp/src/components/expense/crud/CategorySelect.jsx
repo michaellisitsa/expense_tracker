@@ -18,7 +18,6 @@ function CategorySelect(props) {
       .then((res) => {
         setIsLoaded(true);
         setCategories(res.results);
-        // console.log(res.results.find);
         const selectedCategory = res.results.find(
           (result) => result.id === parseFloat(params.id)
         );

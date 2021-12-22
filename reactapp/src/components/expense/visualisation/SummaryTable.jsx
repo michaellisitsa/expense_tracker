@@ -1,11 +1,10 @@
 import { useState, useEffect } from "react";
 import { summariseTimePeriod } from "./summariseTimePeriod";
 import { subDays } from "date-fns";
+import "./SummaryTable.css";
 const currentDate = new Date();
 
 function SummaryTable(props) {
-  const [filteredExpensePeriods, setFilteredExpensePeriods] = useState([]);
-  const [filteredExpenses, setFilteredExpenses] = useState([]);
   const [expensesPerMonth, setExpensesPerMonth] = useState([]);
   const { selectedCategory, expensePeriods, expenses } = props;
 
@@ -13,50 +12,54 @@ function SummaryTable(props) {
   // because the expense periods will all change, and the filters are now irrelevant.
   useEffect(() => {
     if (selectedCategory?.id) {
-      const filteredExpensePeriodsTemp = expensePeriods.filter(
+      const filteredExpensePeriods = expensePeriods.filter(
         (expensePeriod) => expensePeriod.category === selectedCategory.id
       );
-      setFilteredExpensePeriods(filteredExpensePeriodsTemp);
-      const filteredExpensesTemp = expenses.filter((expense) =>
-        filteredExpensePeriodsTemp.find(
+      const filteredExpenses = expenses.filter((expense) =>
+        filteredExpensePeriods.find(
           (filteredExpensePeriod) =>
             filteredExpensePeriod.id === expense.expenseTimePeriod
         )
       );
-      setFilteredExpenses(filteredExpensesTemp);
       // Get the cumulative cost of all expenses within the recent period
       setExpensesPerMonth([
         {
-          period: "Week",
-          expense: summariseTimePeriod(
-            filteredExpensePeriodsTemp,
-            filteredExpensesTemp,
-            subDays(currentDate, 7),
+          duration: "Year",
+          amount: summariseTimePeriod(
+            filteredExpensePeriods,
+            filteredExpenses,
+            subDays(currentDate, 365),
             currentDate
           ),
         },
         {
-          period: "Month",
-          expense: summariseTimePeriod(
-            filteredExpensePeriodsTemp,
-            filteredExpensesTemp,
+          duration: "Quarter",
+          amount: summariseTimePeriod(
+            filteredExpensePeriods,
+            filteredExpenses,
+            subDays(currentDate, 91),
+            currentDate
+          ),
+        },
+        {
+          duration: "Month",
+          amount: summariseTimePeriod(
+            filteredExpensePeriods,
+            filteredExpenses,
             subDays(currentDate, 30),
             currentDate
           ),
         },
         {
-          period: "Year",
-          expense: summariseTimePeriod(
-            filteredExpensePeriodsTemp,
-            filteredExpensesTemp,
-            subDays(currentDate, 365),
+          duration: "Week",
+          amount: summariseTimePeriod(
+            filteredExpensePeriods,
+            filteredExpenses,
+            subDays(currentDate, 7),
             currentDate
           ),
         },
       ]);
-    } else {
-      setFilteredExpensePeriods(expensePeriods);
-      setFilteredExpenses(expenses);
     }
   }, [selectedCategory]);
 
@@ -65,14 +68,56 @@ function SummaryTable(props) {
       <h1>
         {selectedCategory.name}: ${selectedCategory.budget}
       </h1>
-      <ul>
-        {expensesPerMonth.map((expense) => (
-          <li key={expense.period}>
-            Last {expense.period}: ${expense.expense} . Diff:{" "}
-            {selectedCategory.budget - expense.expense}
-          </li>
-        ))}
-      </ul>
+      <table className="summaryTable">
+        <thead>
+          <tr>
+            <th scope="col" className="summaryTableCells"></th>
+            {expensesPerMonth.map((expense) => (
+              <th scope="col" className="summaryTableCells">
+                {expense.duration}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row" className="summaryTableCells">
+              SPENT:
+            </th>
+            {expensesPerMonth.map((expense) => (
+              <td
+                className={`summaryTableCells diff-${
+                  (isNaN(expense.amount) ||
+                    selectedCategory.budget - expense.amount === 0) &&
+                  "grey"
+                }`}
+              >
+                {expense.amount > 0 ? `$ ${expense.amount}` : "N/A"}
+              </td>
+            ))}
+          </tr>
+          <tr>
+            <th scope="row" className="summaryTableCells">
+              REMAINING:
+            </th>
+            {expensesPerMonth.map((expense) => (
+              <td
+                className={`summaryTableCells diff-${
+                  isNaN(expense.amount)
+                    ? "grey"
+                    : selectedCategory.budget - expense.amount > 0
+                    ? "green"
+                    : "red"
+                }`}
+              >
+                {!isNaN(expense.amount)
+                  ? `$ ${selectedCategory.budget - expense.amount}`
+                  : "N/A"}
+              </td>
+            ))}
+          </tr>
+        </tbody>
+      </table>
     </div>
   );
 }

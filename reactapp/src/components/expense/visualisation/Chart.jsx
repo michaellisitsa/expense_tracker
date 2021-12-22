@@ -17,16 +17,7 @@ import {
   getElementsAtEvent,
 } from "react-chartjs-2";
 import { summariseTimePeriod } from "./summariseTimePeriod";
-import {
-  subDays,
-  getOverlappingDaysInIntervals,
-  eachDayOfInterval,
-  isWithinInterval,
-  eachMonthOfInterval,
-  getMonth,
-  format,
-  endOfMonth,
-} from "date-fns";
+import { subDays, eachMonthOfInterval, format, endOfMonth } from "date-fns";
 
 ChartJS.register(
   LinearScale,
@@ -38,6 +29,47 @@ ChartJS.register(
   Tooltip
 );
 
+// Configuration options
+const options = {
+  legend: {
+    display: false,
+  },
+  spanGaps: true,
+  response: true, // responds to size of page
+  maintainAspectRatio: false, // when scaling, stretch width not height respectively
+  scales: {
+    y: {
+      ticks: {
+        callback: function (value) {
+          var ranges = [
+            { divider: 1e6, suffix: "M" },
+            { divider: 1e3, suffix: "k" },
+          ];
+          function formatNumber(n) {
+            for (var i = 0; i < ranges.length; i++) {
+              if (n >= ranges[i].divider) {
+                return (n / ranges[i].divider).toString() + ranges[i].suffix;
+              }
+            }
+            return n;
+          }
+          return "$" + formatNumber(value);
+        },
+      }, // some magic from https://stackoverflow.com/a/44614470 to format y-axis with cost
+      beginAtZero: true,
+      title: {
+        display: true,
+        text: "Expense (month)",
+      },
+    },
+  },
+  elements: {
+    line: {
+      fill: true,
+    },
+  },
+};
+
 // Presents a tooltip with the label of the line, and the X-value and Y-value
 // Could use this to take the median date of each range.
 // Alternatively will need to discretise the moving average calculations for each week / month.
@@ -47,47 +79,25 @@ ChartJS.register(
 function Chart(props) {
   const [filteredExpensePeriods, setFilteredExpensePeriods] = useState([]);
   const [filteredExpenses, setFilteredExpenses] = useState([]);
+  const [monthsRange, setMonthsRange] = useState(12);
   const { selectedCategory, expensePeriods, expenses } = props;
   // Below methods are to print to console the properties of the clicked point.
   // We could use these to instead update something in future. Will leave in to plot to console.
 
-  // Configuration options
-  const options = {
-    legend: {
-      display: false,
-    },
-    spanGaps: true,
-    response: true, // responds to size of page
-    maintainAspectRatio: false, // when scaling, stretch width not height respectively
-    scales: {
-      y: {
-        beginAtZero: true,
-      },
-    },
-  };
-
   // Labels for x-axis.
   // TODO: Create an array of elements for the total extent of dates
   const currentDate = new Date();
-  const prevDate = subDays(currentDate, 365);
+  const prevDate = subDays(currentDate, 30 * monthsRange);
 
   const monthStartDates = eachMonthOfInterval({
     start: prevDate,
     end: currentDate,
   });
-  console.log(monthStartDates);
 
   const monthEndDates = monthStartDates.map((month) => endOfMonth(month));
 
-  console.log(
-    "monthEndDates",
-    monthEndDates,
-    "monthStartDates",
-    monthStartDates
-  );
-  const labels = monthStartDates.map((month) => format(month, "MMM"));
+  const labels = monthStartDates.map((month) => format(month, "MMM yy"));
 
-  // TODO Check why adding large expense doesn't change average
   const monthlyAverages = monthStartDates.map((startDate, index) =>
     summariseTimePeriod(
       filteredExpensePeriods,
@@ -96,42 +106,29 @@ function Chart(props) {
       monthEndDates[index]
     )
   );
-  console.log(monthlyAverages);
 
-  // const labels = [
-  //   "January",
-  //   "February",
-  //   "March",
-  //   "April",
-  //   "May",
-  //   "June",
-  //   "August",
-  //   "September",
-  //   "October",
-  //   "November",
-  //   "December",
-  //   "January",
-  // ];
-
-  //
+  // Data for the
   const data = {
     labels,
     datasets: [
       {
         type: "line",
-        label: "Expenditure (Moving Average)",
+        label: "Expense",
         borderColor: "rgb(255, 99, 132)",
         borderWidth: 1,
-        fill: false,
+        fill: true,
         data: monthlyAverages,
-        // data: [65, 59, 80, 81, 56, 80, 30, 18, 59, 20, 10, 44, 11], // get y-axis data from moving average expenditure
       },
       {
         type: "line",
         label: "Budget",
         borderColor: "rgb(0, 128, 0)",
-        borderWidth: 1,
-        fill: false,
+        pointRadius: 0,
+        backgroundColor: "rgb(0, 128, 0)",
+        pointHoverRadius: 0,
+        borderWidth: 2,
+        fillColor: "rgb(75, 192, 192)",
+        fill: true,
         data: Array(monthStartDates.length).fill(selectedCategory.budget), // get y-axis data from moving average expenditure
       },
     ],
@@ -142,7 +139,7 @@ function Chart(props) {
 
     const datasetIndex = dataset[0].datasetIndex;
 
-    console.log(data.datasets[datasetIndex].label);
+    // console.log(data.datasets[datasetIndex].label);
   };
 
   const printElementAtEvent = (element) => {
@@ -150,13 +147,13 @@ function Chart(props) {
 
     const { datasetIndex, index } = element[0];
 
-    console.log(data.labels[index], data.datasets[datasetIndex].data[index]);
+    // console.log(data.labels[index], data.datasets[datasetIndex].data[index]);
   };
 
   const printElementsAtEvent = (elements) => {
     if (!elements.length) return;
 
-    console.log(elements.length);
+    // console.log(elements.length);
   };
 
   const chartRef = useRef(null);

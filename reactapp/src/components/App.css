@@ -1,0 +1,27 @@
+:root {
+  --navHeight: 50px;
+  --topSummary: 150px;
+  --sidebarWidth: 200px;
+  --deleteIconWidth: 48px;
+}
+
+body {
+  margin: 0;
+  background: #eee;
+  font-family: "Open Sans", sans-serif;
+}
+
+/* Taken from reset.css ensure that browser doesn't apply automatic margins to text */
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+blockquote,
+label,
+p,
+li {
+  line-height: 1.5;
+}
