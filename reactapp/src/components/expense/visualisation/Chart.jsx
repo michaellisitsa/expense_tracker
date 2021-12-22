@@ -193,7 +193,7 @@ function Chart(props) {
   }, [selectedCategory]);
 
   return (
-    <div className="graph">
+    <div className="chart-container">
       <ReactChart
         ref={chartRef}
         onClick={onClick}

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import ExpenseContainer from "./ExpenseContainer";
 import CategorySelect from "./CategorySelect";
 import ExpensePeriodContainer from "./ExpensePeriodContainer";
+import "./CRUD.css";
 
 function CRUD(props) {
   // The entries selected for each table are tracked in top-level containers.
@@ -25,7 +26,7 @@ function CRUD(props) {
   }
 
   return (
-    <>
+    <main className="crud-container">
       <section className="expensePeriods-container">
         <CategorySelect
           selectedCategory={props.selectedCategory}
@@ -39,16 +40,14 @@ function CRUD(props) {
           setExpensePeriods={props.setExpensePeriods}
         />
       </section>
-      <section className="expenses-container">
-        <ExpenseContainer
-          selectedExpense={selectedExpense}
-          selectedExpensePeriod={selectedExpensePeriod}
-          onExpenseFormSubmit={handleExpenseFormSubmit}
-          expenses={props.expenses}
-          setExpenses={props.setExpenses}
-        />
-      </section>
-    </>
+      <ExpenseContainer
+        selectedExpense={selectedExpense}
+        selectedExpensePeriod={selectedExpensePeriod}
+        onExpenseFormSubmit={handleExpenseFormSubmit}
+        expenses={props.expenses}
+        setExpenses={props.setExpenses}
+      />
+    </main>
   );
 }
 

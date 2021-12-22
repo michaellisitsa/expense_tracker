@@ -81,7 +81,7 @@ function ExpenseContainer(props) {
   }
 
   return (
-    <div className="props.expenses">
+    <section className="expenses-container">
       <ExpenseForm
         selectedExpensePeriod={props.selectedExpensePeriod}
         onSubmit={handleFormSubmit}
@@ -100,7 +100,7 @@ function ExpenseContainer(props) {
       ) : (
         <p>Select Expense...</p>
       )}
-    </div>
+    </section>
   );
 }
 

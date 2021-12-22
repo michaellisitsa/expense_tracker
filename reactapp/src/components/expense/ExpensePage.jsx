@@ -23,16 +23,14 @@ function ExpensePage(props) {
         expensePeriods={expensePeriods}
         expenses={expenses}
       />
-      <section className="crud-container">
-        <CRUD
-          selectedCategory={selectedCategory}
-          onCategoryFormSubmit={handleCategoryFormSubmit}
-          expensePeriods={expensePeriods}
-          setExpensePeriods={setExpensePeriods}
-          expenses={expenses}
-          setExpenses={setExpenses}
-        />
-      </section>
+      <CRUD
+        selectedCategory={selectedCategory}
+        onCategoryFormSubmit={handleCategoryFormSubmit}
+        expensePeriods={expensePeriods}
+        setExpensePeriods={setExpensePeriods}
+        expenses={expenses}
+        setExpenses={setExpenses}
+      />
     </div>
   );
 }

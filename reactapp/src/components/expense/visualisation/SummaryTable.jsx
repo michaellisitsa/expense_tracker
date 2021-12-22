@@ -65,15 +65,15 @@ function SummaryTable(props) {
 
   // Don't show table before a user has selected a Category
   if (Object.keys(selectedCategory).length === 0) {
-    return <h2>Select a Category Below:</h2>;
+    return <h1>Select a Category Below:</h1>;
   }
 
   return (
-    <div>
+    <div className="summary-container">
       <h1>
         {selectedCategory.name}: ${selectedCategory.budget}
       </h1>
-      <table className="summaryTable">
+      <table className="summary-table">
         <thead>
           <tr>
             <th scope="col" className="summaryTableCells"></th>

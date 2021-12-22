@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import "./CategoryFilter.css";
 
 function CategoryFilter(props) {
   const navigate = useNavigate();

@@ -1,3 +1,32 @@
+.summary-container {
+  background-color: white;
+  border: 0;
+  border-radius: 0.5em;
+  margin: 1em;
+  padding: 1em;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.summary-table {
+  margin: 0 1.5em;
+  border-collapse: collapse;
+}
+
+.summary-table tr {
+  border-bottom: 1px solid #e0e6ed;
+}
+
+.summary-table th,
+.summary-table td {
+  padding: 1em;
+  text-align: justify;
+  /* overflow: hidden; */
+  white-space: nowrap;
+}
+
 .diff-grey {
   color: grey;
 }
@@ -6,4 +35,11 @@
 }
 .diff-red {
   color: red;
+}
+
+@media (max-width: 768px) {
+  .summary-container {
+    width: calc(100vw - 4em);
+    justify-content: center;
+  }
 }

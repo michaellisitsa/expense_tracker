@@ -1,5 +1,7 @@
 .visualisation-container {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  border-bottom: 1px solid grey;
 }

@@ -1,11 +1,3 @@
-.form1 {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap-reverse;
-  align-items: center;
-  gap: 1em;
-}
-
 .inputs-wrapper {
   display: flex;
   flex-wrap: wrap;
@@ -47,4 +39,10 @@
 
 .clearBtn:hover {
   text-decoration: underline;
+}
+
+.category-form__entry {
+  display: flex;
+  flex-direction: column;
+  padding: 0.5em;
 }

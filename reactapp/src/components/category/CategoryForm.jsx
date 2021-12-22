@@ -44,51 +44,30 @@ function CategoryForm(props) {
   };
 
   return (
-    <form className="form1" id="form1">
+    <form className="category-form">
       <fieldset className="inputs-wrapper">
-        <label htmlFor="name">Name:</label>
-        <input
-          type="text"
-          name="name"
-          id="name"
-          className="category-input"
-          placeholder="Enter Name..."
-          value={formData.name}
-          onChange={handleChange}
-        />
-        <label htmlFor="assignee">Assignee:</label>
-        <input
-          type="text"
-          name="assignee"
-          id="assignee"
-          className="category-input"
-          placeholder="Enter Assignee..."
-          value={formData.assignee}
-          onChange={handleChange}
-        />
-        <label htmlFor="budget">Budget:</label>
-        <input
-          type="text"
-          name="budget"
-          id="budget"
-          className="category-input"
-          placeholder="Enter Budget..."
-          value={formData.budget}
-          onChange={handleChange}
-        />
-        <label htmlFor="description">Description:</label>
-        <input
-          type="text"
-          name="description"
-          id="description"
-          className="category-input"
-          placeholder="Enter Description..."
-          value={formData.description}
-          onChange={handleChange}
-        />
+        {Object.entries(formData).map((data) => (
+          <label
+            key={data[0]}
+            className={`category-form__entry`}
+            htmlFor={data[0]}
+          >
+            {data[0]}
+            <input
+              type={data[0] === "budget" ? "number" : "text"}
+              name={data[0]}
+              className="category-input"
+              placeholder={
+                data[0] === "budget" ? "$1,000.00" : `Enter ${data[0]}...`
+              }
+              value={formData[data]}
+              onChange={handleChange}
+            />
+          </label>
+        ))}
       </fieldset>
-      <button className="post-request" onClick={handleFormSubmit}>
-        Post expense Category Form
+      <button className="category-form__button" onClick={handleFormSubmit}>
+        ADD
       </button>
     </form>
   );
