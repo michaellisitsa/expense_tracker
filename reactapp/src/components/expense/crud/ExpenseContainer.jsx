@@ -82,6 +82,14 @@ function ExpenseContainer(props) {
 
   return (
     <section className="expenses-container">
+      {Object.keys(props.selectedExpense).length !== 0 ? (
+        <p>
+          Selected Expense:
+          {props.selectedExpense.description}
+        </p>
+      ) : (
+        <p>Select Expense...</p>
+      )}
       <ExpenseFilter
         isLoaded={isLoaded}
         expenses={filteredExpenses}
@@ -92,15 +100,6 @@ function ExpenseContainer(props) {
         selectedExpensePeriod={props.selectedExpensePeriod}
         onSubmit={handleFormSubmit}
       />
-
-      {Object.keys(props.selectedExpense).length !== 0 ? (
-        <p>
-          You have selected Expense Id:{props.selectedExpense.id}:{" "}
-          {props.selectedExpense.description}
-        </p>
-      ) : (
-        <p>Select Expense...</p>
-      )}
     </section>
   );
 }

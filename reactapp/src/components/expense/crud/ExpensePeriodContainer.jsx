@@ -123,6 +123,14 @@ function ExpensePeriodContainer(props) {
         onSliderChange={handleSliderChange}
         filteredExpensePeriods={filteredExpensePeriods}
       />
+      {Object.keys(props.selectedExpensePeriod).length !== 0 ? (
+        <p>
+          Selected Period:
+          {props.selectedExpensePeriod.description}
+        </p>
+      ) : (
+        <p>Select Period...</p>
+      )}
       <ExpensePeriodFilter
         isLoaded={isLoaded}
         expensePeriods={filteredExpensePeriodsByDateRange}
@@ -134,15 +142,6 @@ function ExpensePeriodContainer(props) {
         selectedCategory={props.selectedCategory}
         onSubmit={handleFormSubmit}
       />
-      {Object.keys(props.selectedExpensePeriod).length !== 0 ? (
-        <p>
-          You have selected ExpensePeriod Id: {props.selectedExpensePeriod.id}:{" "}
-          {props.selectedExpensePeriod.description}, which will be used when
-          creating an Expense
-        </p>
-      ) : (
-        <p>Select Expense Period...</p>
-      )}
     </div>
   );
 }
