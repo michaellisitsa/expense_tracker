@@ -50,7 +50,7 @@ function CategorySelect(props) {
       {isLoaded ? (
         <select
           className="category-select__select"
-          value={props.selectedCategory.id}
+          value={props.selectedCategory?.id}
           onChange={handleSelectCategory}
           size={categories.length + 1}
         >

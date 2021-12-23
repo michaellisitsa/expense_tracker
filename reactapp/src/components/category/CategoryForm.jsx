@@ -9,6 +9,8 @@ function CategoryForm(props) {
     budget: "",
     description: "",
   });
+  const [error, setError] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
 
   // Making a post request
   // Stack Overflow:
@@ -30,9 +32,19 @@ function CategoryForm(props) {
         description,
       }),
     })
-      .then((res) => res.json())
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        } else {
+          throw Error(res.statusText);
+        }
+      })
       .then((res) => {
         props.onSubmit(res);
+      })
+      .catch((err) => {
+        setError(true);
+        setErrorMsg(err.message);
       });
   };
 
@@ -69,6 +81,7 @@ function CategoryForm(props) {
       <button className="category-form__button" onClick={handleFormSubmit}>
         <span>ADD</span>
       </button>
+      <p className="expensePeriod-form__error">{error && `${errorMsg}`}</p>
     </form>
   );
 }

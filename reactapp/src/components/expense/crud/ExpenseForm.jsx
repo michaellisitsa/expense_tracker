@@ -7,6 +7,8 @@ function ExpenseForm(props) {
     description: "",
     cost: "",
   });
+  const [error, setError] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
 
   // Making a post request
   // Stack Overflow:
@@ -27,9 +29,19 @@ function ExpenseForm(props) {
         expenseTimePeriod: props.selectedExpensePeriod.id,
       }),
     })
-      .then((res) => res.json())
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        } else {
+          throw Error(res.statusText);
+        }
+      })
       .then((res) => {
         props.onSubmit(res);
+      })
+      .catch((err) => {
+        setError(true);
+        setErrorMsg(err.message);
       });
   };
 
@@ -41,7 +53,8 @@ function ExpenseForm(props) {
   };
 
   return (
-    <form className="form1" id="form1">
+    <form className="expense-form">
+      <h1>Enter an Expense:</h1>
       <fieldset className="inputs-wrapper">
         <label htmlFor="description">Description:</label>
         <input
@@ -66,6 +79,9 @@ function ExpenseForm(props) {
       <button className="expense-button" onClick={handleFormSubmit}>
         Post Expense Form
       </button>
+      <p className="expense-form__error">
+        {error && `${errorMsg}. Select Expense Period`}
+      </p>
     </form>
   );
 }

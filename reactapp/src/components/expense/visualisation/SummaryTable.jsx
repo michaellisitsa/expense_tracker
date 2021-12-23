@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { summariseTimePeriod } from "./summariseTimePeriod";
 import { subDays } from "date-fns";
+import { NavLink } from "react-router-dom";
+
 import "./SummaryTable.css";
 const currentDate = new Date();
 
@@ -64,8 +66,16 @@ function SummaryTable(props) {
   }, [selectedCategory, expenses, expensePeriods]);
 
   // Don't show table before a user has selected a Category
-  if (Object.keys(selectedCategory).length === 0) {
-    return <h1>Select a Category Below:</h1>;
+  if (selectedCategory) {
+    if (Object.keys(selectedCategory).length === 0) {
+      return <h1>Select a Category Below:</h1>;
+    }
+  } else {
+    return (
+      <h1>
+        Create your first <NavLink to="/categories">Category</NavLink>
+      </h1>
+    );
   }
 
   return (

@@ -42,12 +42,22 @@ function ExpensePeriodForm(props) {
           description,
           dateStart,
           dateEnd,
-          category: props.selectedCategory.id,
+          category: props.selectedCategory?.id,
         }),
       })
-        .then((res) => res.json())
+        .then((res) => {
+          if (res.ok) {
+            return res.json();
+          } else {
+            throw Error(res.statusText);
+          }
+        })
         .then((res) => {
           props.onSubmit(res);
+        })
+        .catch((err) => {
+          setError(true);
+          setErrorMsg(err.message);
         });
     } else {
       setError(true);
@@ -64,6 +74,7 @@ function ExpensePeriodForm(props) {
 
   return (
     <form className="expensePeriods-form">
+      <h1>Enter an Expense Period:</h1>
       <fieldset className="inputs-wrapper">
         {Object.entries(formData).map((data) => (
           <label
@@ -86,7 +97,9 @@ function ExpensePeriodForm(props) {
       <button className="expensePeriod-form__button" onClick={handleFormSubmit}>
         <span>ADD</span>
       </button>
-      {error && <p className="post-errormsg">{errorMsg}</p>}
+      <p className="expensePeriod-form__error">
+        {error && `${errorMsg} Select Category`}
+      </p>
     </form>
   );
 }

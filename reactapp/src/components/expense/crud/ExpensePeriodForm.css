@@ -19,7 +19,7 @@
   padding: 0.5em;
 }
 
-.post-errormsg {
+.expensePeriod-form__error {
   color: red;
 }
 
@@ -79,4 +79,8 @@
   background-color: #3e8e41;
   box-shadow: 0 0.2em #666;
   transform: translateY(4px);
+}
+
+.expensePeriods-form h1 {
+  padding-bottom: 1em;
 }

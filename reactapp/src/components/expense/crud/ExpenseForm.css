@@ -8,3 +8,11 @@
 .expense-button {
   visibility: hidden;
 }
+
+.expense-form h1 {
+  padding-bottom: 1em;
+}
+
+.expense-form__error {
+  color: red;
+}

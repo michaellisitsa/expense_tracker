@@ -129,7 +129,7 @@ function Chart(props) {
         borderWidth: 2,
         fillColor: "rgb(75, 192, 192)",
         fill: true,
-        data: Array(monthStartDates.length).fill(selectedCategory.budget), // get y-axis data from moving average expenditure
+        data: Array(monthStartDates?.length).fill(selectedCategory?.budget), // get y-axis data from moving average expenditure
       },
     ],
   };
