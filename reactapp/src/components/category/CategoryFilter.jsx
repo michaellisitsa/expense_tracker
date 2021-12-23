@@ -18,7 +18,7 @@ function CategoryFilter(props) {
             <div className="filter-list__container" key={category.id}>
               <div
                 className={`filter-list__option`}
-                onClick={(event) => props.onSelectCategory(event, category)}
+                onClick={(event) => handleSelectCategory(event, category)}
               >
                 {category.name}
               </div>

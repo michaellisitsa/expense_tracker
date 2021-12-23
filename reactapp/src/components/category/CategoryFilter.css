@@ -1,8 +1,8 @@
 .category-page {
   display: flex;
   align-items: center;
-  justify-content: space-evenly;
   border-bottom: 1px solid grey;
+  justify-content: center;
 }
 
 .category-form {
