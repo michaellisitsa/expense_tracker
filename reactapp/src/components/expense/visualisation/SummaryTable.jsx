@@ -61,7 +61,7 @@ function SummaryTable(props) {
         },
       ]);
     }
-  }, [selectedCategory]);
+  }, [selectedCategory, expenses, expensePeriods]);
 
   // Don't show table before a user has selected a Category
   if (Object.keys(selectedCategory).length === 0) {
@@ -91,7 +91,7 @@ function SummaryTable(props) {
         <tbody>
           <tr>
             <th scope="row" className="summaryTableCells">
-              SPENT:
+              EXPENSE (mth):
             </th>
             {expensesPerMonth.map((expense) => (
               <td
@@ -108,7 +108,7 @@ function SummaryTable(props) {
           </tr>
           <tr>
             <th scope="row" className="summaryTableCells">
-              REMAINING:
+              REMAINING (mth):
             </th>
             {expensesPerMonth.map((expense) => (
               <td

@@ -1,3 +1,27 @@
 .crud-container {
   display: flex;
+  flex-direction: row;
+}
+
+.expensePeriods-container {
+  background-color: white;
+  border: 0;
+  border-radius: 0.5em;
+  margin: 1em;
+  padding: 1em;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  overflow: hidden;
+}
+
+@media (max-width: 768px) {
+  .crud-container {
+    flex-direction: column;
+  }
+
+  .expensePeriods-container {
+    flex-direction: column;
+  }
 }

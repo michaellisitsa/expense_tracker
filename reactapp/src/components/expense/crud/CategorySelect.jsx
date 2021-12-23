@@ -23,6 +23,8 @@ function CategorySelect(props) {
         );
         if (selectedCategory) {
           props.onCategoryFormSubmit(selectedCategory);
+        } else {
+          props.onCategoryFormSubmit(res.results[0]);
         }
         // );
       });
@@ -43,30 +45,29 @@ function CategorySelect(props) {
   // The select controlled component logic following this link:
   // https://www.pluralsight.com/guides/how-to-get-selected-value-from-a-mapped-select-input-in-react
   return (
-    <div className="categorySelect">
+    <div className="category-select">
+      <h1>Category:</h1>
       {isLoaded ? (
         <select
-          className="categorySelect__select"
+          className="category-select__select"
           value={props.selectedCategory.id}
           onChange={handleSelectCategory}
+          size={categories.length + 1}
         >
-          {categories.map((category) => (
-            <option key={category.id} value={category.id}>
-              {category.id}: {category.name}
-            </option>
-          ))}
+          <optgroup>
+            {categories.map((category) => (
+              <option
+                className="category-select__option"
+                key={category.id}
+                value={category.id}
+              >
+                {category.name}
+              </option>
+            ))}
+          </optgroup>
         </select>
       ) : (
         <p>Loading Categories...</p>
-      )}
-      {Object.keys(props.selectedCategory).length !== 0 ? (
-        <p className="categorySelect__Text">
-          You have selected Category Id: {props.selectedCategory.id}:{" "}
-          {props.selectedCategory.name}, which will be used when creating an
-          Expense Period
-        </p>
-      ) : (
-        <p>Select Expense Category...</p>
       )}
     </div>
   );

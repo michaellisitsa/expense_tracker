@@ -1,10 +1,82 @@
+.expensePeriods-form {
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  border: 0;
+  border-radius: 0.5em;
+  overflow: hidden;
+}
+
 .expensePeriod-input {
   padding: 0.5em 1em;
   border: solid 1px grey;
   border-radius: 0.5em;
-  margin: 0 1em;
+}
+
+.expensePeriod-form__entry {
+  display: flex;
+  flex-direction: column;
+  padding: 0.5em;
 }
 
 .post-errormsg {
   color: red;
+}
+
+.inputs-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  margin: 0 1em;
+  border-radius: 0.25em;
+}
+
+.expensePeriod-form__button {
+  border-radius: 4px;
+  background-color: rgba(0, 149, 120, 0.8);
+  border: none;
+  color: #ffffff;
+  text-align: center;
+  font-size: 16px;
+  padding: 10px;
+  width: 100px;
+  transition: all 0.1s;
+  cursor: pointer;
+  margin: 1em;
+  box-shadow: 0 0.4em #999;
+  align-self: flex-end;
+}
+
+.expensePeriod-form__button span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.expensePeriod-form__button span:after {
+  content: "\00bb";
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.expensePeriod-form__button:hover span {
+  padding-right: 25px;
+}
+
+.expensePeriod-form__button:hover span:after {
+  opacity: 1;
+  right: 0;
+}
+
+.expensePeriod-form__button:active {
+  background-color: #3e8e41;
+  box-shadow: 0 0.2em #666;
+  transform: translateY(4px);
 }

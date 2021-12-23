@@ -1,5 +1,26 @@
-.categorySelect__select {
+.category-select {
   display: flex;
   flex-direction: column;
-  margin: 0 2em;
+  gap: 1em;
+}
+
+.category-select__select {
+  border: solid 1px #e0e6ed;
+  border-radius: 0.3em;
+  padding: 0.5em 1em;
+  width: auto;
+}
+
+.category-select__select optgroup {
+  font-size: 16px;
+}
+
+.category-select__option {
+  padding: 10px;
+}
+
+@media (max-width: 768px) {
+  .category-select {
+    width: 100%;
+  }
 }

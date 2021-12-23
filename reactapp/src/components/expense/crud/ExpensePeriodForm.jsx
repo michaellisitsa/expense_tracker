@@ -63,43 +63,30 @@ function ExpensePeriodForm(props) {
   };
 
   return (
-    <form className="form1" id="form1">
+    <form className="expensePeriods-form">
       <fieldset className="inputs-wrapper">
-        <label htmlFor="description">Description:</label>
-        <input
-          type="text"
-          name="description"
-          id="description"
-          className="expensePeriod-input"
-          placeholder="Enter Description..."
-          value={formData.description}
-          onChange={handleChange}
-        />
-        <label htmlFor="description">Start Date:</label>
-        <input
-          type="date"
-          name="dateStart"
-          id="dateStart"
-          className="expensePeriod-input"
-          value={formData.dateStart}
-          onChange={handleChange}
-        />
-        <label htmlFor="description">End Date:</label>
-        <input
-          type="date"
-          name="dateEnd"
-          id="dateEnd"
-          className="expensePeriod-input"
-          value={formData.dateEnd}
-          onChange={handleChange}
-        />
+        {Object.entries(formData).map((data) => (
+          <label
+            key={data[0]}
+            className={`expensePeriod-form__entry`}
+            htmlFor={data[0]}
+          >
+            {data[0]}
+            <input
+              type={data[0] === "description" ? "text" : "date"}
+              name={data[0]}
+              className="expensePeriod-input"
+              placeholder={data[0] === "description" && `Enter ${data[0]}`}
+              value={formData[data]}
+              onChange={handleChange}
+            />
+          </label>
+        ))}
       </fieldset>
-      <div className="post-button">
-        <button className="post-request" onClick={handleFormSubmit}>
-          Post expenseTimePeriod
-        </button>
-        {error && <p className="post-errormsg">{errorMsg}</p>}
-      </div>
+      <button className="expensePeriod-form__button" onClick={handleFormSubmit}>
+        <span>ADD</span>
+      </button>
+      {error && <p className="post-errormsg">{errorMsg}</p>}
     </form>
   );
 }

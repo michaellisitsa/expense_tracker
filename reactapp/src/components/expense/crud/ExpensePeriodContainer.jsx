@@ -3,6 +3,7 @@ import ExpensePeriodForm from "./ExpensePeriodForm";
 import ExpensePeriodFilter from "./ExpensePeriodFilter";
 import { CSRFTOKEN } from "../../../utils/csrftoken"; // utility function to request the csrf token for create/delete requests to django
 import Slider from "./Slider";
+import "./ExpensePeriodContainer.css";
 
 // Component takes care of posting/rendering expense periods
 // Also it renders the slider to filter the expense periods by time range
@@ -116,7 +117,7 @@ function ExpensePeriodContainer(props) {
   }
 
   return (
-    <div className="props.expensePeriods">
+    <div className="expensePeriods">
       <Slider
         className="categorySelect__Slider"
         onSliderChange={handleSliderChange}

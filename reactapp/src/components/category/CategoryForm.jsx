@@ -67,7 +67,7 @@ function CategoryForm(props) {
         ))}
       </fieldset>
       <button className="category-form__button" onClick={handleFormSubmit}>
-        ADD
+        <span>ADD</span>
       </button>
     </form>
   );

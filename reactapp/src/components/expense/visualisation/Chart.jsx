@@ -190,7 +190,7 @@ function Chart(props) {
       setFilteredExpensePeriods(expensePeriods);
       setFilteredExpenses(expenses);
     }
-  }, [selectedCategory]);
+  }, [selectedCategory, expenses, expensePeriods]);
 
   return (
     <div className="chart-container">

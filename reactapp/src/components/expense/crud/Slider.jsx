@@ -57,7 +57,7 @@ function Slider(props) {
   };
 
   return (
-    <div className="container">
+    <div className="slider-container">
       <div className="info">
         <span>Selected Interval: </span>
         {selectedInterval.map((d, i) => (
