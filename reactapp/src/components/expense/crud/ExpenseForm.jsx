@@ -63,7 +63,7 @@ function ExpenseForm(props) {
           onChange={handleChange}
         />
       </fieldset>
-      <button className="post-request" onClick={handleFormSubmit}>
+      <button className="expense-button" onClick={handleFormSubmit}>
         Post Expense Form
       </button>
     </form>

@@ -123,16 +123,16 @@ function ExpensePeriodContainer(props) {
         onSliderChange={handleSliderChange}
         filteredExpensePeriods={filteredExpensePeriods}
       />
-      <ExpensePeriodForm
-        selectedCategory={props.selectedCategory}
-        onSubmit={handleFormSubmit}
-      />
       <ExpensePeriodFilter
         isLoaded={isLoaded}
         expensePeriods={filteredExpensePeriodsByDateRange}
         selectedExpensePeriod={props.selectedExpensePeriod}
         onSelectExpensePeriod={handleSelectExpensePeriod}
         onDeleteExpensePeriod={handleDeleteExpensePeriod}
+      />
+      <ExpensePeriodForm
+        selectedCategory={props.selectedCategory}
+        onSubmit={handleFormSubmit}
       />
       {Object.keys(props.selectedExpensePeriod).length !== 0 ? (
         <p>

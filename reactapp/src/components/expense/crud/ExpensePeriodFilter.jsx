@@ -3,33 +3,34 @@ import "./ExpensePeriodFilter.css";
 
 function ExpensePeriodFilter(props) {
   return (
-    <div>
-      <ul>
+    <>
+      <div className="filter-list">
         {props.isLoaded ? (
           props.expensePeriods.map((expensePeriod) => (
-            <li key={expensePeriod.id}>
-              <button
+            <div className="filter-list__container" key={expensePeriod.id}>
+              <div
+                className="filter-list__option"
                 onClick={(event) =>
                   props.onSelectExpensePeriod(event, expensePeriod)
                 }
               >
-                {expensePeriod.id}: {expensePeriod.description} from{" "}
-                {expensePeriod.category}
-              </button>
-              <button
+                {expensePeriod.id}: {expensePeriod.description}
+              </div>
+              <div
+                className="filter-list__delete"
                 onClick={(event) =>
                   props.onDeleteExpensePeriod(event, expensePeriod)
                 }
               >
-                Delete
-              </button>
-            </li>
+                X
+              </div>
+            </div>
           ))
         ) : (
           <p>Loading Expense Periods...</p>
         )}
-      </ul>
-    </div>
+      </div>
+    </>
   );
 }
 

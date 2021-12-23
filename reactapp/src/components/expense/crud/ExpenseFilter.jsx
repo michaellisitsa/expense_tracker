@@ -3,28 +3,30 @@ import "./ExpenseFilter.css";
 
 function ExpenseFilter(props) {
   return (
-    <div>
-      <ul>
+    <>
+      <div className="filter-list">
         {props.isLoaded ? (
           props.expenses.map((expense) => (
-            <li key={expense.id}>
-              <button
+            <div className="filter-list__container" key={expense.id}>
+              <div
+                className={`filter-list__option`}
                 onClick={(event) => props.onSelectExpense(event, expense)}
               >
                 {expense.id}: {expense.description}
-              </button>
-              <button
+              </div>
+              <div
+                className="filter-list__delete"
                 onClick={(event) => props.onDeleteExpense(event, expense)}
               >
-                Delete
-              </button>
-            </li>
+                X
+              </div>
+            </div>
           ))
         ) : (
           <p>Loading Expense...</p>
         )}
-      </ul>
-    </div>
+      </div>
+    </>
   );
 }
 

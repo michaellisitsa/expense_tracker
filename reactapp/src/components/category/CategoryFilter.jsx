@@ -11,28 +11,30 @@ function CategoryFilter(props) {
   }
 
   return (
-    <div>
-      <ul>
+    <>
+      <div className="filter-list">
         {props.isLoaded ? (
           props.categories.map((category) => (
-            <li key={category.id}>
-              <button
-                onClick={(event) => handleSelectCategory(event, category)}
+            <div className="filter-list__container" key={category.id}>
+              <div
+                className={`filter-list__option`}
+                onClick={(event) => props.onSelectCategory(event, category)}
               >
-                {category.id}: {category.name}
-              </button>
-              <button
+                {category.name}
+              </div>
+              <div
+                className="filter-list__delete"
                 onClick={(event) => props.onDeleteCategory(event, category)}
               >
-                Delete
-              </button>
-            </li>
+                X
+              </div>
+            </div>
           ))
         ) : (
           <p>Loading Categories...</p>
         )}
-      </ul>
-    </div>
+      </div>
+    </>
   );
 }
 

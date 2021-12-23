@@ -82,16 +82,17 @@ function ExpenseContainer(props) {
 
   return (
     <section className="expenses-container">
-      <ExpenseForm
-        selectedExpensePeriod={props.selectedExpensePeriod}
-        onSubmit={handleFormSubmit}
-      />
       <ExpenseFilter
         isLoaded={isLoaded}
         expenses={filteredExpenses}
         onSelectExpense={handleSelectExpense}
         onDeleteExpense={handleDeleteExpense}
       />
+      <ExpenseForm
+        selectedExpensePeriod={props.selectedExpensePeriod}
+        onSubmit={handleFormSubmit}
+      />
+
       {Object.keys(props.selectedExpense).length !== 0 ? (
         <p>
           You have selected Expense Id:{props.selectedExpense.id}:{" "}

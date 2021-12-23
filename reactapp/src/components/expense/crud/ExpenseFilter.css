@@ -1,0 +1,55 @@
+.filter-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  margin: 1em;
+}
+
+.filter-list__container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5em;
+}
+
+.filter-list__option {
+  border: 1px solid lightgrey;
+  border-radius: 5px;
+  padding: 0.5em 1em;
+  display: flex;
+  flex-direction: row;
+  cursor: pointer;
+}
+
+.filter-list__option:hover {
+  background-color: lightgrey;
+}
+
+.filter-list__option:active {
+  background-color: lightgrey;
+  transform: scale(90%);
+  box-shadow: grey 1px 2px;
+}
+
+.deleteBtn > img:active {
+  background: white;
+  transform: translate(0, -50%) translate(+3px, +3px);
+  box-shadow: grey 1px 2px;
+}
+
+.filter-list__item {
+  flex: 1;
+}
+
+.filter-list__delete {
+  font-size: 16px;
+  font-weight: 400px;
+  color: lightcoral;
+}
+
+.filter-list__delete:hover {
+  font-size: 16px;
+  font-weight: 700px;
+  color: red;
+  cursor: pointer;
+}
