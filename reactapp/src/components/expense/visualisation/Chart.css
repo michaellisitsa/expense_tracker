@@ -13,8 +13,8 @@
   margin: 1em;
   height: 100%;
   position: relative;
-  height: 20vh;
-  min-width: 300px;
+  width: 50%;
+  flex-shrink: 1;
 }
 
 @media (max-width: 768px) {

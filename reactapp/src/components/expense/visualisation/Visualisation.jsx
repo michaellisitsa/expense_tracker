@@ -1,11 +1,12 @@
 import { useState } from "react";
 import Chart from "./Chart";
 import SummaryTable from "./SummaryTable";
-import "./Visualisation.css";
+import React from "react";
+import CardLayout from "../CardLayout";
 
 function Visualisation(props) {
   return (
-    <section className="visualisation-container">
+    <CardLayout>
       <SummaryTable
         selectedCategory={props.selectedCategory}
         expensePeriods={props.expensePeriods}
@@ -16,7 +17,7 @@ function Visualisation(props) {
         expensePeriods={props.expensePeriods}
         expenses={props.expenses}
       />
-    </section>
+    </CardLayout>
   );
 }
 
