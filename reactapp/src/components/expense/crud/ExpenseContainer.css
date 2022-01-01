@@ -8,4 +8,11 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  width: 30%;
+}
+
+@media (max-width: 768px) {
+  .expenses-container {
+    width: auto;
+  }
 }

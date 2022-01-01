@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import ExpenseContainer from "./ExpenseContainer";
 import CategorySelect from "./CategorySelect";
 import ExpensePeriodContainer from "./ExpensePeriodContainer";
+import CardLayout from "../CardLayout";
 import "./CRUD.css";
 
 function CRUD(props) {
@@ -26,7 +27,7 @@ function CRUD(props) {
   }
 
   return (
-    <main className="crud-container">
+    <CardLayout>
       <section className="expensePeriods-container">
         <CategorySelect
           selectedCategory={props.selectedCategory}
@@ -47,7 +48,7 @@ function CRUD(props) {
         expenses={props.expenses}
         setExpenses={props.setExpenses}
       />
-    </main>
+    </CardLayout>
   );
 }
 

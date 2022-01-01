@@ -1,6 +1,6 @@
 .card-container {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
   border-bottom: 1px solid grey;
   width: 100%;
   max-width: 1200px;

@@ -2,6 +2,7 @@
   display: flex;
   flex-direction: column;
   gap: 1em;
+  width: 30%;
 }
 
 .category-select__select {

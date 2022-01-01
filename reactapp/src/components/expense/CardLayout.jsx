@@ -1,7 +1,7 @@
 import "./CardLayout.css";
 
-function CardContainer({ children }) {
+function CardLayout({ children }) {
   return <section className="card-container">{children}</section>;
 }
 
-export default CardContainer;
+export default CardLayout;
