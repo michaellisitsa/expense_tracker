@@ -1,5 +1,6 @@
 import { useState, useRef } from "react";
 import { CSRFTOKEN } from "../../../utils/csrftoken";
+import Spinner from "../../../utils/Spinner";
 import "./ExpenseForm.css";
 
 function ExpenseForm(props) {
@@ -8,6 +9,7 @@ function ExpenseForm(props) {
     cost: "",
   });
   const descriptionInput = useRef(null);
+  const [isLoaded, setIsLoaded] = useState(true);
   const [error, setError] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
 
@@ -15,11 +17,13 @@ function ExpenseForm(props) {
   // Stack Overflow:
   // https://stackoverflow.com/questions/45308153/posting-data-to-django-rest-framework-using-javascript-fetch
   const handleFormSubmit = (e) => {
+    setIsLoaded(false);
     e.preventDefault();
     const { description, cost } = formData;
     if (formData.description === "" || formData.cost === "") {
       setError(true);
       setErrorMsg("Not all inputs entered");
+      setIsLoaded(true);
     } else {
       fetch("/api/expense/", {
         method: "post",
@@ -51,10 +55,12 @@ function ExpenseForm(props) {
           // Reset error state
           setError(false);
           setErrorMsg("");
+          setIsLoaded(true);
         })
         .catch((err) => {
           setError(true);
           setErrorMsg(err.message);
+          setIsLoaded(true);
         });
       descriptionInput.current.focus();
     }
@@ -82,10 +88,11 @@ function ExpenseForm(props) {
             value={formData.description}
             onChange={handleChange}
           />
+          <p>$</p>
           <input
             type="number"
             name="cost"
-            placeholder="$100.00"
+            placeholder="100"
             value={formData.cost}
             onChange={handleChange}
           />
@@ -96,6 +103,13 @@ function ExpenseForm(props) {
           </button>
         </div>
       </form>
+      {!isLoaded && (
+        <div className="expense-form__loading">
+          <p>{formData.description}</p>
+          <p>$ {formData.cost}</p>
+          <Spinner />
+        </div>
+      )}
     </>
   );
 }

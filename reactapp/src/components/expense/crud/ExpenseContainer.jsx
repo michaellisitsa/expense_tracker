@@ -75,6 +75,7 @@ function ExpenseContainer(props) {
 
   return (
     <section className="expenses-container">
+      <h1>Expenses:</h1>
       <ExpenseForm
         selectedExpensePeriod={props.selectedExpensePeriod}
         onSubmit={handleFormSubmit}

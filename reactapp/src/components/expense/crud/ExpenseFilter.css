@@ -8,7 +8,6 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  gap: 1.5em;
 }
 
 .expense-filter-list__result {
@@ -17,6 +16,13 @@
   align-items: center;
   justify-content: space-between;
   flex: 1;
+}
+
+.expense-filter-list__result > p:first-child {
+  padding-left: 0.25em;
+}
+.expense-filter-list__result > p:last-child {
+  padding-right: 1.25em;
 }
 
 .deleteBtn > img:active {

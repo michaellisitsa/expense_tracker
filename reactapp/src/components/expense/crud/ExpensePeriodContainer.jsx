@@ -118,6 +118,7 @@ function ExpensePeriodContainer(props) {
 
   return (
     <div className="expensePeriods">
+      <h1>Expense Period:</h1>
       <Slider
         className="categorySelect__Slider"
         onSliderChange={handleSliderChange}
