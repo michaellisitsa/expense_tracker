@@ -62,17 +62,10 @@ function ExpenseContainer(props) {
         )
       );
     }
-    props.onExpenseFormSubmit({});
   }, [props.selectedExpensePeriod]);
-
-  function handleSelectExpense(event, expense) {
-    event.preventDefault();
-    props.onExpenseFormSubmit(expense);
-  }
 
   // Add the new submitted value to all expense period arrays, and reset filter
   function handleFormSubmit(expense) {
-    props.onExpenseFormSubmit(expense);
     props.setExpenses((prevExpense) => [...prevExpense, expense]);
     setFilteredExpenses((prevFilteredExpense) => [
       ...prevFilteredExpense,
@@ -82,23 +75,14 @@ function ExpenseContainer(props) {
 
   return (
     <section className="expenses-container">
-      {Object.keys(props.selectedExpense).length !== 0 ? (
-        <p>
-          Selected Expense:
-          {props.selectedExpense.description}
-        </p>
-      ) : (
-        <p>Select Expense...</p>
-      )}
-      <ExpenseFilter
-        isLoaded={isLoaded}
-        expenses={filteredExpenses}
-        onSelectExpense={handleSelectExpense}
-        onDeleteExpense={handleDeleteExpense}
-      />
       <ExpenseForm
         selectedExpensePeriod={props.selectedExpensePeriod}
         onSubmit={handleFormSubmit}
+      />
+      <ExpenseFilter
+        isLoaded={isLoaded}
+        expenses={filteredExpenses}
+        onDeleteExpense={handleDeleteExpense}
       />
     </section>
   );

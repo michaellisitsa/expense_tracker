@@ -10,7 +10,6 @@ function CRUD(props) {
   // This allows passing data down to foreign key relations, for auto-filling
   // the FK field in forms or filtering by that foreign key.
   const [selectedExpensePeriod, setSelectedExpensePeriod] = useState({});
-  const [selectedExpense, setSelectedExpense] = useState({});
 
   // Applies to 2 funcs below.
   // Instead of passing setters directly into props, I pass this wrapping function
@@ -20,10 +19,6 @@ function CRUD(props) {
 
   function handleExpensePeriodFormSubmit(expensePeriod) {
     setSelectedExpensePeriod(expensePeriod);
-  }
-
-  function handleExpenseFormSubmit(expense) {
-    setSelectedExpense(expense);
   }
 
   return (
@@ -42,9 +37,7 @@ function CRUD(props) {
         />
       </section>
       <ExpenseContainer
-        selectedExpense={selectedExpense}
         selectedExpensePeriod={selectedExpensePeriod}
-        onExpenseFormSubmit={handleExpenseFormSubmit}
         expenses={props.expenses}
         setExpenses={props.setExpenses}
       />

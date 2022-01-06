@@ -1,12 +1,38 @@
+.expense-form {
+  display: flex;
+  flex-direction: row;
+  gap: 1.5em;
+}
+
+.expense-form__inputs {
+  display: flex;
+  flex: 1;
+}
+
+.expense-form__inputs > input:first-child {
+  flex: 1;
+}
+
+.expense-form__inputs > input:last-child {
+  text-align: right;
+}
+
+.expense-button {
+  color: green;
+  font-size: 24px;
+  border: 0;
+  border-radius: 50%;
+  background: white;
+  cursor: pointer;
+  margin: 0;
+  padding: 0;
+}
+
 .expense-input {
   padding: 0.5em 1em;
   border: solid 1px grey;
   border-radius: 0.5em;
   margin: 0 1em;
-}
-
-.expense-button {
-  visibility: hidden;
 }
 
 .expense-form h1 {

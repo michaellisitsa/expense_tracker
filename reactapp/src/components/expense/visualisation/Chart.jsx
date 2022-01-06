@@ -18,7 +18,7 @@ import {
 } from "react-chartjs-2";
 import { summariseTimePeriod } from "./summariseTimePeriod";
 import { subDays, eachMonthOfInterval, format, endOfMonth } from "date-fns";
-
+import { formatNumber } from "../../../utils/formatNumber";
 ChartJS.register(
   LinearScale,
   CategoryScale,
@@ -41,18 +41,6 @@ const options = {
     y: {
       ticks: {
         callback: function (value) {
-          var ranges = [
-            { divider: 1e6, suffix: "M" },
-            { divider: 1e3, suffix: "k" },
-          ];
-          function formatNumber(n) {
-            for (var i = 0; i < ranges.length; i++) {
-              if (n >= ranges[i].divider) {
-                return (n / ranges[i].divider).toString() + ranges[i].suffix;
-              }
-            }
-            return n;
-          }
           return "$" + formatNumber(value);
         },
       }, // some magic from https://stackoverflow.com/a/44614470 to format y-axis with cost

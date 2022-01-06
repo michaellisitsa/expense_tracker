@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { summariseTimePeriod } from "./summariseTimePeriod";
 import { subDays } from "date-fns";
 import { NavLink } from "react-router-dom";
+import { formatNumber } from "../../../utils/formatNumber";
 
 import "./SummaryTable.css";
 const currentDate = new Date();
@@ -112,7 +113,9 @@ function SummaryTable(props) {
                   "grey"
                 }`}
               >
-                {expense.amount > 0 ? `$ ${expense.amount}` : "N/A"}
+                {expense.amount > 0
+                  ? `$ ${formatNumber(expense.amount)}`
+                  : "N/A"}
               </td>
             ))}
           </tr>
@@ -132,7 +135,9 @@ function SummaryTable(props) {
                 }`}
               >
                 {!isNaN(expense.amount)
-                  ? `$ ${selectedCategory.budget - expense.amount}`
+                  ? `$ ${formatNumber(
+                      selectedCategory.budget - expense.amount
+                    )}`
                   : "N/A"}
               </td>
             ))}
