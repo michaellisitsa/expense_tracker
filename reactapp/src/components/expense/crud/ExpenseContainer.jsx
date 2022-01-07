@@ -7,7 +7,7 @@ import "./ExpenseContainer.css";
 // Component takes care of posting/rendering props.expenses
 // Each expense has a FK expense period which is passed down and filters the inputs
 // as well as appended when form is submitted.
-function ExpenseContainer(props) {
+function ExpenseContainer({ selectedExpensePeriod, expenses, setExpenses }) {
   // States below store each level of progressive filter
   // 1. raw data from fetch request
   // 2. filtered by category FK
@@ -21,10 +21,10 @@ function ExpenseContainer(props) {
     })
       .then((res) => res.json())
       .then((res) => {
-        props.setExpenses(res.results);
+        setExpenses(res.results);
         setIsLoaded(true);
       });
-  }, []);
+  }, [setExpenses]);
 
   // Making a delete request
   function handleDeleteExpense(event, expenseToDelete) {
@@ -39,7 +39,7 @@ function ExpenseContainer(props) {
     })
       .then((res) => res.text())
       .then((res) => {
-        props.setExpenses((prev) =>
+        setExpenses((prev) =>
           prev.filter((expense) => expense.id !== expenseToDelete.id)
         );
         setFilteredExpenses((prev) =>
@@ -51,33 +51,30 @@ function ExpenseContainer(props) {
       });
   }
 
+  // Update Filtered Results local state when different expensePeriod selected, or expenses list updated.
+  // This pattern needs to be re-factored to note store derived state.
   // Whenever a different expense Period is selected, reset all filtered results
   // because the expense periods will all change, and the filters are now irrelevant.
   useEffect(() => {
-    if (props.selectedExpensePeriod?.id) {
+    if (selectedExpensePeriod?.id) {
       setFilteredExpenses(
-        props.expenses.filter(
-          (expense) =>
-            expense.expenseTimePeriod === props.selectedExpensePeriod.id
+        expenses.filter(
+          (expense) => expense.expenseTimePeriod === selectedExpensePeriod.id
         )
       );
     }
-  }, [props.selectedExpensePeriod]);
+  }, [selectedExpensePeriod, expenses]);
 
   // Add the new submitted value to all expense period arrays, and reset filter
   function handleFormSubmit(expense) {
-    props.setExpenses((prevExpense) => [...prevExpense, expense]);
-    setFilteredExpenses((prevFilteredExpense) => [
-      ...prevFilteredExpense,
-      expense,
-    ]);
+    setExpenses((prevExpense) => [...prevExpense, expense]);
   }
 
   return (
     <section className="expenses-container">
       <h1>Expenses:</h1>
       <ExpenseForm
-        selectedExpensePeriod={props.selectedExpensePeriod}
+        selectedExpensePeriod={selectedExpensePeriod}
         onSubmit={handleFormSubmit}
       />
       <ExpenseFilter

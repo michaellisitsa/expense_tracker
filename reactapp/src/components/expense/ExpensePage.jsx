@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import CRUD from "./crud/CRUD";
 import Visualisation from "./visualisation/Visualisation";
 import "./ExpensePage.css";
@@ -12,9 +12,13 @@ function ExpensePage(props) {
   const [expensePeriods, setExpensePeriods] = useState([]);
   const [expenses, setExpenses] = useState([]);
 
-  function handleCategoryFormSubmit(category) {
-    setSelectedCategory(category);
-  }
+  // Memoized as this is called within useEffect and shouldn't update unless the
+  const handleCategoryFormSubmit = useCallback(
+    (category) => {
+      setSelectedCategory(category);
+    },
+    [setSelectedCategory]
+  );
 
   return (
     <div className="wrapper">

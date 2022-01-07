@@ -1,11 +1,18 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import ExpenseContainer from "./ExpenseContainer";
 import CategorySelect from "./CategorySelect";
 import ExpensePeriodContainer from "./ExpensePeriodContainer";
 import CardLayout from "../CardLayout";
 import "./CRUD.css";
 
-function CRUD(props) {
+function CRUD({
+  selectedCategory,
+  onCategoryFormSubmit,
+  expensePeriods,
+  setExpensePeriods,
+  expenses,
+  setExpenses,
+}) {
   // The entries selected for each table are tracked in top-level containers.
   // This allows passing data down to foreign key relations, for auto-filling
   // the FK field in forms or filtering by that foreign key.
@@ -17,29 +24,32 @@ function CRUD(props) {
   // the below are poorly named, because they are triggered not only on form submits,
   // but also on selections within xxxFilter components.
 
-  function handleExpensePeriodFormSubmit(expensePeriod) {
-    setSelectedExpensePeriod(expensePeriod);
-  }
+  const handleExpensePeriodFormSubmit = useCallback(
+    (expensePeriod) => {
+      setSelectedExpensePeriod(expensePeriod);
+    },
+    [setSelectedExpensePeriod]
+  );
 
   return (
     <CardLayout>
       <section className="expensePeriods-container">
         <CategorySelect
-          selectedCategory={props.selectedCategory}
-          onCategoryFormSubmit={props.onCategoryFormSubmit}
+          selectedCategory={selectedCategory}
+          onCategoryFormSubmit={onCategoryFormSubmit}
         />
         <ExpensePeriodContainer
           selectedExpensePeriod={selectedExpensePeriod}
-          selectedCategory={props.selectedCategory}
+          selectedCategory={selectedCategory}
           onExpensePeriodFormSubmit={handleExpensePeriodFormSubmit}
-          expensePeriods={props.expensePeriods}
-          setExpensePeriods={props.setExpensePeriods}
+          expensePeriods={expensePeriods}
+          setExpensePeriods={setExpensePeriods}
         />
       </section>
       <ExpenseContainer
         selectedExpensePeriod={selectedExpensePeriod}
-        expenses={props.expenses}
-        setExpenses={props.setExpenses}
+        expenses={expenses}
+        setExpenses={setExpenses}
       />
     </CardLayout>
   );

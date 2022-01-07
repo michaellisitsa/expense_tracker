@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import "./CategorySelect.css";
 import { useParams } from "react-router-dom";
 
-function CategorySelect(props) {
+function CategorySelect({ selectedCategory, onCategoryFormSubmit }) {
   const [categories, setCategories] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const params = useParams();
@@ -22,13 +22,13 @@ function CategorySelect(props) {
           (result) => result.id === parseFloat(params.id)
         );
         if (selectedCategory) {
-          props.onCategoryFormSubmit(selectedCategory);
+          onCategoryFormSubmit(selectedCategory);
         } else {
-          props.onCategoryFormSubmit(res.results[0]);
+          onCategoryFormSubmit(res.results[0]);
         }
         // );
       });
-  }, []);
+  }, [params.id, onCategoryFormSubmit]);
 
   // When the select dropdown changes, do this.
   // Need to use event.target.value to access what is the currently selected value
@@ -39,7 +39,7 @@ function CategorySelect(props) {
       (category) => category.id === parseFloat(event.target.value)
     );
     // pass selected category up to the top leve.
-    props.onCategoryFormSubmit(selectedCategory);
+    onCategoryFormSubmit(selectedCategory);
   }
 
   // The select controlled component logic following this link:
@@ -50,7 +50,7 @@ function CategorySelect(props) {
       {isLoaded ? (
         <select
           className="category-select__select"
-          value={props.selectedCategory?.id}
+          value={selectedCategory?.id}
           onChange={handleSelectCategory}
           size={categories.length + 1}
         >
