@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import "./CategoryForm.css";
 import { CSRFTOKEN } from "../../utils/csrftoken";
 

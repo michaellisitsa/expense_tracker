@@ -1,5 +1,5 @@
 import "./Chart.css";
-import React, { MouseEvent, useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import {
   Chart as ChartJS,
   LinearScale,
@@ -10,12 +10,12 @@ import {
   Legend,
   Tooltip,
 } from "chart.js";
-import {
-  Chart as ReactChart,
-  getDatasetAtEvent,
-  getElementAtEvent,
-  getElementsAtEvent,
-} from "react-chartjs-2";
+import { Chart as ReactChart } from "react-chartjs-2";
+// import {
+//   getDatasetAtEvent,
+//   getElementAtEvent,
+//   getElementsAtEvent,
+// } from "react-chartjs-2"; // for logging any interactions with charts
 import { summariseTimePeriod } from "./summariseTimePeriod";
 import { subDays, eachMonthOfInterval, format, endOfMonth } from "date-fns";
 import { formatNumber } from "../../../utils/formatNumber";
@@ -67,7 +67,6 @@ const options = {
 function Chart(props) {
   const [filteredExpensePeriods, setFilteredExpensePeriods] = useState([]);
   const [filteredExpenses, setFilteredExpenses] = useState([]);
-  const [monthsRange, setMonthsRange] = useState(12);
   const { selectedCategory, expensePeriods, expenses } = props;
   // Below methods are to print to console the properties of the clicked point.
   // We could use these to instead update something in future. Will leave in to plot to console.
@@ -75,7 +74,7 @@ function Chart(props) {
   // Labels for x-axis.
   // TODO: Create an array of elements for the total extent of dates
   const currentDate = new Date();
-  const prevDate = subDays(currentDate, 30 * monthsRange);
+  const prevDate = subDays(currentDate, 30 * 12);
 
   const monthStartDates = eachMonthOfInterval({
     start: prevDate,
@@ -122,27 +121,29 @@ function Chart(props) {
     ],
   };
 
-  const printDatasetAtEvent = (dataset) => {
-    if (!dataset.length) return;
+  // Below methods are used when logging interaction events to the console.
 
-    const datasetIndex = dataset[0].datasetIndex;
+  // const printDatasetAtEvent = (dataset) => {
+  //   if (!dataset.length) return;
 
-    // console.log(data.datasets[datasetIndex].label);
-  };
+  //   const datasetIndex = dataset[0].datasetIndex;
 
-  const printElementAtEvent = (element) => {
-    if (!element.length) return;
+  //   // console.log(data.datasets[datasetIndex].label);
+  // };
 
-    const { datasetIndex, index } = element[0];
+  // const printElementAtEvent = (element) => {
+  //   if (!element.length) return;
 
-    // console.log(data.labels[index], data.datasets[datasetIndex].data[index]);
-  };
+  //   const { datasetIndex, index } = element[0];
 
-  const printElementsAtEvent = (elements) => {
-    if (!elements.length) return;
+  //   // console.log(data.labels[index], data.datasets[datasetIndex].data[index]);
+  // };
 
-    // console.log(elements.length);
-  };
+  // const printElementsAtEvent = (elements) => {
+  //   if (!elements.length) return;
+
+  //   // console.log(elements.length);
+  // };
 
   const chartRef = useRef(null);
 
@@ -153,9 +154,9 @@ function Chart(props) {
       return;
     }
 
-    printDatasetAtEvent(getDatasetAtEvent(chart, event)); // logs the dataset (label of line)
-    printElementAtEvent(getElementAtEvent(chart, event)); // logs the x, y values
-    printElementsAtEvent(getElementsAtEvent(chart, event)); // logs "1", maybe the dataset number
+    // printDatasetAtEvent(getDatasetAtEvent(chart, event)); // logs the dataset (label of line)
+    // printElementAtEvent(getElementAtEvent(chart, event)); // logs the x, y values
+    // printElementsAtEvent(getElementsAtEvent(chart, event)); // logs "1", maybe the dataset number
   };
 
   // Whenever a different category is selected, reset all filtered results

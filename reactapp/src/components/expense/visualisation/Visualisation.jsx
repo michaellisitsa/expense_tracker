@@ -1,4 +1,3 @@
-import { useState } from "react";
 import Chart from "./Chart";
 import SummaryTable from "./SummaryTable";
 import React from "react";

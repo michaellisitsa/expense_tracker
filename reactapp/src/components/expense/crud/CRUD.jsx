@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import ExpenseContainer from "./ExpenseContainer";
 import CategorySelect from "./CategorySelect";
 import ExpensePeriodContainer from "./ExpensePeriodContainer";

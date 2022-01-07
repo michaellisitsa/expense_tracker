@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import "./ExpensePeriodFilter.css";
 
 function ExpensePeriodFilter(props) {

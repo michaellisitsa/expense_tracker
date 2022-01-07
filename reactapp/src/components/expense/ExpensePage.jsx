@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import CRUD from "./crud/CRUD";
 import Visualisation from "./visualisation/Visualisation";
 import "./ExpensePage.css";
