@@ -1,7 +1,7 @@
 import { useState } from "react";
-import "./ExpensePeriodForm.css";
 import { CSRFTOKEN } from "../../../utils/csrftoken";
 import { differenceInDays } from "date-fns";
+import "./ExpensePeriodForm.css";
 
 function ExpensePeriodForm(props) {
   const [formData, setFormData] = useState({
@@ -67,34 +67,43 @@ function ExpensePeriodForm(props) {
   };
 
   return (
-    <form className="expensePeriods-form">
-      <h1>Enter an Expense Period:</h1>
-      <fieldset className="inputs-wrapper">
-        {Object.entries(formData).map((data) => (
-          <label
-            key={data[0]}
-            className={`expensePeriod-form__entry`}
-            htmlFor={data[0]}
-          >
-            {data[0]}
-            <input
-              type={data[0] === "description" ? "text" : "date"}
-              name={data[0]}
-              className="expensePeriod-input"
-              placeholder={data[0] === "description" && `Enter ${data[0]}`}
-              value={formData[data]}
-              onChange={handleChange}
-            />
-          </label>
-        ))}
-      </fieldset>
-      <button className="expensePeriod-form__button" onClick={handleFormSubmit}>
-        <span>ADD</span>
-      </button>
+    <>
       <p className="expensePeriod-form__error">
         {error && `${errorMsg} Select Category`}
       </p>
-    </form>
+      <form className="expensePeriods-form">
+        <div className="expensePeriod-form__inputs">
+          <input
+            type="text"
+            name="description"
+            className="expensePeriod-input"
+            placeholder="Enter Description:"
+            value={formData.description}
+            onChange={handleChange}
+          />
+          <div className="expensePeriods-Form__dates-wrapper">
+            <input
+              type="date"
+              name="dateStart"
+              value={formData.dateStart}
+              onChange={handleChange}
+            />
+            <input
+              type="date"
+              name="dateEnd"
+              value={formData.dateEnd}
+              onChange={handleChange}
+            />
+          </div>
+        </div>
+        <button
+          className="expensePeriod-form__button"
+          onClick={handleFormSubmit}
+        >
+          <span>ADD</span>
+        </button>
+      </form>
+    </>
   );
 }
 

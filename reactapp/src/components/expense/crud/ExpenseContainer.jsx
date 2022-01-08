@@ -8,10 +8,6 @@ import "./ExpenseContainer.css";
 // Each expense has a FK expense period which is passed down and filters the inputs
 // as well as appended when form is submitted.
 function ExpenseContainer({ selectedExpensePeriod, expenses, setExpenses }) {
-  // States below store each level of progressive filter
-  // 1. raw data from fetch request
-  // 2. filtered by category FK
-  const [filteredExpenses, setFilteredExpenses] = useState([]);
   // The isLoaded state here is passed down to the "xxxFilter" components once the fetch is completed.
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -42,28 +38,11 @@ function ExpenseContainer({ selectedExpensePeriod, expenses, setExpenses }) {
         setExpenses((prev) =>
           prev.filter((expense) => expense.id !== expenseToDelete.id)
         );
-        setFilteredExpenses((prev) =>
-          prev.filter((expense) => expense.id !== expenseToDelete.id)
-        );
       })
       .catch((err) => {
         console.log(err.message);
       });
   }
-
-  // Update Filtered Results local state when different expensePeriod selected, or expenses list updated.
-  // This pattern needs to be re-factored to note store derived state.
-  // Whenever a different expense Period is selected, reset all filtered results
-  // because the expense periods will all change, and the filters are now irrelevant.
-  useEffect(() => {
-    if (selectedExpensePeriod?.id) {
-      setFilteredExpenses(
-        expenses.filter(
-          (expense) => expense.expenseTimePeriod === selectedExpensePeriod.id
-        )
-      );
-    }
-  }, [selectedExpensePeriod, expenses]);
 
   // Add the new submitted value to all expense period arrays, and reset filter
   function handleFormSubmit(expense) {
@@ -78,8 +57,9 @@ function ExpenseContainer({ selectedExpensePeriod, expenses, setExpenses }) {
         onSubmit={handleFormSubmit}
       />
       <ExpenseFilter
+        selectedExpensePeriod={selectedExpensePeriod}
         isLoaded={isLoaded}
-        expenses={filteredExpenses}
+        expenses={expenses}
         onDeleteExpense={handleDeleteExpense}
       />
     </section>

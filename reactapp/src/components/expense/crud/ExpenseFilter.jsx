@@ -1,11 +1,19 @@
 import "./ExpenseFilter.css";
 
-function ExpenseFilter(props) {
+function ExpenseFilter({
+  selectedExpensePeriod,
+  isLoaded,
+  expenses,
+  onDeleteExpense,
+}) {
+  const filteredExpenses = expenses.filter(
+    (expense) => expense.expenseTimePeriod === selectedExpensePeriod.id
+  );
   return (
     <>
       <div className="expense-filter-list">
-        {props.isLoaded ? (
-          [...props.expenses].reverse().map((expense) => (
+        {isLoaded ? (
+          [...filteredExpenses].reverse().map((expense) => (
             <div className="expense-filter-list__container" key={expense.id}>
               <div className="expense-filter-list__result">
                 <p className={`expense-filter-list__description`}>
@@ -18,7 +26,7 @@ function ExpenseFilter(props) {
               <div className="expense-filter-list__crud">
                 <div
                   className="expense-filter-list__delete"
-                  onClick={(event) => props.onDeleteExpense(event, expense)}
+                  onClick={(event) => onDeleteExpense(event, expense)}
                 >
                   X
                 </div>

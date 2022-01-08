@@ -1,10 +1,30 @@
 .expensePeriods-form {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   background-color: white;
   border: 0;
   border-radius: 0.5em;
   overflow: hidden;
+}
+
+.expensePeriod-form__inputs {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.expensePeriods-Form__dates-wrapper {
+  display: flex;
+  justify-content: space-between;
+  border: solid 1px grey;
+  border-radius: 6px;
+  overflow: hidden;
+  gap: 0.25em;
+  padding: 0.5em;
+}
+
+.expensePeriods-Form__dates-wrapper input {
+  border: none;
 }
 
 .expensePeriod-input {
