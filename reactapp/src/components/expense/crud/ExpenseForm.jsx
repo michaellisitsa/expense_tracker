@@ -3,7 +3,7 @@ import { CSRFTOKEN } from "../../../utils/csrftoken";
 import Spinner from "../../../utils/Spinner";
 import "./ExpenseForm.css";
 
-function ExpenseForm(props) {
+function ExpenseForm({ selectedExpensePeriod, setExpenses }) {
   const [formData, setFormData] = useState({
     description: "",
     cost: "",
@@ -35,7 +35,7 @@ function ExpenseForm(props) {
         body: JSON.stringify({
           description,
           cost,
-          expenseTimePeriod: props.selectedExpensePeriod.id,
+          expenseTimePeriod: selectedExpensePeriod.id,
         }),
       })
         .then((res) => {
@@ -46,7 +46,7 @@ function ExpenseForm(props) {
           }
         })
         .then((res) => {
-          props.onSubmit(res);
+          setExpenses((prevExpense) => [...prevExpense, res]);
           // Clear formData
           setFormData({
             description: "",

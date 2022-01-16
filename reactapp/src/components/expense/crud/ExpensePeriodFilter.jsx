@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import "./ExpensePeriodFilter.css";
 
 function ExpensePeriodFilter({
@@ -5,18 +6,43 @@ function ExpensePeriodFilter({
   isLoaded,
   expensePeriods,
   selectedExpensePeriod,
-  onSelectExpensePeriod,
+  setSelectedExpensePeriod,
   onDeleteExpensePeriod,
 }) {
   const filteredExpensePeriods = [...expensePeriods]
     .reverse()
     .filter((expensePeriod) => expensePeriod.category === selectedCategory.id);
-  const selectedExpensePeriodId =
-    Object.keys(selectedExpensePeriod).length !== 0
-      ? selectedExpensePeriod.id
-      : filteredExpensePeriods.length !== 0
-      ? filteredExpensePeriods[0].id
-      : null;
+
+  // TODO: make simpler logic for determining which expense period to select.
+  let selectedExpensePeriodId = null;
+  // Get the id of the selected list element
+  if (
+    Object.keys(selectedExpensePeriod).length === 0 &&
+    filteredExpensePeriods.length !== 0
+  ) {
+    selectedExpensePeriodId = filteredExpensePeriods[0].id;
+  } else if (filteredExpensePeriods.length === 0) {
+    // pass
+  } else if (
+    filteredExpensePeriods.filter(
+      (result) => selectedExpensePeriod.id === result.id
+    ).length !== 0
+  ) {
+    selectedExpensePeriodId = selectedExpensePeriod.id;
+  } else {
+    selectedExpensePeriodId = filteredExpensePeriods[0].id;
+  }
+
+  useEffect(() => {
+    if (selectedExpensePeriodId) {
+      setSelectedExpensePeriod(
+        expensePeriods.find((result) => result.id === selectedExpensePeriodId)
+      );
+    } else {
+      setSelectedExpensePeriod({});
+    }
+  }, [setSelectedExpensePeriod, expensePeriods, selectedExpensePeriodId]);
+
   return (
     <>
       <div className="expensePeriod-filter-list">
@@ -30,7 +56,7 @@ function ExpensePeriodFilter({
                 className={`expensePeriod-filter-list__option${
                   selectedExpensePeriodId === expensePeriod.id ? " active" : ""
                 }`}
-                onClick={(event) => onSelectExpensePeriod(event, expensePeriod)}
+                onClick={() => setSelectedExpensePeriod(expensePeriod)}
               >
                 {expensePeriod.id}: {expensePeriod.description}
               </div>

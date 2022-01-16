@@ -11,7 +11,7 @@ import "./ExpensePeriodContainer.css";
 function ExpensePeriodContainer({
   selectedExpensePeriod,
   selectedCategory,
-  onExpensePeriodFormSubmit,
+  setSelectedExpensePeriod,
   expensePeriods,
   setExpensePeriods,
 }) {
@@ -57,22 +57,6 @@ function ExpensePeriodContainer({
       });
   }
 
-  // Clear selected ExpensePeriod when changing selectedCategory
-  useEffect(() => {
-    onExpensePeriodFormSubmit({});
-  }, [selectedCategory, onExpensePeriodFormSubmit]);
-
-  function handleSelectExpensePeriod(event, expensePeriod) {
-    event.preventDefault();
-    onExpensePeriodFormSubmit(expensePeriod);
-  }
-
-  // Add the new submitted value to all expense period arrays, and reset filters
-  function handleFormSubmit(expensePeriod) {
-    onExpensePeriodFormSubmit(expensePeriod);
-    setExpensePeriods((prevState) => [...prevState, expensePeriod]);
-  }
-
   // The slider component will send back a filtered list of expense periods
   // This function sets these in the state so that it can be passed down to the xxxFilter component.
   // function handleSliderChange(ExpensePeriodsByDate) {
@@ -89,14 +73,15 @@ function ExpensePeriodContainer({
       /> */}
       <ExpensePeriodForm
         selectedCategory={selectedCategory}
-        onSubmit={handleFormSubmit}
+        setSelectedExpensePeriod={setSelectedExpensePeriod}
+        setExpensePeriods={setExpensePeriods}
       />
       <ExpensePeriodFilter
         selectedCategory={selectedCategory}
         isLoaded={isLoaded}
         expensePeriods={expensePeriods}
         selectedExpensePeriod={selectedExpensePeriod}
-        onSelectExpensePeriod={handleSelectExpensePeriod}
+        setSelectedExpensePeriod={setSelectedExpensePeriod}
         onDeleteExpensePeriod={handleDeleteExpensePeriod}
       />
     </div>

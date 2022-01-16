@@ -1,21 +1,17 @@
-import Chart from "./Chart";
-import SummaryTable from "./SummaryTable";
-import React from "react";
+import React, { Children, cloneElement } from "react";
 import CardLayout from "../CardLayout";
 
-function Visualisation(props) {
+function Visualisation({
+  selectedCategory,
+  expensePeriods,
+  expenses,
+  children,
+}) {
   return (
     <CardLayout>
-      <SummaryTable
-        selectedCategory={props.selectedCategory}
-        expensePeriods={props.expensePeriods}
-        expenses={props.expenses}
-      />
-      <Chart
-        selectedCategory={props.selectedCategory}
-        expensePeriods={props.expensePeriods}
-        expenses={props.expenses}
-      />
+      {Children.map(children, (child) =>
+        cloneElement(child, { selectedCategory, expensePeriods, expenses })
+      )}
     </CardLayout>
   );
 }

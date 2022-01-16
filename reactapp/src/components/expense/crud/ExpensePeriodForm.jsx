@@ -3,7 +3,11 @@ import { CSRFTOKEN } from "../../../utils/csrftoken";
 import { differenceInDays } from "date-fns";
 import "./ExpensePeriodForm.css";
 
-function ExpensePeriodForm(props) {
+function ExpensePeriodForm({
+  selectedCategory,
+  setSelectedExpensePeriod,
+  setExpensePeriods,
+}) {
   const [formData, setFormData] = useState({
     description: "",
     dateStart: "",
@@ -36,7 +40,7 @@ function ExpensePeriodForm(props) {
           description,
           dateStart,
           dateEnd,
-          category: props.selectedCategory?.id,
+          category: selectedCategory?.id,
         }),
       })
         .then((res) => {
@@ -47,7 +51,9 @@ function ExpensePeriodForm(props) {
           }
         })
         .then((res) => {
-          props.onSubmit(res);
+          // Add the new submitted value to all expense period arrays, and reset filters
+          setSelectedExpensePeriod(res);
+          setExpensePeriods((prevState) => [...prevState, res]);
         })
         .catch((err) => {
           setError(true);
