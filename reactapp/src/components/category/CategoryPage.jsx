@@ -57,17 +57,9 @@ function CategoryPage(props) {
       });
   }
 
-  // When a post request is made:
-  // 1. pass the selected category up to ExpenseTracker
-  // 2. pass the updated list of all categories up to ExpenseTracker
-  //    in future will rationalise so the concatenation could be done up within the ExpenseTracker function, rather than duplicating here.
-  function handleFormSubmit(category) {
-    setCategories((prevCategories) => [...prevCategories, category]);
-  }
-
   return (
     <section className="category-page">
-      <CategoryForm onSubmit={handleFormSubmit} />
+      <CategoryForm setCategories={setCategories} />
       <CategoryFilter
         isLoaded={isLoaded}
         categories={categories}

@@ -44,17 +44,12 @@ function ExpenseContainer({ selectedExpensePeriod, expenses, setExpenses }) {
       });
   }
 
-  // Add the new submitted value to all expense period arrays, and reset filter
-  function handleFormSubmit(expense) {
-    setExpenses((prevExpense) => [...prevExpense, expense]);
-  }
-
   return (
     <section className="expenses-container">
       <h1>Expenses:</h1>
       <ExpenseForm
         selectedExpensePeriod={selectedExpensePeriod}
-        onSubmit={handleFormSubmit}
+        setExpenses={setExpenses}
       />
       <ExpenseFilter
         selectedExpensePeriod={selectedExpensePeriod}

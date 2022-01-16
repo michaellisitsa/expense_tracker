@@ -2,7 +2,7 @@ import { useState } from "react";
 import "./CategoryForm.css";
 import { CSRFTOKEN } from "../../utils/csrftoken";
 
-function CategoryForm(props) {
+function CategoryForm({ setCategories }) {
   const [formData, setFormData] = useState({
     name: "",
     assignee: "",
@@ -40,7 +40,7 @@ function CategoryForm(props) {
         }
       })
       .then((res) => {
-        props.onSubmit(res);
+        setCategories((prevCategories) => [...prevCategories, res]);
       })
       .catch((err) => {
         setError(true);

@@ -1,11 +1,11 @@
-import { useState, useCallback } from "react";
+import { useState } from "react";
 import CRUD from "./crud/CRUD";
 import Visualisation from "./visualisation/Visualisation";
 import "./ExpensePage.css";
 import Chart from "./visualisation/Chart";
 import SummaryTable from "./visualisation/SummaryTable";
 
-function ExpensePage(props) {
+function ExpensePage() {
   // The selectedCategory needs to be known at the ExpensePage (top) level
   // because it is used for visualisation.
   // TODO - to display all categories, we might need to also pass up categories array
