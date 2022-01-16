@@ -2,6 +2,8 @@ import { useState, useCallback } from "react";
 import CRUD from "./crud/CRUD";
 import Visualisation from "./visualisation/Visualisation";
 import "./ExpensePage.css";
+import Chart from "./visualisation/Chart";
+import SummaryTable from "./visualisation/SummaryTable";
 
 function ExpensePage(props) {
   // The selectedCategory needs to be known at the ExpensePage (top) level
@@ -26,7 +28,10 @@ function ExpensePage(props) {
         selectedCategory={selectedCategory}
         expensePeriods={expensePeriods}
         expenses={expenses}
-      />
+      >
+        <SummaryTable />
+        <Chart />
+      </Visualisation>
       <CRUD
         selectedCategory={selectedCategory}
         onCategoryFormSubmit={handleCategoryFormSubmit}
