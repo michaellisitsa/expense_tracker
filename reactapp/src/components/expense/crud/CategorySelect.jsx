@@ -1,8 +1,10 @@
-import { useState, useEffect } from "react";
-import "./CategorySelect.css";
+import { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
+import "./CategorySelect.css";
+import { useExpenseContext } from "../ExpenseProvider";
 
-function CategorySelect({ selectedCategory, setSelectedCategory }) {
+function CategorySelect() {
+  const { selectedCategory, setSelectedCategory } = useExpenseContext();
   const [categories, setCategories] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const params = useParams();

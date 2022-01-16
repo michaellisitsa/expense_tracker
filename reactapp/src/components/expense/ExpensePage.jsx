@@ -1,38 +1,29 @@
-import { useState } from "react";
+import { useState, createContext } from "react";
 import CRUD from "./crud/CRUD";
 import Visualisation from "./visualisation/Visualisation";
 import "./ExpensePage.css";
 import Chart from "./visualisation/Chart";
 import SummaryTable from "./visualisation/SummaryTable";
+import ExpenseProvider from "./ExpenseProvider";
+import ExpenseContainer from "./crud/ExpenseContainer";
+import CategorySelect from "./crud/CategorySelect";
+import ExpensePeriodContainer from "./crud/ExpensePeriodContainer";
 
 function ExpensePage() {
-  // The selectedCategory needs to be known at the ExpensePage (top) level
-  // because it is used for visualisation.
-  // TODO - to display all categories, we might need to also pass up categories array
-  const [selectedCategory, setSelectedCategory] = useState({});
-  // The below state is passed up from xxxContainer to allow responsive visualisations.
-  const [expensePeriods, setExpensePeriods] = useState([]);
-  const [expenses, setExpenses] = useState([]);
-
   return (
-    <div className="wrapper">
-      <Visualisation
-        selectedCategory={selectedCategory}
-        expensePeriods={expensePeriods}
-        expenses={expenses}
-      >
+    <ExpenseProvider className="wrapper">
+      <Visualisation>
         <SummaryTable />
         <Chart />
       </Visualisation>
-      <CRUD
-        selectedCategory={selectedCategory}
-        setSelectedCategory={setSelectedCategory}
-        expensePeriods={expensePeriods}
-        setExpensePeriods={setExpensePeriods}
-        expenses={expenses}
-        setExpenses={setExpenses}
-      />
-    </div>
+      <CRUD>
+        <section className="expensePeriods-container">
+          <CategorySelect />
+          <ExpensePeriodContainer />
+        </section>
+        <ExpenseContainer />
+      </CRUD>
+    </ExpenseProvider>
   );
 }
 

@@ -3,18 +3,14 @@ import ExpensePeriodForm from "./ExpensePeriodForm";
 import ExpensePeriodFilter from "./ExpensePeriodFilter";
 import { CSRFTOKEN } from "../../../utils/csrftoken"; // utility function to request the csrf token for create/delete requests to django
 import "./ExpensePeriodContainer.css";
+import { useExpenseContext } from "../ExpenseProvider";
 
 // Component takes care of posting/rendering expense periods
 // Also it renders the slider to filter the expense periods by time range
 // Each expense period has a FK category which is passed down and filters the inputs
 // as well as appended when form is submitted.
-function ExpensePeriodContainer({
-  selectedExpensePeriod,
-  selectedCategory,
-  setSelectedExpensePeriod,
-  expensePeriods,
-  setExpensePeriods,
-}) {
+function ExpensePeriodContainer() {
+  const { setExpensePeriods } = useExpenseContext();
   // The isLoaded state here is passed down to the "xxxFilter" components once the fetch is completed.
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -71,17 +67,9 @@ function ExpensePeriodContainer({
         onSliderChange={handleSliderChange}
         filteredExpensePeriods={filteredExpensePeriods}
       /> */}
-      <ExpensePeriodForm
-        selectedCategory={selectedCategory}
-        setSelectedExpensePeriod={setSelectedExpensePeriod}
-        setExpensePeriods={setExpensePeriods}
-      />
+      <ExpensePeriodForm />
       <ExpensePeriodFilter
-        selectedCategory={selectedCategory}
         isLoaded={isLoaded}
-        expensePeriods={expensePeriods}
-        selectedExpensePeriod={selectedExpensePeriod}
-        setSelectedExpensePeriod={setSelectedExpensePeriod}
         onDeleteExpensePeriod={handleDeleteExpensePeriod}
       />
     </div>

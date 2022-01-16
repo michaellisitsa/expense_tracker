@@ -2,17 +2,16 @@ import { useState } from "react";
 import { CSRFTOKEN } from "../../../utils/csrftoken";
 import { differenceInDays } from "date-fns";
 import "./ExpensePeriodForm.css";
+import { useExpenseContext } from "../ExpenseProvider";
 
-function ExpensePeriodForm({
-  selectedCategory,
-  setSelectedExpensePeriod,
-  setExpensePeriods,
-}) {
+function ExpensePeriodForm() {
   const [formData, setFormData] = useState({
     description: "",
     dateStart: "",
     dateEnd: "",
   });
+  const { selectedCategory, setSelectedExpensePeriod, setExpensePeriods } =
+    useExpenseContext();
   const [error, setError] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
 

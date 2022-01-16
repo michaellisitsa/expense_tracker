@@ -1,9 +1,11 @@
 import { useState, useRef } from "react";
 import { CSRFTOKEN } from "../../../utils/csrftoken";
 import Spinner from "../../../utils/Spinner";
+import { useExpenseContext } from "../ExpenseProvider";
 import "./ExpenseForm.css";
 
-function ExpenseForm({ selectedExpensePeriod, setExpenses }) {
+function ExpenseForm() {
+  const { selectedExpensePeriod, setExpenses } = useExpenseContext();
   const [formData, setFormData] = useState({
     description: "",
     cost: "",

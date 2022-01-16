@@ -1,11 +1,8 @@
+import { useExpenseContext } from "../ExpenseProvider";
 import "./ExpenseFilter.css";
 
-function ExpenseFilter({
-  selectedExpensePeriod,
-  isLoaded,
-  expenses,
-  onDeleteExpense,
-}) {
+function ExpenseFilter({ isLoaded, onDeleteExpense }) {
+  const { selectedExpensePeriod, expenses } = useExpenseContext();
   const filteredExpenses = expenses.filter(
     (expense) => expense.expenseTimePeriod === selectedExpensePeriod.id
   );

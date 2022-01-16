@@ -1,14 +1,14 @@
 import { useEffect } from "react";
+import { useExpenseContext } from "../ExpenseProvider";
 import "./ExpensePeriodFilter.css";
 
-function ExpensePeriodFilter({
-  selectedCategory,
-  isLoaded,
-  expensePeriods,
-  selectedExpensePeriod,
-  setSelectedExpensePeriod,
-  onDeleteExpensePeriod,
-}) {
+function ExpensePeriodFilter({ isLoaded, onDeleteExpensePeriod }) {
+  const {
+    selectedCategory,
+    expensePeriods,
+    selectedExpensePeriod,
+    setSelectedExpensePeriod,
+  } = useExpenseContext();
   const filteredExpensePeriods = [...expensePeriods]
     .reverse()
     .filter((expensePeriod) => expensePeriod.category === selectedCategory.id);
