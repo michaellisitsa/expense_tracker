@@ -7,7 +7,7 @@ import "./CRUD.css";
 
 function CRUD({
   selectedCategory,
-  onCategoryFormSubmit,
+  setSelectedCategory,
   expensePeriods,
   setExpensePeriods,
   expenses,
@@ -18,30 +18,17 @@ function CRUD({
   // the FK field in forms or filtering by that foreign key.
   const [selectedExpensePeriod, setSelectedExpensePeriod] = useState({});
 
-  // Applies to 2 funcs below.
-  // Instead of passing setters directly into props, I pass this wrapping function
-  // Expecting that I will need to add more logic for the graphing and summary table in future into funcs
-  // the below are poorly named, because they are triggered not only on form submits,
-  // but also on selections within xxxFilter components.
-
-  const handleExpensePeriodFormSubmit = useCallback(
-    (expensePeriod) => {
-      setSelectedExpensePeriod(expensePeriod);
-    },
-    [setSelectedExpensePeriod]
-  );
-
   return (
     <CardLayout>
       <section className="expensePeriods-container">
         <CategorySelect
           selectedCategory={selectedCategory}
-          onCategoryFormSubmit={onCategoryFormSubmit}
+          setSelectedCategory={setSelectedCategory}
         />
         <ExpensePeriodContainer
           selectedExpensePeriod={selectedExpensePeriod}
           selectedCategory={selectedCategory}
-          onExpensePeriodFormSubmit={handleExpensePeriodFormSubmit}
+          setSelectedExpensePeriod={setSelectedExpensePeriod}
           expensePeriods={expensePeriods}
           setExpensePeriods={setExpensePeriods}
         />

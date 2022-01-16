@@ -11,7 +11,7 @@ import "./ExpensePeriodContainer.css";
 function ExpensePeriodContainer({
   selectedExpensePeriod,
   selectedCategory,
-  onExpensePeriodFormSubmit,
+  setSelectedExpensePeriod,
   expensePeriods,
   setExpensePeriods,
 }) {
@@ -59,17 +59,17 @@ function ExpensePeriodContainer({
 
   // Clear selected ExpensePeriod when changing selectedCategory
   useEffect(() => {
-    onExpensePeriodFormSubmit({});
-  }, [selectedCategory, onExpensePeriodFormSubmit]);
+    setSelectedExpensePeriod({});
+  }, [selectedCategory, setSelectedExpensePeriod]);
 
   function handleSelectExpensePeriod(event, expensePeriod) {
     event.preventDefault();
-    onExpensePeriodFormSubmit(expensePeriod);
+    setSelectedExpensePeriod(expensePeriod);
   }
 
   // Add the new submitted value to all expense period arrays, and reset filters
   function handleFormSubmit(expensePeriod) {
-    onExpensePeriodFormSubmit(expensePeriod);
+    setSelectedExpensePeriod(expensePeriod);
     setExpensePeriods((prevState) => [...prevState, expensePeriod]);
   }
 

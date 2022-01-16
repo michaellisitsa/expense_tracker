@@ -14,14 +14,6 @@ function ExpensePage(props) {
   const [expensePeriods, setExpensePeriods] = useState([]);
   const [expenses, setExpenses] = useState([]);
 
-  // Memoized as this is called within useEffect and shouldn't update unless the
-  const handleCategoryFormSubmit = useCallback(
-    (category) => {
-      setSelectedCategory(category);
-    },
-    [setSelectedCategory]
-  );
-
   return (
     <div className="wrapper">
       <Visualisation
@@ -34,7 +26,7 @@ function ExpensePage(props) {
       </Visualisation>
       <CRUD
         selectedCategory={selectedCategory}
-        onCategoryFormSubmit={handleCategoryFormSubmit}
+        setSelectedCategory={setSelectedCategory}
         expensePeriods={expensePeriods}
         setExpensePeriods={setExpensePeriods}
         expenses={expenses}
