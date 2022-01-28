@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import "./CategorySelect.css";
 import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 function CategorySelect({ selectedCategory, setSelectedCategory }) {
   const [categories, setCategories] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const params = useParams();
+  const categoriesFromStore = useSelector((state) => state.categories.entities);
 
   useEffect(() => {
     // repeating the get request here, even though its also in CategoryContainer
@@ -35,7 +37,7 @@ function CategorySelect({ selectedCategory, setSelectedCategory }) {
   // rather than the pure HTML selected attribute on each option.
   function handleSelectCategory(event) {
     event.preventDefault();
-    const selectedCategory = categories.find(
+    const selectedCategory = categoriesFromStore.find(
       (category) => category.id === parseFloat(event.target.value)
     );
     // pass selected category up to the top leve.
@@ -52,10 +54,10 @@ function CategorySelect({ selectedCategory, setSelectedCategory }) {
           className="category-select__select"
           value={selectedCategory?.id}
           onChange={handleSelectCategory}
-          size={categories.length + 1}
+          size={categoriesFromStore.length + 1}
         >
           <optgroup>
-            {categories.map((category) => (
+            {categoriesFromStore.map((category) => (
               <option
                 className="category-select__option"
                 key={category.id}
