@@ -1,43 +1,39 @@
 import { useState, useEffect } from "react";
 import "./CategorySelect.css";
 import { useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { updateSelectedCategory } from "../../category/CategorySlice";
 
 function CategorySelect({ selectedCategory, setSelectedCategory }) {
+  const dispatch = useDispatch();
   const [categories, setCategories] = useState([]);
-  const [isLoaded, setIsLoaded] = useState(false);
+  // const [isLoaded, setIsLoaded] = useState(false);
   const params = useParams();
-  const categoriesFromStore = useSelector((state) => state.categories.entities);
+  const categoriesFromStore = useSelector((state) => state.categories);
+  const isLoaded = categoriesFromStore.status === "success";
 
   useEffect(() => {
-    // repeating the get request here, even though its also in CategoryContainer
-    // because CategoryContainer will be in a separate Route.
-    // QUESTION: Would there be a better way to do the fetch request once and store it up in "ExpenseTracker" component
-    fetch("/api/expenseCategory/", {
-      method: "get",
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        setIsLoaded(true);
-        setCategories(res.results);
-        const selectedCategory = res.results.find(
-          (result) => result.id === parseFloat(params.id)
-        );
-        if (selectedCategory) {
-          setSelectedCategory(selectedCategory);
-        } else {
-          setSelectedCategory(res.results[0]);
-        }
-        // );
-      });
-  }, [params.id, setSelectedCategory]);
+    const categoryFromUrlParams = categoriesFromStore.entities.find(
+      (result) => result.id === parseFloat(params.id)
+    );
+    if (categoryFromUrlParams) {
+      dispatch(updateSelectedCategory(categoryFromUrlParams.id));
+      setSelectedCategory(categoryFromUrlParams);
+    } else if (
+      !categoryFromUrlParams &&
+      categoriesFromStore.entities.length !== 0
+    ) {
+      dispatch(updateSelectedCategory(categoriesFromStore.entities[0].id));
+      setSelectedCategory(categoriesFromStore.entities[0]);
+    }
+  }, [params.id, setSelectedCategory, categoriesFromStore.entities, dispatch]);
 
   // When the select dropdown changes, do this.
   // Need to use event.target.value to access what is the currently selected value
   // rather than the pure HTML selected attribute on each option.
   function handleSelectCategory(event) {
     event.preventDefault();
-    const selectedCategory = categoriesFromStore.find(
+    const selectedCategory = categoriesFromStore.entities.find(
       (category) => category.id === parseFloat(event.target.value)
     );
     // pass selected category up to the top leve.
@@ -54,10 +50,10 @@ function CategorySelect({ selectedCategory, setSelectedCategory }) {
           className="category-select__select"
           value={selectedCategory?.id}
           onChange={handleSelectCategory}
-          size={categoriesFromStore.length + 1}
+          size={categoriesFromStore.entities.length + 1}
         >
           <optgroup>
-            {categoriesFromStore.map((category) => (
+            {categoriesFromStore.entities.map((category) => (
               <option
                 className="category-select__option"
                 key={category.id}

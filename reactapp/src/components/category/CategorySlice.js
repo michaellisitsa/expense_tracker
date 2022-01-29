@@ -3,34 +3,40 @@ const LOADING_STATUS = "loading";
 const SUCCESS_STATUS = "success";
 const FAILURE_STATUS = "failure";
 
+const initialState = { status: "idle", selectedId: null, entities: [] };
+
+export const selectCategoriesStatus = (state) => state.categories.status;
+
 export function fetchCategories() {
   return async function fetchCategoriesThunk(dispatch, getState) {
-    dispatch(expensesLoading());
-    dispatch(expensesLoading());
-    dispatch(expensesLoading());
+    dispatch(categoriesLoading());
     const response = await fetch("/api/expenseCategory", { method: "get" });
     const data = await response.json();
-    dispatch(expensesLoaded(data.results));
+    dispatch(categoriesLoaded(data.results));
   };
 }
 
-export function expensesLoaded(categories) {
-  return { type: "expenses/expensesLoaded", payload: categories };
+export function categoriesLoaded(categories) {
+  return { type: "categories/categoriesLoaded", payload: categories };
 }
 
-export function expensesLoading() {
-  return { type: "expenses/expensesLoading" };
+export function categoriesLoading() {
+  return { type: "categories/categoriesLoading" };
+}
+
+export function updateSelectedCategory(categoryId) {
+  return { type: "categories/updateSelectedCategory", payload: categoryId };
 }
 
 function fetchIdleCategoryReducer(state, action) {
   switch (action.type) {
-    case "expenses/expensesLoading":
+    case "categories/categoriesLoading":
       return {
         ...state,
         status: LOADING_STATUS,
       };
     default:
-      // So if expensesLoaded is called, it won't perform the action.
+      // So if categoriesLoaded is called, it won't perform the action.
       // It enforces that a loading state should be called first.
       return state;
   }
@@ -38,7 +44,7 @@ function fetchIdleCategoryReducer(state, action) {
 
 function fetchLoadingCategoryReducer(state, action) {
   switch (action.type) {
-    case "expenses/expensesLoaded":
+    case "categories/categoriesLoaded":
       return {
         ...state,
         status: SUCCESS_STATUS,
@@ -52,31 +58,42 @@ function fetchLoadingCategoryReducer(state, action) {
 
 function fetchSuccessCategoryReducer(state, action) {
   switch (action.type) {
-    case "expenses/expensesLoading":
+    case "categories/categoriesLoading":
       return {
         ...state,
         status: LOADING_STATUS,
       };
+    case "categories/updateSelectedCategory":
+      // If the selection doesn't exist within the list of categories, don't set it.
+      if (state.entities.length !== 0) {
+        if (state.entities.find((category) => category.id === action.payload)) {
+          return {
+            ...state,
+            selectedId: action.payload,
+          };
+        }
+      }
+      return state;
     default:
-      // So if expensesLoaded is called, it won't perform the action.
+      // So if categoriesLoaded is called, it won't perform the action.
       return state;
   }
 }
 
 function fetchFailureCategoryReducer(state, action) {
   switch (action.type) {
-    case "expenses/expensesLoading":
+    case "categories/categoriesLoading":
       return {
         ...state,
         status: LOADING_STATUS,
       };
     default:
-      // So if expensesLoaded is called, it won't perform the action.
+      // So if categoriesLoaded is called, it won't perform the action.
       return state;
   }
 }
 
-const CategorySlice = (state = { status: "idle", entities: [] }, action) => {
+const CategorySlice = (state = initialState, action) => {
   switch (state.status) {
     case IDLE_STATUS:
       return fetchIdleCategoryReducer(state, action);
