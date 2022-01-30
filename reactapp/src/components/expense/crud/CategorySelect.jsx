@@ -2,7 +2,10 @@ import { useState, useEffect } from "react";
 import "./CategorySelect.css";
 import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { updateSelectedCategory } from "../../category/CategorySlice";
+import {
+  fetchCategories,
+  updateSelectedCategory,
+} from "../../category/CategorySlice";
 
 function CategorySelect({ selectedCategory, setSelectedCategory }) {
   const dispatch = useDispatch();
@@ -11,6 +14,12 @@ function CategorySelect({ selectedCategory, setSelectedCategory }) {
   const params = useParams();
   const categoriesFromStore = useSelector((state) => state.categories);
   const isLoaded = categoriesFromStore.status === "success";
+
+  function handleRefetch(event) {
+    event.preventDefault();
+    dispatch(fetchCategories());
+    console.log("refetched");
+  }
 
   useEffect(() => {
     const categoryFromUrlParams = categoriesFromStore.entities.find(
@@ -44,6 +53,7 @@ function CategorySelect({ selectedCategory, setSelectedCategory }) {
   // https://www.pluralsight.com/guides/how-to-get-selected-value-from-a-mapped-select-input-in-react
   return (
     <div className="category-select">
+      <button onClick={handleRefetch}>Refetch</button>
       <h1>Category:</h1>
       {isLoaded ? (
         <select

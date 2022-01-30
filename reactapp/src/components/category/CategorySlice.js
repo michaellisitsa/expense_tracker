@@ -10,10 +10,19 @@ export const selectCategoriesStatus = (state) => state.categories.status;
 export function fetchCategories() {
   return async function fetchCategoriesThunk(dispatch, getState) {
     dispatch(categoriesLoading());
-    const response = await fetch("/api/expenseCategory", { method: "get" });
-    const data = await response.json();
-    dispatch(categoriesLoaded(data.results));
+    try {
+      const response = await fetch("/api/expenseCategory", { method: "get" });
+      const data = await response.json();
+      dispatch(categoriesLoaded(data.results));
+    } catch (err) {
+      console.log(err.message);
+      dispatch(categoriesFailedToLoad(err.message));
+    }
   };
+}
+
+export function categoriesFailedToLoad(categories) {
+  return { type: "categories/categoriesFailedToLoad" };
 }
 
 export function categoriesLoaded(categories) {
@@ -49,6 +58,11 @@ function fetchLoadingCategoryReducer(state, action) {
         ...state,
         status: SUCCESS_STATUS,
         entities: action.payload,
+      };
+    case "categories/categoriesFailedToLoad":
+      return {
+        ...state,
+        status: FAILURE_STATUS,
       };
     default:
       // So if expenseLoading is called whilst its already in loading it won't do anything.
