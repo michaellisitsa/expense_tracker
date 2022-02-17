@@ -9,39 +9,50 @@ function ExpensePeriodFilter({
   setSelectedExpensePeriod,
   onDeleteExpensePeriod,
 }) {
-  const filteredExpensePeriods = [...expensePeriods]
-    .reverse()
-    .filter((expensePeriod) => expensePeriod.category === selectedCategory.id);
-
-  // TODO: make simpler logic for determining which expense period to select.
   let selectedExpensePeriodId = null;
-  // Get the id of the selected list element
-  if (
-    Object.keys(selectedExpensePeriod).length === 0 &&
-    filteredExpensePeriods.length !== 0
-  ) {
-    selectedExpensePeriodId = filteredExpensePeriods[0].id;
-  } else if (filteredExpensePeriods.length === 0) {
-    // pass
-  } else if (
-    filteredExpensePeriods.filter(
-      (result) => selectedExpensePeriod.id === result.id
-    ).length !== 0
-  ) {
-    selectedExpensePeriodId = selectedExpensePeriod.id;
-  } else {
-    selectedExpensePeriodId = filteredExpensePeriods[0].id;
+  let filteredExpensePeriods;
+  if (selectedCategory) {
+    filteredExpensePeriods = [...expensePeriods]
+      .reverse()
+      .filter(
+        (expensePeriod) => expensePeriod.category === selectedCategory.id
+      );
+
+    // TODO: make simpler logic for determining which expense period to select.
+    // Get the id of the selected list element
+    if (
+      Object.keys(selectedExpensePeriod).length === 0 &&
+      filteredExpensePeriods.length !== 0
+    ) {
+      selectedExpensePeriodId = filteredExpensePeriods[0].id;
+    } else if (filteredExpensePeriods.length === 0) {
+      // pass
+    } else if (
+      filteredExpensePeriods.filter(
+        (result) => selectedExpensePeriod.id === result.id
+      ).length !== 0
+    ) {
+      selectedExpensePeriodId = selectedExpensePeriod.id;
+    } else {
+      selectedExpensePeriodId = filteredExpensePeriods[0].id;
+    }
   }
 
   useEffect(() => {
-    if (selectedExpensePeriodId) {
-      setSelectedExpensePeriod(
-        expensePeriods.find((result) => result.id === selectedExpensePeriodId)
-      );
-    } else {
-      setSelectedExpensePeriod({});
+    if (selectedCategory) {
+      if (selectedExpensePeriodId) {
+        setSelectedExpensePeriod(
+          expensePeriods.find((result) => result.id === selectedExpensePeriodId)
+        );
+      } else {
+        setSelectedExpensePeriod({});
+      }
     }
   }, [setSelectedExpensePeriod, expensePeriods, selectedExpensePeriodId]);
+
+  if (!selectedCategory) {
+    return <p>Loading Expense Periods...</p>;
+  }
 
   return (
     <>

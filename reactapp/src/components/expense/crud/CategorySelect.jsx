@@ -1,33 +1,53 @@
 import { useState, useEffect } from "react";
 import "./CategorySelect.css";
 import { useParams } from "react-router-dom";
+import { useStore } from "../../../store/helpers/use-store";
+import { observer } from "mobx-react-lite";
 
 function CategorySelect({ selectedCategory, setSelectedCategory }) {
-  const [categories, setCategories] = useState([]);
-  const [isLoaded, setIsLoaded] = useState(false);
+  // const [categories, setCategories] = useState([]);
+  const { categoriesStore } = useStore();
+
+  const isLoaded = categoriesStore.status === "success";
+  // const [isLoaded, setIsLoaded] = useState(false);
   const params = useParams();
 
+  // useEffect(() => {
+  //   // repeating the get request here, even though its also in CategoryContainer
+  //   // because CategoryContainer will be in a separate Route.
+  //   // QUESTION: Would there be a better way to do the fetch request once and store it up in "ExpenseTracker" component
+  //   fetch("/api/expenseCategory/", {
+  //     method: "get",
+  //   })
+  //     .then((res) => res.json())
+  //     .then((res) => {
+  //       setIsLoaded(true);
+  //       setCategories(res.results);
+  //       const selectedCategory = res.results.find(
+  //         (result) => result.id === parseFloat(params.id)
+  //       );
+  //       if (selectedCategory) {
+  //         setSelectedCategory(selectedCategory);
+  //       } else {
+  //         setSelectedCategory(res.results[0]);
+  //       }
+  //       // );
+  //     });
+  // }, [params.id, setSelectedCategory]);
+
+  // useEffect(() => {
+  //   categoriesStore.loadCategories();
+  // }, [categoriesStore]);
+
   useEffect(() => {
-    // repeating the get request here, even though its also in CategoryContainer
-    // because CategoryContainer will be in a separate Route.
-    // QUESTION: Would there be a better way to do the fetch request once and store it up in "ExpenseTracker" component
-    fetch("/api/expenseCategory/", {
-      method: "get",
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        setIsLoaded(true);
-        setCategories(res.results);
-        const selectedCategory = res.results.find(
-          (result) => result.id === parseFloat(params.id)
-        );
-        if (selectedCategory) {
-          setSelectedCategory(selectedCategory);
-        } else {
-          setSelectedCategory(res.results[0]);
-        }
-        // );
-      });
+    const categoryFromParams = categoriesStore.list.find(
+      (result) => result.id === parseFloat(params.id)
+    );
+    if (categoryFromParams) {
+      setSelectedCategory(categoryFromParams);
+    } else {
+      setSelectedCategory(categoriesStore.list[0]);
+    }
   }, [params.id, setSelectedCategory]);
 
   // When the select dropdown changes, do this.
@@ -35,7 +55,7 @@ function CategorySelect({ selectedCategory, setSelectedCategory }) {
   // rather than the pure HTML selected attribute on each option.
   function handleSelectCategory(event) {
     event.preventDefault();
-    const selectedCategory = categories.find(
+    const selectedCategory = categoriesStore.list.find(
       (category) => category.id === parseFloat(event.target.value)
     );
     // pass selected category up to the top leve.
@@ -52,10 +72,10 @@ function CategorySelect({ selectedCategory, setSelectedCategory }) {
           className="category-select__select"
           value={selectedCategory?.id}
           onChange={handleSelectCategory}
-          size={categories.length + 1}
+          size={categoriesStore.list.length + 1}
         >
           <optgroup>
-            {categories.map((category) => (
+            {categoriesStore.list.map((category) => (
               <option
                 className="category-select__option"
                 key={category.id}
@@ -73,4 +93,4 @@ function CategorySelect({ selectedCategory, setSelectedCategory }) {
   );
 }
 
-export default CategorySelect;
+export default observer(CategorySelect);
