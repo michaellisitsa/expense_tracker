@@ -5,6 +5,7 @@ import { NavLink } from "react-router-dom";
 import { formatNumber } from "../../../utils/formatNumber";
 
 import "./SummaryTable.css";
+import { observer } from "mobx-react-lite";
 const currentDate = new Date();
 
 function SummaryTable({ selectedCategory, expensePeriodsStore, expenses }) {
@@ -148,4 +149,4 @@ function SummaryTable({ selectedCategory, expensePeriodsStore, expenses }) {
   );
 }
 
-export default SummaryTable;
+export default observer(SummaryTable);

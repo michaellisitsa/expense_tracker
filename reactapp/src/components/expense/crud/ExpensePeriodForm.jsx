@@ -2,6 +2,7 @@ import { useState } from "react";
 import { CSRFTOKEN } from "../../../utils/csrftoken";
 import { differenceInDays } from "date-fns";
 import "./ExpensePeriodForm.css";
+import { observer } from "mobx-react-lite";
 
 function ExpensePeriodForm({
   selectedCategory,
@@ -114,4 +115,4 @@ function ExpensePeriodForm({
   );
 }
 
-export default ExpensePeriodForm;
+export default observer(ExpensePeriodForm);

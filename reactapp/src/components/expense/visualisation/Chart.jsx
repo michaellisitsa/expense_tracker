@@ -19,6 +19,7 @@ import { Chart as ReactChart } from "react-chartjs-2";
 import { summariseTimePeriod } from "./summariseTimePeriod";
 import { subDays, eachMonthOfInterval, format, endOfMonth } from "date-fns";
 import { formatNumber } from "../../../utils/formatNumber";
+import { observer } from "mobx-react-lite";
 ChartJS.register(
   LinearScale,
   CategoryScale,
@@ -193,4 +194,4 @@ function Chart({ selectedCategory, expensePeriodsStore, expenses }) {
   );
 }
 
-export default Chart;
+export default observer(Chart);

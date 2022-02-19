@@ -1,3 +1,4 @@
+import { observer } from "mobx-react-lite";
 import React, { Children, cloneElement } from "react";
 import CardLayout from "../CardLayout";
 
@@ -16,4 +17,4 @@ function Visualisation({
   );
 }
 
-export default Visualisation;
+export default observer(Visualisation);

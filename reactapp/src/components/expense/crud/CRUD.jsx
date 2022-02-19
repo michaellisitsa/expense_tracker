@@ -4,6 +4,7 @@ import CategorySelect from "./CategorySelect";
 import ExpensePeriodContainer from "./ExpensePeriodContainer";
 import CardLayout from "../CardLayout";
 import "./CRUD.css";
+import { observer } from "mobx-react-lite";
 
 function CRUD({
   selectedCategory,
@@ -40,4 +41,4 @@ function CRUD({
   );
 }
 
-export default CRUD;
+export default observer(CRUD);

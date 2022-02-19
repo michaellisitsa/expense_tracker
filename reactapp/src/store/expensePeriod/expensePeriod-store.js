@@ -1,4 +1,4 @@
-import { runInAction, autorun, makeAutoObservable } from "mobx";
+import { runInAction, autorun, makeAutoObservable, action } from "mobx";
 
 class ExpensePeriod {
   id = "";
@@ -6,13 +6,27 @@ class ExpensePeriod {
   dateStart = "";
   dateEnd = "";
   category = "";
-  constructor(id, description, dateStart, dateEnd, category) {
+  constructor(
+    id,
+    description,
+    dateStart,
+    dateEnd,
+    category,
+    expensePeriodsStore
+  ) {
     this.id = id;
     this.description = description;
     this.dateStart = dateStart;
     this.dateEnd = dateEnd;
     this.category = category;
-    makeAutoObservable(this);
+    this.expensePeriodsStore = expensePeriodsStore;
+    makeAutoObservable(this, {
+      delete: action,
+    });
+  }
+
+  delete() {
+    this.expensePeriodsStore.deleteExpensePeriod(this);
   }
 }
 
@@ -20,7 +34,9 @@ export default class ExpensePeriodsStore {
   status = "idle";
   list = [];
   constructor() {
-    makeAutoObservable(this);
+    makeAutoObservable(this, {
+      deleteExpensePeriod: action,
+    });
     autorun(() =>
       console.log("Status:", this.status, "List of Expense Periods", this.list)
     );
@@ -53,8 +69,15 @@ export default class ExpensePeriodsStore {
         expensePeriod.description,
         expensePeriod.dateStart,
         expensePeriod.dateEnd,
-        expensePeriod.category
+        expensePeriod.category,
+        this
       )
     );
+  }
+
+  deleteExpensePeriod(expensePeriod) {
+    const expensePeriodToDeleteIndex = this.list.indexOf(expensePeriod);
+    this.list.splice(expensePeriodToDeleteIndex, 1);
+    console.log(expensePeriodToDeleteIndex);
   }
 }

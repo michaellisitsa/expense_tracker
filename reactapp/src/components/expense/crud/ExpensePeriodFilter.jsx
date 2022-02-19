@@ -1,3 +1,4 @@
+import { observer } from "mobx-react-lite";
 import { useEffect } from "react";
 import "./ExpensePeriodFilter.css";
 
@@ -51,6 +52,7 @@ function ExpensePeriodFilter({
     }
   }, [setSelectedExpensePeriod, expensePeriods, selectedExpensePeriodId]);
 
+  console.log(expensePeriods);
   if (!selectedCategory) {
     return <p>Loading Expense Periods...</p>;
   }
@@ -59,7 +61,7 @@ function ExpensePeriodFilter({
     <>
       <div className="expensePeriod-filter-list">
         {isLoaded ? (
-          filteredExpensePeriods.map((expensePeriod) => (
+          expensePeriods.map((expensePeriod) => (
             <div
               className="expensePeriod-filter-list__container"
               key={expensePeriod.id}
@@ -74,7 +76,7 @@ function ExpensePeriodFilter({
               </div>
               <div
                 className="expensePeriod-filter-list__delete"
-                onClick={(event) => onDeleteExpensePeriod(event, expensePeriod)}
+                onClick={() => expensePeriod.delete()}
               >
                 X
               </div>
@@ -88,4 +90,4 @@ function ExpensePeriodFilter({
   );
 }
 
-export default ExpensePeriodFilter;
+export default observer(ExpensePeriodFilter);
