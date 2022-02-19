@@ -8,8 +8,7 @@ import "./CRUD.css";
 function CRUD({
   selectedCategory,
   setSelectedCategory,
-  expensePeriods,
-  setExpensePeriods,
+  expensePeriodsStore,
   expenses,
   setExpenses,
 }) {
@@ -29,8 +28,7 @@ function CRUD({
           selectedExpensePeriod={selectedExpensePeriod}
           selectedCategory={selectedCategory}
           setSelectedExpensePeriod={setSelectedExpensePeriod}
-          expensePeriods={expensePeriods}
-          setExpensePeriods={setExpensePeriods}
+          expensePeriodsStore={expensePeriodsStore}
         />
       </section>
       <ExpenseContainer

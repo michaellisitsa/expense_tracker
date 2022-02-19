@@ -4,13 +4,14 @@ import "./ExpensePeriodFilter.css";
 function ExpensePeriodFilter({
   selectedCategory,
   isLoaded,
-  expensePeriods,
+  expensePeriodsStore,
   selectedExpensePeriod,
   setSelectedExpensePeriod,
   onDeleteExpensePeriod,
 }) {
   let selectedExpensePeriodId = null;
   let filteredExpensePeriods;
+  const expensePeriods = expensePeriodsStore.list;
   if (selectedCategory) {
     filteredExpensePeriods = [...expensePeriods]
       .reverse()

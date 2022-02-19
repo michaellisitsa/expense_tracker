@@ -6,7 +6,6 @@ import RootStore from "./store/rootStore";
 import { StoreProvider } from "./store/helpers/store-context";
 
 const rootStore = new RootStore();
-rootStore.categoriesStore.loadCategories();
 
 // console.log(store);
 

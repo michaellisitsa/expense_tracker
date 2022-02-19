@@ -64,10 +64,10 @@ const options = {
 // Therefore could just draw a point for each moving average point.
 // To simplify initially could do a fixed 12 month timeline
 // Then show a vertical strip for areas of the graph that actually have data.
-function Chart(props) {
+function Chart({ selectedCategory, expensePeriodsStore, expenses }) {
   const [filteredExpensePeriods, setFilteredExpensePeriods] = useState([]);
   const [filteredExpenses, setFilteredExpenses] = useState([]);
-  const { selectedCategory, expensePeriods, expenses } = props;
+  const expensePeriods = expensePeriodsStore.list;
   // Below methods are to print to console the properties of the clicked point.
   // We could use these to instead update something in future. Will leave in to plot to console.
 

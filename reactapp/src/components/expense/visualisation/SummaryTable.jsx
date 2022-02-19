@@ -7,9 +7,9 @@ import { formatNumber } from "../../../utils/formatNumber";
 import "./SummaryTable.css";
 const currentDate = new Date();
 
-function SummaryTable(props) {
+function SummaryTable({ selectedCategory, expensePeriodsStore, expenses }) {
   const [expensesPerMonth, setExpensesPerMonth] = useState([]);
-  const { selectedCategory, expensePeriods, expenses } = props;
+  const expensePeriods = expensePeriodsStore.list;
 
   // Whenever a different category is selected, reset all filtered results
   // because the expense periods will all change, and the filters are now irrelevant.

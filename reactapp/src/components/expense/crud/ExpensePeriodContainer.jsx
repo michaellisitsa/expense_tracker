@@ -3,6 +3,7 @@ import ExpensePeriodForm from "./ExpensePeriodForm";
 import ExpensePeriodFilter from "./ExpensePeriodFilter";
 import { CSRFTOKEN } from "../../../utils/csrftoken"; // utility function to request the csrf token for create/delete requests to django
 import "./ExpensePeriodContainer.css";
+import { useStore } from "../../../store/helpers/use-store";
 
 // Component takes care of posting/rendering expense periods
 // Also it renders the slider to filter the expense periods by time range
@@ -12,22 +13,22 @@ function ExpensePeriodContainer({
   selectedExpensePeriod,
   selectedCategory,
   setSelectedExpensePeriod,
-  expensePeriods,
-  setExpensePeriods,
+  expensePeriodsStore,
+  // setExpensePeriods,
 }) {
   // The isLoaded state here is passed down to the "xxxFilter" components once the fetch is completed.
-  const [isLoaded, setIsLoaded] = useState(false);
+  const isLoaded = expensePeriodsStore.status === "success";
 
-  useEffect(() => {
-    fetch(`/api/expenseTimePeriod/`, {
-      method: "get",
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        setExpensePeriods(res.results);
-        setIsLoaded(true);
-      });
-  }, [setExpensePeriods]);
+  // useEffect(() => {
+  //   fetch(`/api/expenseTimePeriod/`, {
+  //     method: "get",
+  //   })
+  //     .then((res) => res.json())
+  //     .then((res) => {
+  //       setExpensePeriods(res.results);
+  //       setIsLoaded(true);
+  //     });
+  // }, [setExpensePeriods]);
 
   // Making a delete request
   function handleDeleteExpensePeriod(event, expensePeriodToDelete) {
@@ -44,11 +45,12 @@ function ExpensePeriodContainer({
       .then((res) => {
         // QUESTION: Is there any way to improve this selective filtering state storage.
         //           As seen below we have to duplicate setting the info several times.
-        setExpensePeriods((prev) =>
-          prev.filter(
-            (expensePeriod) => expensePeriod.id !== expensePeriodToDelete.id
-          )
-        );
+        //TODO: replace with domain object method for deletion
+        // expensePeriodsStore((prev) =>
+        //   prev.filter(
+        //     (expensePeriod) => expensePeriod.id !== expensePeriodToDelete.id
+        //   )
+        // );
       })
       .catch((err) => {
         // Filter out the delete category.
@@ -74,12 +76,12 @@ function ExpensePeriodContainer({
       <ExpensePeriodForm
         selectedCategory={selectedCategory}
         setSelectedExpensePeriod={setSelectedExpensePeriod}
-        setExpensePeriods={setExpensePeriods}
+        expensePeriodsStore={expensePeriodsStore}
       />
       <ExpensePeriodFilter
         selectedCategory={selectedCategory}
         isLoaded={isLoaded}
-        expensePeriods={expensePeriods}
+        expensePeriodsStore={expensePeriodsStore}
         selectedExpensePeriod={selectedExpensePeriod}
         setSelectedExpensePeriod={setSelectedExpensePeriod}
         onDeleteExpensePeriod={handleDeleteExpensePeriod}

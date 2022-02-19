@@ -1,4 +1,4 @@
-import { observable, makeObservable, runInAction, autorun, action } from "mobx";
+import { runInAction, autorun, makeAutoObservable } from "mobx";
 
 class Category {
   id = "";
@@ -12,13 +12,7 @@ class Category {
     this.assignee = assignee;
     this.budget = budget;
     this.description = description;
-    makeObservable(this, {
-      id: observable,
-      name: observable,
-      assignee: observable,
-      budget: observable,
-      description: observable,
-    });
+    makeAutoObservable(this);
   }
 }
 
@@ -26,12 +20,7 @@ export default class CategoriesStore {
   status = "idle";
   list = [];
   constructor() {
-    makeObservable(this, {
-      list: observable,
-      status: observable,
-      loadCategories: action,
-      addCategory: action,
-    });
+    makeAutoObservable(this);
     autorun(() =>
       console.log("Status:", this.status, "List of Categories", this.list)
     );
@@ -42,7 +31,7 @@ export default class CategoriesStore {
     switch (this.status) {
       case "idle":
         this.status = "loading";
-        fetch("/api/expenseCategory/", {
+        return fetch("/api/expenseCategory/", {
           method: "get",
         })
           .then((res) => res.json())
@@ -52,7 +41,6 @@ export default class CategoriesStore {
               this.status = "success";
             });
           });
-        break;
       default:
       // do nothing
     }

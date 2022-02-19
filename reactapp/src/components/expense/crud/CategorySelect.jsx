@@ -12,42 +12,20 @@ function CategorySelect({ selectedCategory, setSelectedCategory }) {
   // const [isLoaded, setIsLoaded] = useState(false);
   const params = useParams();
 
-  // useEffect(() => {
-  //   // repeating the get request here, even though its also in CategoryContainer
-  //   // because CategoryContainer will be in a separate Route.
-  //   // QUESTION: Would there be a better way to do the fetch request once and store it up in "ExpenseTracker" component
-  //   fetch("/api/expenseCategory/", {
-  //     method: "get",
-  //   })
-  //     .then((res) => res.json())
-  //     .then((res) => {
-  //       setIsLoaded(true);
-  //       setCategories(res.results);
-  //       const selectedCategory = res.results.find(
-  //         (result) => result.id === parseFloat(params.id)
-  //       );
-  //       if (selectedCategory) {
-  //         setSelectedCategory(selectedCategory);
-  //       } else {
-  //         setSelectedCategory(res.results[0]);
-  //       }
-  //       // );
-  //     });
-  // }, [params.id, setSelectedCategory]);
-
-  // useEffect(() => {
-  //   categoriesStore.loadCategories();
-  // }, [categoriesStore]);
-
+  // Load initial categories, and set the selectory category
   useEffect(() => {
-    const categoryFromParams = categoriesStore.list.find(
-      (result) => result.id === parseFloat(params.id)
-    );
-    if (categoryFromParams) {
-      setSelectedCategory(categoryFromParams);
-    } else {
-      setSelectedCategory(categoriesStore.list[0]);
+    async function loadData() {
+      await categoriesStore.loadCategories();
+      const categoryFromParams = categoriesStore.list.find(
+        (result) => result.id === parseFloat(params.id)
+      );
+      if (categoryFromParams) {
+        setSelectedCategory(categoryFromParams);
+      } else {
+        setSelectedCategory(categoriesStore.list[0]);
+      }
     }
+    loadData();
   }, [params.id, setSelectedCategory]);
 
   // When the select dropdown changes, do this.
