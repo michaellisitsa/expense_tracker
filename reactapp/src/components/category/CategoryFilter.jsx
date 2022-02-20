@@ -1,7 +1,10 @@
+import { observer } from "mobx-react-lite";
 import { useNavigate } from "react-router-dom";
+import { useStore } from "../../store/helpers/use-store";
 import "./CategoryFilter.css";
 
 function CategoryFilter(props) {
+  const { categoriesStore } = useStore();
   const navigate = useNavigate();
 
   function handleSelectCategory(event, category) {
@@ -13,7 +16,7 @@ function CategoryFilter(props) {
     <>
       <div className="filter-list">
         {props.isLoaded ? (
-          props.categories.map((category) => (
+          categoriesStore.list.map((category) => (
             <div className="filter-list__container" key={category.id}>
               <div
                 className={`filter-list__option`}
@@ -23,7 +26,7 @@ function CategoryFilter(props) {
               </div>
               <div
                 className="filter-list__delete"
-                onClick={(event) => props.onDeleteCategory(event, category)}
+                onClick={() => category.delete()}
               >
                 X
               </div>
@@ -37,4 +40,4 @@ function CategoryFilter(props) {
   );
 }
 
-export default CategoryFilter;
+export default observer(CategoryFilter);

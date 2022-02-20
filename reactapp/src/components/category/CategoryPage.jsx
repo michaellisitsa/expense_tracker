@@ -3,14 +3,22 @@ import CategoryForm from "./CategoryForm";
 import CategoryFilter from "./CategoryFilter";
 import { CSRFTOKEN } from "../../utils/csrftoken"; // utility function to request the csrf token for create/delete requests to django
 import "./CategoryPage.css";
+import { observer } from "mobx-react-lite";
+import { useStore } from "../../store/helpers/use-store";
 
 // Component will live in a separate route in future (to allow adding and deleting categories
 // which is a less frequent activity that adding expense periods & expenses so doesn't need to be on the main SPA)
 function CategoryPage(props) {
   const [categories, setCategories] = useState([]);
+  const { categoriesStore } = useStore();
 
   // The isLoaded state here is passed down to the "xxxFilter" components once the fetch is completed.
   const [isLoaded, setIsLoaded] = useState(false);
+
+  // Load initial categories, and set the selectory category
+  useEffect(() => {
+    categoriesStore.loadCategories();
+  }, []);
 
   // The get request here is passed down to the "xxxFilter" components
   useEffect(() => {
@@ -69,4 +77,4 @@ function CategoryPage(props) {
   );
 }
 
-export default CategoryPage;
+export default observer(CategoryPage);

@@ -8,7 +8,6 @@ function ExpensePeriodFilter({
   expensePeriodsStore,
   selectedExpensePeriod,
   setSelectedExpensePeriod,
-  onDeleteExpensePeriod,
 }) {
   let selectedExpensePeriodId = null;
   let filteredExpensePeriods;
@@ -61,27 +60,33 @@ function ExpensePeriodFilter({
     <>
       <div className="expensePeriod-filter-list">
         {isLoaded ? (
-          expensePeriods.map((expensePeriod) => (
-            <div
-              className="expensePeriod-filter-list__container"
-              key={expensePeriod.id}
-            >
+          expensePeriods.map((expensePeriod) =>
+            filteredExpensePeriods.find(
+              (item) => item.id === expensePeriod.id
+            ) ? (
               <div
-                className={`expensePeriod-filter-list__option${
-                  selectedExpensePeriodId === expensePeriod.id ? " active" : ""
-                }`}
-                onClick={() => setSelectedExpensePeriod(expensePeriod)}
+                className="expensePeriod-filter-list__container"
+                key={expensePeriod.id}
               >
-                {expensePeriod.id}: {expensePeriod.description}
+                <div
+                  className={`expensePeriod-filter-list__option${
+                    selectedExpensePeriodId === expensePeriod.id
+                      ? " active"
+                      : ""
+                  }`}
+                  onClick={() => setSelectedExpensePeriod(expensePeriod)}
+                >
+                  {expensePeriod.id}: {expensePeriod.description}
+                </div>
+                <div
+                  className="expensePeriod-filter-list__delete"
+                  onClick={() => expensePeriod.delete()}
+                >
+                  X
+                </div>
               </div>
-              <div
-                className="expensePeriod-filter-list__delete"
-                onClick={() => expensePeriod.delete()}
-              >
-                X
-              </div>
-            </div>
-          ))
+            ) : null
+          )
         ) : (
           <p>Loading Expense Periods...</p>
         )}

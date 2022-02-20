@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "./CategoryForm.css";
 import { CSRFTOKEN } from "../../utils/csrftoken";
+import { observer } from "mobx-react-lite";
 
 function CategoryForm({ setCategories }) {
   const [formData, setFormData] = useState({
@@ -86,4 +87,4 @@ function CategoryForm({ setCategories }) {
   );
 }
 
-export default CategoryForm;
+export default observer(CategoryForm);

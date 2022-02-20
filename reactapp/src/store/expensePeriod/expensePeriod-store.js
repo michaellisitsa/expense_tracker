@@ -1,4 +1,5 @@
 import { runInAction, autorun, makeAutoObservable, action } from "mobx";
+import { CSRFTOKEN } from "../../utils/csrftoken";
 
 class ExpensePeriod {
   id = "";
@@ -76,8 +77,41 @@ export default class ExpensePeriodsStore {
   }
 
   deleteExpensePeriod(expensePeriod) {
-    const expensePeriodToDeleteIndex = this.list.indexOf(expensePeriod);
-    this.list.splice(expensePeriodToDeleteIndex, 1);
-    console.log(expensePeriodToDeleteIndex);
+    switch (this.status) {
+      case "success":
+        this.status = "loading";
+        fetch(`/api/expenseTimePeriod/${expensePeriod.id}`, {
+          method: "delete",
+          headers: {
+            Accept: "application/json, text/plain, */*",
+            "Content-Type": "application/json",
+            "X-CSRFToken": CSRFTOKEN,
+          },
+        })
+          .then((res) => res.text())
+          .then((res) => {
+            // QUESTION: Is there any way to improve this selective filtering state storage.
+            //           As seen below we have to duplicate setting the info several times.
+            //TODO: replace with domain object method for deletion
+            // expensePeriodsStore((prev) =>
+            //   prev.filter(
+            //     (expensePeriod) => expensePeriod.id !== expensePeriodToDelete.id
+            //   )
+            // );
+            runInAction(() => {
+              const expensePeriodToDeleteIndex =
+                this.list.indexOf(expensePeriod);
+              this.list.splice(expensePeriodToDeleteIndex, 1);
+              this.status = "success";
+            });
+          })
+          .catch((err) => {
+            // Filter out the delete category.
+            // Comparison is on the entire object rather than just the id.
+            console.log(err.message);
+          });
+      default:
+      // do nothing
+    }
   }
 }

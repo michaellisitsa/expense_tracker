@@ -74,7 +74,6 @@ function ExpensePeriodContainer({
         expensePeriodsStore={expensePeriodsStore}
         selectedExpensePeriod={selectedExpensePeriod}
         setSelectedExpensePeriod={setSelectedExpensePeriod}
-        onDeleteExpensePeriod={handleDeleteExpensePeriod}
       />
     </div>
   );
