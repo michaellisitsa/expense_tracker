@@ -13,7 +13,7 @@ import { useStore } from "../../store/helpers/use-store";
 // function loadData ()
 
 function ExpensePage() {
-  const { expensePeriodsStore } = useStore();
+  const { expensePeriodsStore, expensesStore } = useStore();
 
   // The selectedCategory needs to be known at the ExpensePage (top) level
   // because it is used for visualisation.
@@ -21,11 +21,11 @@ function ExpensePage() {
   const [selectedCategory, setSelectedCategory] = useState({});
   // The below state is passed up from xxxContainer to allow responsive visualisations.
   // const [expensePeriods, setExpensePeriods] = useState([]);
-  const [expenses, setExpenses] = useState([]);
 
   useEffect(() => {
     async function loadData() {
       await expensePeriodsStore.loadExpensePeriods();
+      await expensesStore.loadExpenses();
     }
     loadData();
   }, []);
@@ -35,7 +35,7 @@ function ExpensePage() {
       <Visualisation
         selectedCategory={selectedCategory}
         expensePeriodsStore={expensePeriodsStore}
-        expenses={expenses}
+        expensesStore={expensesStore}
       >
         <SummaryTable />
         <Chart />
@@ -44,8 +44,7 @@ function ExpensePage() {
         selectedCategory={selectedCategory}
         setSelectedCategory={setSelectedCategory}
         expensePeriodsStore={expensePeriodsStore}
-        expenses={expenses}
-        setExpenses={setExpenses}
+        expensesStore={expensesStore}
       />
     </div>
   );

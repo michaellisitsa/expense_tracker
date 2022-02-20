@@ -17,7 +17,6 @@ function ExpensePeriodContainer({
   // setExpensePeriods,
 }) {
   // The isLoaded state here is passed down to the "xxxFilter" components once the fetch is completed.
-  const isLoaded = expensePeriodsStore.status === "success";
 
   // The slider component will send back a filtered list of expense periods
   // This function sets these in the state so that it can be passed down to the xxxFilter component.
@@ -40,7 +39,6 @@ function ExpensePeriodContainer({
       />
       <ExpensePeriodFilter
         selectedCategory={selectedCategory}
-        isLoaded={isLoaded}
         expensePeriodsStore={expensePeriodsStore}
         selectedExpensePeriod={selectedExpensePeriod}
         setSelectedExpensePeriod={setSelectedExpensePeriod}

@@ -10,8 +10,7 @@ function CRUD({
   selectedCategory,
   setSelectedCategory,
   expensePeriodsStore,
-  expenses,
-  setExpenses,
+  expensesStore,
 }) {
   // The entries selected for each table are tracked in top-level containers.
   // This allows passing data down to foreign key relations, for auto-filling
@@ -34,8 +33,7 @@ function CRUD({
       </section>
       <ExpenseContainer
         selectedExpensePeriod={selectedExpensePeriod}
-        expenses={expenses}
-        setExpenses={setExpenses}
+        expensesStore={expensesStore}
       />
     </CardLayout>
   );

@@ -1,9 +1,10 @@
+import { observer } from "mobx-react-lite";
 import { useState, useRef } from "react";
 import { CSRFTOKEN } from "../../../utils/csrftoken";
 import Spinner from "../../../utils/Spinner";
 import "./ExpenseForm.css";
 
-function ExpenseForm({ selectedExpensePeriod, setExpenses }) {
+function ExpenseForm({ selectedExpensePeriod, expensesStore }) {
   const [formData, setFormData] = useState({
     description: "",
     cost: "",
@@ -46,7 +47,7 @@ function ExpenseForm({ selectedExpensePeriod, setExpenses }) {
           }
         })
         .then((res) => {
-          setExpenses((prevExpense) => [...prevExpense, res]);
+          expensesStore.addExpense(res);
           // Clear formData
           setFormData({
             description: "",
@@ -114,4 +115,4 @@ function ExpenseForm({ selectedExpensePeriod, setExpenses }) {
   );
 }
 
-export default ExpenseForm;
+export default observer(ExpenseForm);

@@ -34,6 +34,7 @@ class ExpensePeriod {
 export default class ExpensePeriodsStore {
   status = "idle";
   list = [];
+  errorMessage = "";
   constructor() {
     makeAutoObservable(this, {
       deleteExpensePeriod: action,
@@ -56,6 +57,13 @@ export default class ExpensePeriodsStore {
             runInAction(() => {
               res.results.map((result) => this.addExpensePeriod(result));
               this.status = "success";
+              this.errorMessage = "";
+            });
+          })
+          .catch((err) => {
+            runInAction(() => {
+              this.status = "failure";
+              this.errorMessage = "Failed to Load Expense Periods";
             });
           });
       default:

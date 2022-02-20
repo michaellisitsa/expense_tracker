@@ -5,13 +5,17 @@ import CardLayout from "../CardLayout";
 function Visualisation({
   selectedCategory,
   expensePeriodsStore,
-  expenses,
+  expensesStore,
   children,
 }) {
   return (
     <CardLayout>
       {Children.map(children, (child) =>
-        cloneElement(child, { selectedCategory, expensePeriodsStore, expenses })
+        cloneElement(child, {
+          selectedCategory,
+          expensePeriodsStore,
+          expensesStore,
+        })
       )}
     </CardLayout>
   );

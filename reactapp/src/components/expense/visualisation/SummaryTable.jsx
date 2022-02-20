@@ -8,9 +8,14 @@ import "./SummaryTable.css";
 import { observer } from "mobx-react-lite";
 const currentDate = new Date();
 
-function SummaryTable({ selectedCategory, expensePeriodsStore, expenses }) {
+function SummaryTable({
+  selectedCategory,
+  expensePeriodsStore,
+  expensesStore,
+}) {
   const [expensesPerMonth, setExpensesPerMonth] = useState([]);
   const expensePeriods = expensePeriodsStore.list;
+  const expenses = expensesStore.list;
 
   // Whenever a different category is selected, reset all filtered results
   // because the expense periods will all change, and the filters are now irrelevant.
