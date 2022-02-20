@@ -91,6 +91,10 @@
   cursor: pointer;
 }
 
+.filter-list__option--deleting {
+  color: rgba(232, 99, 99, 0.5);
+}
+
 .filter-list__option:hover {
   background-color: lightgrey;
 }

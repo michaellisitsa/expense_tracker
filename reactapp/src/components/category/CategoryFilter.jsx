@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { useStore } from "../../store/helpers/use-store";
 import "./CategoryFilter.css";
 
-function CategoryFilter(props) {
-  const { categoriesStore } = useStore();
+function CategoryFilter({ categoriesStore }) {
+  const isLoaded = categoriesStore.status === "success";
   const navigate = useNavigate();
 
   function handleSelectCategory(event, category) {
@@ -12,26 +12,40 @@ function CategoryFilter(props) {
     navigate(`/expenses/${category.id}`);
   }
 
+  function handleDelete(event, category) {
+    event.preventDefault();
+    category.delete();
+  }
+
   return (
     <>
       <div className="filter-list">
-        {props.isLoaded ? (
-          categoriesStore.list.map((category) => (
-            <div className="filter-list__container" key={category.id}>
-              <div
-                className={`filter-list__option`}
-                onClick={(event) => handleSelectCategory(event, category)}
-              >
-                {category.name}
+        {isLoaded ? (
+          categoriesStore.list.map((category) => {
+            const isUpdating = category.status === "updating";
+            return (
+              <div className="filter-list__container" key={category.id}>
+                <div
+                  className={`filter-list__option ${
+                    isUpdating ? "filter-list__option--deleting" : ""
+                  }`}
+                  onClick={(event) => handleSelectCategory(event, category)}
+                >
+                  {category.name}
+                  <small>
+                    {category.status === "failure" &&
+                      `Error: ${category.errorMessage}`}
+                  </small>
+                </div>
+                <div
+                  className="filter-list__delete"
+                  onClick={(event) => handleDelete(event, category)}
+                >
+                  X
+                </div>
               </div>
-              <div
-                className="filter-list__delete"
-                onClick={() => category.delete()}
-              >
-                X
-              </div>
-            </div>
-          ))
+            );
+          })
         ) : (
           <p>Loading Categories...</p>
         )}

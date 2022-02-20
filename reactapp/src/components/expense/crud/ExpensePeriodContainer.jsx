@@ -19,36 +19,6 @@ function ExpensePeriodContainer({
   // The isLoaded state here is passed down to the "xxxFilter" components once the fetch is completed.
   const isLoaded = expensePeriodsStore.status === "success";
 
-  // Making a delete request
-  function handleDeleteExpensePeriod(event, expensePeriodToDelete) {
-    event.preventDefault();
-    expensePeriodsStore.deleteExpensePeriod(expensePeriodToDelete.id);
-    // fetch(`/api/expenseTimePeriod/${expensePeriodToDelete.id}`, {
-    //   method: "delete",
-    //   headers: {
-    //     Accept: "application/json, text/plain, */*",
-    //     "Content-Type": "application/json",
-    //     "X-CSRFToken": CSRFTOKEN,
-    //   },
-    // })
-    //   .then((res) => res.text())
-    //   .then((res) => {
-    //     // QUESTION: Is there any way to improve this selective filtering state storage.
-    //     //           As seen below we have to duplicate setting the info several times.
-    //     //TODO: replace with domain object method for deletion
-    //     // expensePeriodsStore((prev) =>
-    //     //   prev.filter(
-    //     //     (expensePeriod) => expensePeriod.id !== expensePeriodToDelete.id
-    //     //   )
-    //     // );
-    //   })
-    //   .catch((err) => {
-    //     // Filter out the delete category.
-    //     // Comparison is on the entire object rather than just the id.
-    //     console.log(err.message);
-    //   });
-  }
-
   // The slider component will send back a filtered list of expense periods
   // This function sets these in the state so that it can be passed down to the xxxFilter component.
   // function handleSliderChange(ExpensePeriodsByDate) {

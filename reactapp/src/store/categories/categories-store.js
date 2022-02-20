@@ -7,6 +7,8 @@ class Category {
   assignee = "";
   budget = "";
   description = "";
+  status = "success";
+  errorMessage = "";
   constructor(id, name, assignee, budget, description, categoriesStore) {
     this.id = id;
     this.name = name;
@@ -19,16 +21,24 @@ class Category {
     });
   }
 
-  delete() {
-    this.categoriesStore.deleteCategory(this);
+  async delete() {
+    this.status = "updating";
+    await this.categoriesStore.deleteCategory(this);
+    this.status = "success";
   }
 }
 
 export default class CategoriesStore {
   status = "idle";
   list = [];
+  error = { status: false, message: "" };
   constructor() {
-    makeAutoObservable(this);
+    makeAutoObservable(this, {
+      loadCategories: action,
+      addToServer: action,
+      addCategory: action,
+      deleteCategory: action,
+    });
     autorun(() =>
       console.log("Status:", this.status, "List of Categories", this.list)
     );
@@ -54,6 +64,43 @@ export default class CategoriesStore {
     }
   }
 
+  // Making a post request
+  // Stack Overflow:
+  // https://stackoverflow.com/questions/45308153/posting-data-to-django-rest-framework-using-javascript-fetch
+  addToServer({ name, assignee, budget, description }) {
+    fetch("/api/expenseCategory/", {
+      method: "post",
+      headers: {
+        Accept: "application/json, */*",
+        "Content-Type": "application/json",
+        "X-CSRFToken": CSRFTOKEN,
+      },
+      body: JSON.stringify({
+        name,
+        assignee,
+        budget,
+        description,
+      }),
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        } else {
+          throw Error(res.statusText);
+        }
+      })
+      .then((res) => {
+        runInAction(() => {
+          this.addCategory(res);
+          // console.log(res);
+          this.error = { status: false, message: "" };
+        });
+      })
+      .catch((err) => {
+        this.error = { status: true, message: err };
+      });
+  }
+
   addCategory(category) {
     this.list.push(
       new Category(
@@ -70,8 +117,8 @@ export default class CategoriesStore {
   deleteCategory(category) {
     switch (this.status) {
       case "success":
-        this.status = "loading";
-        fetch(`/api/expenseCategory/${category.id}`, {
+        // this.status = "loading";
+        return fetch(`/api/expenseCategory/${category.id}`, {
           method: "delete",
           headers: {
             Accept: "application/json, text/plain, */*",
@@ -92,13 +139,12 @@ export default class CategoriesStore {
             runInAction(() => {
               const categoryToDeleteIndex = this.list.indexOf(category);
               this.list.splice(categoryToDeleteIndex, 1);
-              this.status = "success";
+              // this.status = "success";
             });
           })
           .catch((err) => {
-            // Filter out the delete category.
-            // Comparison is on the entire object rather than just the id.
-            console.log(err.message);
+            category.status = "failure";
+            category.errorMessage = "Delete Failed";
           });
       default:
       // do nothing
