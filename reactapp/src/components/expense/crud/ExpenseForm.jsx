@@ -10,7 +10,7 @@ function ExpenseForm({ selectedExpensePeriod, expensesStore }) {
     cost: "",
   });
   const descriptionInput = useRef(null);
-  const [isLoaded, setIsLoaded] = useState(true);
+  const isLoaded = expensesStore.status === "success";
   const [error, setError] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
 
@@ -18,51 +18,23 @@ function ExpenseForm({ selectedExpensePeriod, expensesStore }) {
   // Stack Overflow:
   // https://stackoverflow.com/questions/45308153/posting-data-to-django-rest-framework-using-javascript-fetch
   const handleFormSubmit = (e) => {
-    setIsLoaded(false);
     e.preventDefault();
     const { description, cost } = formData;
     if (formData.description === "" || formData.cost === "") {
       setError(true);
       setErrorMsg("Not all inputs entered");
-      setIsLoaded(true);
     } else {
-      fetch("/api/expense/", {
-        method: "post",
-        headers: {
-          Accept: "application/json, */*",
-          "Content-Type": "application/json",
-          "X-CSRFToken": CSRFTOKEN,
-        },
-        body: JSON.stringify({
-          description,
-          cost,
-          expenseTimePeriod: selectedExpensePeriod.id,
-        }),
-      })
-        .then((res) => {
-          if (res.ok) {
-            return res.json();
-          } else {
-            throw Error(res.statusText);
-          }
-        })
-        .then((res) => {
-          expensesStore.addExpense(res);
-          // Clear formData
-          setFormData({
-            description: "",
-            cost: "",
-          });
-          // Reset error state
-          setError(false);
-          setErrorMsg("");
-          setIsLoaded(true);
-        })
-        .catch((err) => {
-          setError(true);
-          setErrorMsg(err.message);
-          setIsLoaded(true);
+      expensesStore.addToServer({
+        description: formData.description,
+        cost: formData.cost,
+        expenseTimePeriod: selectedExpensePeriod.id,
+      });
+      if (isLoaded) {
+        setFormData({
+          description: "",
+          cost: "",
         });
+      }
       descriptionInput.current.focus();
     }
   };

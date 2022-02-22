@@ -60,6 +60,45 @@ export default class ExpensesStore {
     }
   }
 
+  // Making a post request
+  // Stack Overflow:
+  // https://stackoverflow.com/questions/45308153/posting-data-to-django-rest-framework-using-javascript-fetch
+  addToServer({ description, cost, expenseTimePeriod }) {
+    fetch("/api/expense/", {
+      method: "post",
+      headers: {
+        Accept: "application/json, */*",
+        "Content-Type": "application/json",
+        "X-CSRFToken": CSRFTOKEN,
+      },
+      body: JSON.stringify({
+        description,
+        cost,
+        expenseTimePeriod,
+      }),
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        } else {
+          throw Error(res.statusText);
+        }
+      })
+      .then((res) => {
+        runInAction(() => {
+          this.addExpense(res);
+          this.status = "success";
+          this.errorMessage = "";
+        });
+      })
+      .catch((err) => {
+        runInAction(() => {
+          this.status = "failure";
+          this.errorMessage = "accessed catch statement";
+        });
+      });
+  }
+
   addExpense(expense) {
     this.list.push(
       new Expense(
