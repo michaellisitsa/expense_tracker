@@ -52,7 +52,6 @@ function ExpensePeriodFilter({
     }
   }, [setSelectedExpensePeriod, expensePeriods, selectedExpensePeriodId]);
 
-  console.log(expensePeriods);
   if (!selectedCategory) {
     return <p>Loading Expense Periods...</p>;
   }

@@ -1,6 +1,5 @@
 import { observer } from "mobx-react-lite";
 import { useNavigate } from "react-router-dom";
-import { useStore } from "../../store/helpers/use-store";
 import "./CategoryFilter.css";
 
 function CategoryFilter({ categoriesStore }) {

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import "./CategorySelect.css";
 import { useParams } from "react-router-dom";
 import { useStore } from "../../../store/helpers/use-store";

@@ -1,4 +1,4 @@
-import { runInAction, autorun, makeAutoObservable, action } from "mobx";
+import { runInAction, makeAutoObservable, action } from "mobx";
 import { CSRFTOKEN } from "../../utils/csrftoken";
 
 class Expense {
@@ -31,9 +31,6 @@ export default class ExpensesStore {
       deleteExpense: action,
       loadExpenses: action,
     });
-    autorun(() =>
-      console.log("Status:", this.status, "List of Expenses", this.list)
-    );
   }
 
   // Fetch all categories from the server

@@ -1,7 +1,5 @@
-import { useState, useEffect } from "react";
 import ExpenseForm from "./ExpenseForm";
 import ExpenseFilter from "./ExpenseFilter";
-import { CSRFTOKEN } from "../../../utils/csrftoken"; // utility function to request the csrf token for create/delete requests to django
 import "./ExpenseContainer.css";
 import { observer } from "mobx-react-lite";
 
@@ -10,7 +8,6 @@ import { observer } from "mobx-react-lite";
 // as well as appended when form is submitted.
 function ExpenseContainer({ selectedExpensePeriod, expensesStore }) {
   // The isLoaded state here is passed down to the "xxxFilter" components once the fetch is completed.
-  const isLoaded = expensesStore.status === "success";
 
   return (
     <section className="expenses-container">

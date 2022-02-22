@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 import { observer } from "mobx-react-lite";
-import { memoize } from "memoize-one";
 
 import CRUD from "./crud/CRUD";
 import Visualisation from "./visualisation/Visualisation";
@@ -36,10 +34,7 @@ function ExpensePage() {
         selectedCategory={selectedCategory}
         expensePeriodsStore={expensePeriodsStore}
         expensesStore={expensesStore}
-      >
-        <SummaryTable />
-        <Chart />
-      </Visualisation>
+      />
       <CRUD
         selectedCategory={selectedCategory}
         setSelectedCategory={setSelectedCategory}

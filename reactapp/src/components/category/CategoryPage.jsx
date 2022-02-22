@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import CategoryForm from "./CategoryForm";
 import CategoryFilter from "./CategoryFilter";
 import "./CategoryPage.css";

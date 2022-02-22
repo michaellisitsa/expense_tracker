@@ -1,7 +1,5 @@
-import { useState, useEffect } from "react";
 import ExpensePeriodForm from "./ExpensePeriodForm";
 import ExpensePeriodFilter from "./ExpensePeriodFilter";
-import { CSRFTOKEN } from "../../../utils/csrftoken"; // utility function to request the csrf token for create/delete requests to django
 import "./ExpensePeriodContainer.css";
 import { observer } from "mobx-react-lite";
 

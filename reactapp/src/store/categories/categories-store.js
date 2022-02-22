@@ -1,4 +1,4 @@
-import { runInAction, autorun, makeAutoObservable, action } from "mobx";
+import { runInAction, makeAutoObservable, action } from "mobx";
 import { CSRFTOKEN } from "../../utils/csrftoken";
 
 class Category {
@@ -39,9 +39,6 @@ export default class CategoriesStore {
       addCategory: action,
       deleteCategory: action,
     });
-    autorun(() =>
-      console.log("Status:", this.status, "List of Categories", this.list)
-    );
   }
 
   // Fetch all categories from the server

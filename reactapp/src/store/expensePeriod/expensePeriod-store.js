@@ -1,4 +1,4 @@
-import { runInAction, autorun, makeAutoObservable, action } from "mobx";
+import { runInAction, makeAutoObservable, action } from "mobx";
 import { CSRFTOKEN } from "../../utils/csrftoken";
 
 class ExpensePeriod {
@@ -39,9 +39,6 @@ export default class ExpensePeriodsStore {
     makeAutoObservable(this, {
       deleteExpensePeriod: action,
     });
-    autorun(() =>
-      console.log("Status:", this.status, "List of Expense Periods", this.list)
-    );
   }
 
   // Fetch all categories from the server
@@ -88,7 +85,7 @@ export default class ExpensePeriodsStore {
     switch (this.status) {
       case "success":
         this.status = "loading";
-        fetch(`/api/expenseTimePeriod/${expensePeriod.id}`, {
+        return fetch(`/api/expenseTimePeriod/${expensePeriod.id}`, {
           method: "delete",
           headers: {
             Accept: "application/json, text/plain, */*",

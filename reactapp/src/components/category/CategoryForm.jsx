@@ -1,6 +1,5 @@
 import { useState } from "react";
 import "./CategoryForm.css";
-import { CSRFTOKEN } from "../../utils/csrftoken";
 import { observer } from "mobx-react-lite";
 
 function CategoryForm({ categoriesStore }) {

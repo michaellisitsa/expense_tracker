@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
+import { observer } from "mobx-react-lite";
 import { summariseTimePeriod } from "./summariseTimePeriod";
 import { subDays } from "date-fns";
 import { NavLink } from "react-router-dom";
 import { formatNumber } from "../../../utils/formatNumber";
 
 import "./SummaryTable.css";
-import { observer } from "mobx-react-lite";
+import { isObservable, isObservableArray } from "mobx";
 const currentDate = new Date();
 
 function SummaryTable({
@@ -13,64 +14,46 @@ function SummaryTable({
   expensePeriodsStore,
   expensesStore,
 }) {
-  const [expensesPerMonth, setExpensesPerMonth] = useState([]);
+  // const [expensesPerMonth, setExpensesPerMonth] = useState([]);
   const expensePeriods = expensePeriodsStore.list;
   const expenses = expensesStore.list;
 
   // Whenever a different category is selected, reset all filtered results
   // because the expense periods will all change, and the filters are now irrelevant.
-  useEffect(() => {
-    if (selectedCategory?.id) {
-      const filteredExpensePeriods = expensePeriods.filter(
-        (expensePeriod) => expensePeriod.category === selectedCategory.id
-      );
-      const filteredExpenses = expenses.filter((expense) =>
-        filteredExpensePeriods.find(
-          (filteredExpensePeriod) =>
-            filteredExpensePeriod.id === expense.expenseTimePeriod
-        )
-      );
-      // Get the cumulative cost of all expenses within the recent period
-      setExpensesPerMonth([
-        {
-          duration: "Year",
-          amount: summariseTimePeriod(
-            filteredExpensePeriods,
-            filteredExpenses,
-            subDays(currentDate, 365),
-            currentDate
-          ),
-        },
-        {
-          duration: "Quarter",
-          amount: summariseTimePeriod(
-            filteredExpensePeriods,
-            filteredExpenses,
-            subDays(currentDate, 91),
-            currentDate
-          ),
-        },
-        {
-          duration: "Month",
-          amount: summariseTimePeriod(
-            filteredExpensePeriods,
-            filteredExpenses,
-            subDays(currentDate, 30),
-            currentDate
-          ),
-        },
-        {
-          duration: "Week",
-          amount: summariseTimePeriod(
-            filteredExpensePeriods,
-            filteredExpenses,
-            subDays(currentDate, 7),
-            currentDate
-          ),
-        },
-      ]);
-    }
-  }, [selectedCategory, expenses, expensePeriods]);
+  let filteredExpensePeriods;
+  let filteredExpenses;
+  if (selectedCategory?.id) {
+    filteredExpensePeriods = [...expensePeriods].filter(
+      (expensePeriod) => expensePeriod.category === selectedCategory.id
+    );
+    filteredExpenses = [...expenses].filter((expense) =>
+      filteredExpensePeriods.find(
+        (filteredExpensePeriod) =>
+          filteredExpensePeriod.id === expense.expenseTimePeriod
+      )
+    );
+  }
+  const intervals = [
+    { label: "Year", duration: 365 },
+    { label: "Quarter", duration: 91 },
+    { label: "Month", duration: 30 },
+    { label: "Week", duration: 7 },
+  ];
+
+  let expensesPerMonth = [];
+  if (selectedCategory?.id) {
+    intervals.forEach((interval) =>
+      expensesPerMonth.push({
+        duration: interval.label,
+        amount: summariseTimePeriod(
+          filteredExpensePeriods,
+          filteredExpenses,
+          subDays(currentDate, interval.duration),
+          currentDate
+        ),
+      })
+    );
+  }
 
   // Don't show table before a user has selected a Category
   if (selectedCategory) {
