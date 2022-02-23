@@ -1,19 +1,28 @@
+import { observer } from "mobx-react-lite";
 import React, { Children, cloneElement } from "react";
 import CardLayout from "../CardLayout";
+import Chart from "./Chart";
+import SummaryTable from "./SummaryTable";
 
 function Visualisation({
   selectedCategory,
-  expensePeriods,
-  expenses,
-  children,
+  expensePeriodsStore,
+  expensesStore,
 }) {
   return (
     <CardLayout>
-      {Children.map(children, (child) =>
-        cloneElement(child, { selectedCategory, expensePeriods, expenses })
-      )}
+      <SummaryTable
+        selectedCategory={selectedCategory}
+        expensePeriodsStore={expensePeriodsStore}
+        expensesStore={expensesStore}
+      />
+      <Chart
+        selectedCategory={selectedCategory}
+        expensePeriodsStore={expensePeriodsStore}
+        expensesStore={expensesStore}
+      />
     </CardLayout>
   );
 }
 
-export default Visualisation;
+export default observer(Visualisation);

@@ -2,11 +2,12 @@ import { useState } from "react";
 import { CSRFTOKEN } from "../../../utils/csrftoken";
 import { differenceInDays } from "date-fns";
 import "./ExpensePeriodForm.css";
+import { observer } from "mobx-react-lite";
 
 function ExpensePeriodForm({
   selectedCategory,
   setSelectedExpensePeriod,
-  setExpensePeriods,
+  expensePeriodsStore,
 }) {
   const [formData, setFormData] = useState({
     description: "",
@@ -53,7 +54,8 @@ function ExpensePeriodForm({
         .then((res) => {
           // Add the new submitted value to all expense period arrays, and reset filters
           setSelectedExpensePeriod(res);
-          setExpensePeriods((prevState) => [...prevState, res]);
+          expensePeriodsStore.addExpensePeriod(res);
+          // setExpensePeriods((prevState) => [...prevState, res]);
         })
         .catch((err) => {
           setError(true);
@@ -113,4 +115,4 @@ function ExpensePeriodForm({
   );
 }
 
-export default ExpensePeriodForm;
+export default observer(ExpensePeriodForm);

@@ -19,6 +19,7 @@ import { Chart as ReactChart } from "react-chartjs-2";
 import { summariseTimePeriod } from "./summariseTimePeriod";
 import { subDays, eachMonthOfInterval, format, endOfMonth } from "date-fns";
 import { formatNumber } from "../../../utils/formatNumber";
+import { observer } from "mobx-react-lite";
 ChartJS.register(
   LinearScale,
   CategoryScale,
@@ -64,12 +65,25 @@ const options = {
 // Therefore could just draw a point for each moving average point.
 // To simplify initially could do a fixed 12 month timeline
 // Then show a vertical strip for areas of the graph that actually have data.
-function Chart(props) {
-  const [filteredExpensePeriods, setFilteredExpensePeriods] = useState([]);
-  const [filteredExpenses, setFilteredExpenses] = useState([]);
-  const { selectedCategory, expensePeriods, expenses } = props;
-  // Below methods are to print to console the properties of the clicked point.
-  // We could use these to instead update something in future. Will leave in to plot to console.
+function Chart({ selectedCategory, expensePeriodsStore, expensesStore }) {
+  // const [filteredExpensePeriods, setFilteredExpensePeriods] = useState([]);
+  // const [filteredExpenses, setFilteredExpenses] = useState([]);
+  const expensePeriods = expensePeriodsStore.list;
+  const expenses = expensesStore.list;
+
+  let filteredExpensePeriods = [];
+  let filteredExpenses = [];
+  if (selectedCategory?.id) {
+    filteredExpensePeriods = [...expensePeriods].filter(
+      (expensePeriod) => expensePeriod.category === selectedCategory.id
+    );
+    filteredExpenses = [...expenses].filter((expense) =>
+      filteredExpensePeriods.find(
+        (filteredExpensePeriod) =>
+          filteredExpensePeriod.id === expense.expenseTimePeriod
+      )
+    );
+  }
 
   // Labels for x-axis.
   // TODO: Create an array of elements for the total extent of dates
@@ -159,28 +173,6 @@ function Chart(props) {
     // printElementsAtEvent(getElementsAtEvent(chart, event)); // logs "1", maybe the dataset number
   };
 
-  // Whenever a different category is selected, reset all filtered results
-  // because the expense periods will all change, and the filters are now irrelevant.
-  useEffect(() => {
-    if (selectedCategory?.id) {
-      const filteredExpensePeriodsTemp = expensePeriods.filter(
-        (expensePeriod) => expensePeriod.category === selectedCategory.id
-      );
-      setFilteredExpensePeriods(filteredExpensePeriodsTemp);
-      const filteredExpensesTemp = expenses.filter((expense) =>
-        filteredExpensePeriodsTemp.find(
-          (filteredExpensePeriod) =>
-            filteredExpensePeriod.id === expense.expenseTimePeriod
-        )
-      );
-      setFilteredExpenses(filteredExpensesTemp);
-      // Get the cumulative cost of all expenses within the recent period
-    } else {
-      setFilteredExpensePeriods(expensePeriods);
-      setFilteredExpenses(expenses);
-    }
-  }, [selectedCategory, expenses, expensePeriods]);
-
   return (
     <div className="chart-container">
       <ReactChart
@@ -193,4 +185,4 @@ function Chart(props) {
   );
 }
 
-export default Chart;
+export default observer(Chart);

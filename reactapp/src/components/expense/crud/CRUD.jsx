@@ -4,14 +4,13 @@ import CategorySelect from "./CategorySelect";
 import ExpensePeriodContainer from "./ExpensePeriodContainer";
 import CardLayout from "../CardLayout";
 import "./CRUD.css";
+import { observer } from "mobx-react-lite";
 
 function CRUD({
   selectedCategory,
   setSelectedCategory,
-  expensePeriods,
-  setExpensePeriods,
-  expenses,
-  setExpenses,
+  expensePeriodsStore,
+  expensesStore,
 }) {
   // The entries selected for each table are tracked in top-level containers.
   // This allows passing data down to foreign key relations, for auto-filling
@@ -29,17 +28,15 @@ function CRUD({
           selectedExpensePeriod={selectedExpensePeriod}
           selectedCategory={selectedCategory}
           setSelectedExpensePeriod={setSelectedExpensePeriod}
-          expensePeriods={expensePeriods}
-          setExpensePeriods={setExpensePeriods}
+          expensePeriodsStore={expensePeriodsStore}
         />
       </section>
       <ExpenseContainer
         selectedExpensePeriod={selectedExpensePeriod}
-        expenses={expenses}
-        setExpenses={setExpenses}
+        expensesStore={expensesStore}
       />
     </CardLayout>
   );
 }
 
-export default CRUD;
+export default observer(CRUD);
