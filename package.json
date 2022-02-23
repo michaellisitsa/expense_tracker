@@ -7,7 +7,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "heroku-prebuild": "NODE_ENV=production cd reactapp/ && yarn install && yarn build && cd .."
+    "heroku-prebuild": "NODE_ENV=production cd reactapp/ && npm install && npm run build && cd .."
   },
   "cacheDirectories": [
     "reactapp/node_modules"
