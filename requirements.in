@@ -1,4 +1,4 @@
-django==4.0
+django==4.0.2
 django-allauth==0.47.0
 django-environ==0.8.1
 django-heroku==0.3.1
