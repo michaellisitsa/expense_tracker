@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
 import { useState, useRef } from "react";
-import { CSRFTOKEN } from "../../../utils/csrftoken";
+import styled from "styled-components";
 import Spinner from "../../../utils/Spinner";
 import "./ExpenseForm.css";
 
@@ -20,13 +20,13 @@ function ExpenseForm({ selectedExpensePeriod, expensesStore }) {
   const handleFormSubmit = (e) => {
     e.preventDefault();
     const { description, cost } = formData;
-    if (formData.description === "" || formData.cost === "") {
+    if (description === "" || cost === "") {
       setError(true);
       setErrorMsg("Not all inputs entered");
     } else {
       expensesStore.addToServer({
-        description: formData.description,
-        cost: formData.cost,
+        description: description,
+        cost: cost,
         expenseTimePeriod: selectedExpensePeriod.id,
       });
       if (isLoaded) {
@@ -51,8 +51,8 @@ function ExpenseForm({ selectedExpensePeriod, expensesStore }) {
       <p className="expense-form__error">
         {error && `${errorMsg}. Select Expense Period`}
       </p>
-      <form className="expense-form">
-        <div className="expense-form__inputs">
+      <Form>
+        <Inputs>
           <input
             ref={descriptionInput}
             type="text"
@@ -69,13 +69,13 @@ function ExpenseForm({ selectedExpensePeriod, expensesStore }) {
             value={formData.cost}
             onChange={handleChange}
           />
-        </div>
+        </Inputs>
         <div className="expense-form__crud">
           <button className="expense-button" onClick={handleFormSubmit}>
             +
           </button>
         </div>
-      </form>
+      </Form>
       {!isLoaded && (
         <div className="expense-form__loading">
           <p>{formData.description}</p>
@@ -88,3 +88,25 @@ function ExpenseForm({ selectedExpensePeriod, expensesStore }) {
 }
 
 export default observer(ExpenseForm);
+
+const Inputs = styled.div`
+  display: flex;
+  flex: 1;
+
+  > input:first-child {
+    flex: 1;
+    margin-right: 1em;
+  }
+
+  > input:last-child {
+    text-align: right;
+    width: 30%;
+  }
+`;
+
+const Form = styled.form`
+  display: flex;
+  flex-direction: row;
+  gap: 1.5em;
+  margin-bottom: 1em;
+`;

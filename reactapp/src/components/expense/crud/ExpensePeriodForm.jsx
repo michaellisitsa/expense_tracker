@@ -3,6 +3,7 @@ import { CSRFTOKEN } from "../../../utils/csrftoken";
 import { differenceInDays } from "date-fns";
 import "./ExpensePeriodForm.css";
 import { observer } from "mobx-react-lite";
+import styled from "styled-components";
 
 function ExpensePeriodForm({
   selectedCategory,
@@ -79,17 +80,16 @@ function ExpensePeriodForm({
       <p className="expensePeriod-form__error">
         {error && `${errorMsg} Select Category`}
       </p>
-      <form className="expensePeriods-form">
-        <div className="expensePeriod-form__inputs">
+      <Form>
+        <Inputs>
           <input
             type="text"
             name="description"
-            className="expensePeriod-input"
             placeholder="Enter Description:"
             value={formData.description}
             onChange={handleChange}
           />
-          <div className="expensePeriods-Form__dates-wrapper">
+          <InputsRow>
             <input
               type="date"
               name="dateStart"
@@ -102,17 +102,52 @@ function ExpensePeriodForm({
               value={formData.dateEnd}
               onChange={handleChange}
             />
-          </div>
-        </div>
+          </InputsRow>
+        </Inputs>
         <button
           className="expensePeriod-form__button"
           onClick={handleFormSubmit}
         >
           <span>ADD</span>
         </button>
-      </form>
+      </Form>
     </>
   );
 }
 
 export default observer(ExpensePeriodForm);
+
+const Inputs = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+
+  > input:first-child {
+    padding: 0.5em 1em;
+    border: solid 1px grey;
+    border-radius: 0.5em;
+  }
+`;
+
+const Form = styled.form`
+  display: flex;
+  background-color: white;
+  border: 0;
+  border-radius: 0.5em;
+  flex-wrap: wrap;
+`;
+
+const InputsRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  border: solid 1px grey;
+  border-radius: 6px;
+  overflow: hidden;
+  gap: 0.25em;
+  padding: 0.5em;
+  flex-wrap: wrap;
+
+  > input {
+    border: none;
+  }
+`;
