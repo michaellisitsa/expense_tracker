@@ -4,33 +4,7 @@
   background-color: white;
   border: 0;
   border-radius: 0.5em;
-  overflow: hidden;
-}
-
-.expensePeriod-form__inputs {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-}
-
-.expensePeriods-Form__dates-wrapper {
-  display: flex;
-  justify-content: space-between;
-  border: solid 1px grey;
-  border-radius: 6px;
-  overflow: hidden;
-  gap: 0.25em;
-  padding: 0.5em;
-}
-
-.expensePeriods-Form__dates-wrapper input {
-  border: none;
-}
-
-.expensePeriod-input {
-  padding: 0.5em 1em;
-  border: solid 1px grey;
-  border-radius: 0.5em;
+  /* overflow: hidden; */
 }
 
 .expensePeriod-form__entry {
@@ -99,8 +73,4 @@
   background-color: #3e8e41;
   box-shadow: 0 0.2em #666;
   transform: translateY(4px);
-}
-
-.expensePeriods-form h1 {
-  padding-bottom: 1em;
 }

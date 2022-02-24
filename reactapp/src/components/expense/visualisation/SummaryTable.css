@@ -4,15 +4,13 @@
   border-radius: 0.5em;
   margin: 1em;
   padding: 1em;
-  height: 100%;
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  flex-shrink: 1;
+  flex: 1;
 }
 
 .summary-table {
-  margin: 0 1.5em;
   border-collapse: collapse;
 }
 
@@ -22,7 +20,7 @@
 
 .summary-table th,
 .summary-table td {
-  padding: 1em;
+  padding: 1em 0;
   text-align: justify;
   /* overflow: hidden; */
   white-space: nowrap;

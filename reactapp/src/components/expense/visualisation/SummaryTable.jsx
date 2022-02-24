@@ -34,10 +34,10 @@ function SummaryTable({
     );
   }
   const intervals = [
-    { label: "Year", duration: 365 },
-    { label: "Quarter", duration: 91 },
-    { label: "Month", duration: 30 },
-    { label: "Week", duration: 7 },
+    { label: "YR", duration: 365 },
+    { label: "QTR", duration: 91 },
+    { label: "MTH", duration: 30 },
+    { label: "WK", duration: 7 },
   ];
 
   let expensesPerMonth = [];
@@ -91,7 +91,7 @@ function SummaryTable({
         <tbody>
           <tr>
             <th scope="row" className="summaryTableCells">
-              EXPENSE (mth):
+              EXPENSE
             </th>
             {expensesPerMonth.map((expense) => (
               <td
@@ -110,7 +110,7 @@ function SummaryTable({
           </tr>
           <tr>
             <th scope="row" className="summaryTableCells">
-              REMAINING (mth):
+              REMAIN
             </th>
             {expensesPerMonth.map((expense) => (
               <td
