@@ -102,6 +102,53 @@ export default class ExpensesStore {
       });
   }
 
+  addMultipleToServer({ description, cost, date, expenseTimePeriod }) {
+    fetch("/api/multipleExpenses/", {
+      method: "post",
+      headers: {
+        Accept: "application/json, */*",
+        "Content-Type": "application/json",
+        "X-CSRFToken": CSRFTOKEN,
+      },
+      body: JSON.stringify({
+        expenses: [
+          {
+            description,
+            cost,
+            date,
+            expenseTimePeriod,
+          },
+          {
+            description,
+            cost,
+            date,
+            expenseTimePeriod,
+          },
+        ],
+      }),
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        } else {
+          throw Error(res.statusText);
+        }
+      })
+      .then((res) => {
+        runInAction(() => {
+          this.addExpense(res);
+          this.status = "success";
+          this.errorMessage = "";
+        });
+      })
+      .catch((err) => {
+        runInAction(() => {
+          this.status = "failure";
+          this.errorMessage = "accessed catch statement";
+        });
+      });
+  }
+
   addExpense(expense) {
     this.list.push(
       new Expense(

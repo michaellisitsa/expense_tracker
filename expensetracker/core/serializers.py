@@ -7,6 +7,16 @@ from rest_framework import serializers
 #         fields = ['description','dateStart','dateEnd']
 
 
+class MultipleExpenseSerializer(serializers.ModelSerializer):
+    def __init__(self, *args, **kwargs):
+        many = kwargs.pop("many", True)
+        super(MultipleExpenseSerializer, self).__init__(many=many, *args, **kwargs)
+
+    class Meta:
+        model = Expense
+        fields = "__all__"
+
+
 class ExpenseSerializer(serializers.ModelSerializer):
     # https://www.django-rest-framework.org/api-guide/relations/#nested-relationships
     # category = serializers.RelatedField(

@@ -42,6 +42,30 @@ function ExpenseForm({ selectedExpensePeriod, expensesStore }) {
     }
   };
 
+  const handleMultipleSubmit = (e) => {
+    e.preventDefault();
+    const { description, cost, date } = formData;
+    if (description === "" || cost === "") {
+      setError(true);
+      setErrorMsg("Not all inputs entered");
+    } else {
+      expensesStore.addMultipleToServer({
+        description: description,
+        cost: cost,
+        date: date,
+        expenseTimePeriod: selectedExpensePeriod.id,
+      });
+      if (isLoaded) {
+        setFormData({
+          description: "",
+          cost: "",
+          date: "",
+        });
+      }
+      descriptionInput.current.focus();
+    }
+  };
+
   const handleChange = (event) => {
     setFormData((data) => ({
       ...data,
@@ -82,6 +106,9 @@ function ExpenseForm({ selectedExpensePeriod, expensesStore }) {
         <div className="expense-form__crud">
           <button className="expense-button" onClick={handleFormSubmit}>
             +
+          </button>
+          <button className="expense-button" onClick={handleMultipleSubmit}>
+            Multi +
           </button>
         </div>
       </Form>

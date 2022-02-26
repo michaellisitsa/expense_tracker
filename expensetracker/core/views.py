@@ -12,11 +12,12 @@ from .serializers import (
     ExpenseTimePeriodSerializer,
     ExpenseCategorySerializer,
     ExpenseSerializer,
+    MultipleExpenseSerializer,
 )
 from .utils.utils import summariseTimePeriod
 from django.core import serializers
 
-from rest_framework import viewsets, permissions, authentication, status
+from rest_framework import viewsets, permissions, authentication, status, mixins
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
@@ -213,6 +214,47 @@ def createExpenses(request, pk):
     return render(request, "core/createExpenses.html", context)
 
 
+# class MultipleExpenseViewSet(viewsets.ModelViewSet):
+#     """
+#     API endpoint that allows Expenses to be viewed or editted.
+#     """
+
+#     queryset = Expense.objects.all()  # gets filtered in get_queryset
+#     serializer_class = MultipleExpenseSerializer
+#     permission_classes = [permissions.IsAuthenticated]
+
+#     def get_queryset(self):
+#         req = self.request
+#         if req:
+#             self.queryset = Expense.objects.filter(
+#                 expenseTimePeriod__category__user=req.user
+#             )
+#             print("request accessed")
+#             return self.queryset
+#         else:
+#             print("request not accessed")
+#             return self.queryset
+
+
+class MultipleExpenseViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
+    queryset = Expense.objects.all()
+    serializer_class = MultipleExpenseSerializer
+
+    def create(self, request, *args, **kwargs):
+        self.user = request.user
+        listOfThings = request.data["expenses"]
+
+        serializer = self.get_serializer(data=listOfThings, many=True)
+        if serializer.is_valid():
+            serializer.save()
+            headers = self.get_success_headers(serializer.data)
+            return Response(
+                serializer.data, status=status.HTTP_201_CREATED, headers=headers
+            )
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 class ExpenseViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows Expenses to be viewed or editted.
@@ -233,6 +275,15 @@ class ExpenseViewSet(viewsets.ModelViewSet):
         else:
             print("request not accessed")
             return self.queryset
+
+
+# @api_view(['POST'])
+# def ImportExpenses(request):
+#     serialized = ExpenseTimePeriodSerializer(data=request.data, many=True)
+#     if serialized.is_valid():
+#         serialized.save()
+#         return Response(serialized.data, status=status.HTTP_201_CREATED)
+#     return Response(serialized._errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class ExpenseTimePeriodViewSet(viewsets.ModelViewSet):

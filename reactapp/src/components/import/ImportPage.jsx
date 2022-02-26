@@ -63,9 +63,11 @@ function ImportPage(props) {
               </div>
               <ProgressBar style={styles.progressBarBackgroundColor} />
             </div>
-            {csvData.map((expense) => (
-              <div>{expense[2]}</div>
-            ))}
+            <ol>
+              {csvData.map((expense, index) => (
+                <li key={index}>{expense[2]}</li>
+              ))}
+            </ol>
           </div>
         )}
       </CSVReader>
