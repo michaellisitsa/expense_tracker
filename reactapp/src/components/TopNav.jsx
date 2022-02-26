@@ -5,6 +5,7 @@ function TopNav(props) {
   const tabs = [
     { label: "Categories", id: "categories" },
     { label: "Expenses", id: "expenses" },
+    { label: "Import", id: "import" },
   ];
 
   return (

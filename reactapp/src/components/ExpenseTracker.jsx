@@ -2,8 +2,8 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import "./ExpenseTracker.css";
 
 import CategoryPage from "./category/CategoryPage";
-
 import ExpensePage from "./expense/ExpensePage";
+import ImportPage from "./import/ImportPage";
 
 function ExpenseTracker(props) {
   // Using routes within a django react app and 404 status is described in below link:
@@ -17,6 +17,7 @@ function ExpenseTracker(props) {
         <Route path=":id" element={<ExpensePage />} />
       </Route>
       <Route exact path="/categories/" element={<CategoryPage />} />
+      <Route exact path="/import/" element={<ImportPage />} />
       <Route path="/" element={<Navigate replace to="/expenses" />} />
     </Routes>
   );
