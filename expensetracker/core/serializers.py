@@ -21,6 +21,7 @@ class ExpenseSerializer(serializers.ModelSerializer):
         expense = Expense()
         expense.description = validated_data["description"]
         expense.cost = validated_data["cost"]
+        expense.date = validated_data["date"]
         expense.expenseTimePeriod = validated_data["expenseTimePeriod"]
         # State should hold what category you're currently in.
         # But how do you prevent a form being submitted with a different username.

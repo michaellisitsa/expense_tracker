@@ -8,6 +8,7 @@ function ExpenseForm({ selectedExpensePeriod, expensesStore }) {
   const [formData, setFormData] = useState({
     description: "",
     cost: "",
+    date: "",
   });
   const descriptionInput = useRef(null);
   const isLoaded = expensesStore.status === "success";
@@ -19,7 +20,7 @@ function ExpenseForm({ selectedExpensePeriod, expensesStore }) {
   // https://stackoverflow.com/questions/45308153/posting-data-to-django-rest-framework-using-javascript-fetch
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    const { description, cost } = formData;
+    const { description, cost, date } = formData;
     if (description === "" || cost === "") {
       setError(true);
       setErrorMsg("Not all inputs entered");
@@ -27,12 +28,14 @@ function ExpenseForm({ selectedExpensePeriod, expensesStore }) {
       expensesStore.addToServer({
         description: description,
         cost: cost,
+        date: date,
         expenseTimePeriod: selectedExpensePeriod.id,
       });
       if (isLoaded) {
         setFormData({
           description: "",
           cost: "",
+          date: "",
         });
       }
       descriptionInput.current.focus();
@@ -67,6 +70,12 @@ function ExpenseForm({ selectedExpensePeriod, expensesStore }) {
             name="cost"
             placeholder="100"
             value={formData.cost}
+            onChange={handleChange}
+          />
+          <input
+            type="date"
+            name="date"
+            value={formData.date}
             onChange={handleChange}
           />
         </Inputs>

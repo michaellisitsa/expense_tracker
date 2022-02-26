@@ -29,6 +29,7 @@ function ExpenseFilter({ selectedExpensePeriod, expensesStore }) {
                   <p className={`expense-filter-list__cost`}>
                     $ {Math.round(expense.cost)}
                   </p>
+                  {expense.date && <p>{expense.date}</p>}
                 </div>
                 <div className="expense-filter-list__crud">
                   <div

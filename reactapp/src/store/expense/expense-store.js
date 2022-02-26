@@ -5,11 +5,13 @@ class Expense {
   id = "";
   description = "";
   cost = "";
+  date = "";
   expenseTimePeriod = "";
-  constructor(id, description, cost, expenseTimePeriod, expensesStore) {
+  constructor(id, description, cost, date, expenseTimePeriod, expensesStore) {
     this.id = id;
     this.description = description;
     this.cost = cost;
+    this.date = date;
     this.expenseTimePeriod = expenseTimePeriod;
     this.expensesStore = expensesStore;
     makeAutoObservable(this, {
@@ -63,7 +65,7 @@ export default class ExpensesStore {
   // Making a post request
   // Stack Overflow:
   // https://stackoverflow.com/questions/45308153/posting-data-to-django-rest-framework-using-javascript-fetch
-  addToServer({ description, cost, expenseTimePeriod }) {
+  addToServer({ description, cost, date, expenseTimePeriod }) {
     fetch("/api/expense/", {
       method: "post",
       headers: {
@@ -74,6 +76,7 @@ export default class ExpensesStore {
       body: JSON.stringify({
         description,
         cost,
+        date,
         expenseTimePeriod,
       }),
     })
@@ -105,6 +108,7 @@ export default class ExpensesStore {
         expense.id,
         expense.description,
         expense.cost,
+        expense.date,
         expense.expenseTimePeriod,
         this
       )
