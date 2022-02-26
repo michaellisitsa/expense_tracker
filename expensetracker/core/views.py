@@ -237,8 +237,24 @@ def createExpenses(request, pk):
 
 
 class MultipleExpenseViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
+    """
+    Solution per https://stackoverflow.com/a/22237209
+    """
+
     queryset = Expense.objects.all()
     serializer_class = MultipleExpenseSerializer
+
+    def get_queryset(self):
+        req = self.request
+        if req:
+            self.queryset = Expense.objects.filter(
+                expenseTimePeriod__category__user=req.user
+            )
+            print("request accessed")
+            return self.queryset
+        else:
+            print("request not accessed")
+            return self.queryset
 
     def create(self, request, *args, **kwargs):
         self.user = request.user

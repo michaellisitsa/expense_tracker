@@ -1,5 +1,6 @@
 import React from "react";
 import { useCSVReader } from "react-papaparse";
+import { parse } from "../../components/import/ofx-js";
 
 const styles = {
   csvReader: {
@@ -28,8 +29,22 @@ const styles = {
 
 function ImportPage(props) {
   const [csvData, setCsvData] = React.useState([]);
+  const [ofxData, setOfxData] = React.useState([]);
   const [errors, setErrors] = React.useState([]);
   const { CSVReader } = useCSVReader();
+
+  function handleOFXImport(event) {
+    event.preventDefault();
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      parse(event.target.result).then((ofxData) => {
+        setOfxData(
+          ofxData.OFX.BANKMSGSRSV1.STMTTRNRS.STMTRS.BANKTRANLIST.STMTTRN
+        );
+      });
+    };
+    reader.readAsText(event.target.files[0]);
+  }
 
   return (
     <div>
@@ -63,6 +78,9 @@ function ImportPage(props) {
               </div>
               <ProgressBar style={styles.progressBarBackgroundColor} />
             </div>
+            <form>
+              <input type="file" onChange={handleOFXImport} accept=".ofx" />
+            </form>
             <ol>
               {csvData.map((expense, index) => (
                 <li key={index}>{expense[2]}</li>
