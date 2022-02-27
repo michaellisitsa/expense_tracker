@@ -24,6 +24,17 @@ class ExpenseSerializer(serializers.ModelSerializer):
     #     read_only=True,
     # )
 
+    class Meta:
+        """
+        https://www.django-rest-framework.org/api-guide/serializers/#modelserializer
+        Also in tutorial, note that a Serializer is like a Form class, whereas a ModelSerializer
+        is like a ModelForm because it maps to a class.
+        https://www.django-rest-framework.org/tutorial/1-serialization/#using-modelserializers
+        """
+
+        model = Expense
+        fields = "__all__"
+
     def create(self, validated_data):
 
         # request = self.context.get("request")
@@ -42,17 +53,6 @@ class ExpenseSerializer(serializers.ModelSerializer):
         expense.save()
 
         return expense
-
-    class Meta:
-        """
-        https://www.django-rest-framework.org/api-guide/serializers/#modelserializer
-        Also in tutorial, note that a Serializer is like a Form class, whereas a ModelSerializer
-        is like a ModelForm because it maps to a class.
-        https://www.django-rest-framework.org/tutorial/1-serialization/#using-modelserializers
-        """
-
-        model = Expense
-        fields = "__all__"
 
 
 class ExpenseTimePeriodSerializer(serializers.ModelSerializer):

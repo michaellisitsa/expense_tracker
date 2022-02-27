@@ -5,7 +5,7 @@ class Expense {
   id = "";
   description = "";
   cost = "";
-  date = "";
+  date = null;
   expenseTimePeriod = "";
   constructor(id, description, cost, date, expenseTimePeriod, expensesStore) {
     this.id = id;
@@ -65,7 +65,7 @@ export default class ExpensesStore {
   // Making a post request
   // Stack Overflow:
   // https://stackoverflow.com/questions/45308153/posting-data-to-django-rest-framework-using-javascript-fetch
-  addToServer({ description, cost, date, expenseTimePeriod }) {
+  addToServer(props) {
     fetch("/api/expense/", {
       method: "post",
       headers: {
@@ -73,11 +73,8 @@ export default class ExpensesStore {
         "Content-Type": "application/json",
         "X-CSRFToken": CSRFTOKEN,
       },
-      body: JSON.stringify({
-        description,
-        cost,
-        date,
-        expenseTimePeriod,
+      body: JSON.stringify(props, (key, value) => {
+        if (value !== "") return value;
       }),
     })
       .then((res) => {

@@ -8,7 +8,7 @@ function ExpenseForm({ selectedExpensePeriod, expensesStore }) {
   const [formData, setFormData] = useState({
     description: "",
     cost: "",
-    date: "",
+    date: null,
   });
   const descriptionInput = useRef(null);
   const isLoaded = expensesStore.status === "success";
@@ -35,7 +35,7 @@ function ExpenseForm({ selectedExpensePeriod, expensesStore }) {
         setFormData({
           description: "",
           cost: "",
-          date: "",
+          date: null,
         });
       }
       descriptionInput.current.focus();
@@ -59,7 +59,7 @@ function ExpenseForm({ selectedExpensePeriod, expensesStore }) {
         setFormData({
           description: "",
           cost: "",
-          date: "",
+          date: null,
         });
       }
       descriptionInput.current.focus();
