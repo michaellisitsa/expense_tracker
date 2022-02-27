@@ -68,6 +68,47 @@ export default class ExpensePeriodsStore {
     }
   }
 
+  // Making a post request
+  // Stack Overflow:
+  // https://stackoverflow.com/questions/45308153/posting-data-to-django-rest-framework-using-javascript-fetch
+  addToServer({ description, dateStart, dateEnd, category }) {
+    return fetch("/api/expenseTimePeriod/", {
+      method: "post",
+      headers: {
+        Accept: "application/json, */*",
+        "Content-Type": "application/json",
+        "X-CSRFToken": CSRFTOKEN,
+      },
+      body: JSON.stringify({
+        description,
+        dateStart,
+        dateEnd,
+        category,
+      }),
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        } else {
+          throw Error(res.statusText);
+        }
+      })
+      .then((res) => {
+        runInAction(() => {
+          this.addExpensePeriod(res);
+          this.status = "success";
+          this.errorMessage = "";
+        });
+        return res;
+      })
+      .catch((err) => {
+        runInAction(() => {
+          this.status = "failure";
+          this.errorMessage = "accessed catch statement";
+        });
+      });
+  }
+
   addExpensePeriod(expensePeriod) {
     this.list.push(
       new ExpensePeriod(

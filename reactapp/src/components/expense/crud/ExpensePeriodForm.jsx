@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { CSRFTOKEN } from "../../../utils/csrftoken";
+import { useState, useRef } from "react";
 import { differenceInDays } from "date-fns";
 import "./ExpensePeriodForm.css";
 import { observer } from "mobx-react-lite";
@@ -15,13 +14,15 @@ function ExpensePeriodForm({
     dateStart: "",
     dateEnd: "",
   });
+  const isLoaded = expensePeriodsStore.status === "success";
   const [error, setError] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
+  const descriptionInput = useRef(null);
 
   // Making a post request
   // Stack Overflow:
   // https://stackoverflow.com/questions/45308153/posting-data-to-django-rest-framework-using-javascript-fetch
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
     const { description, dateStart, dateEnd } = formData;
     const result = differenceInDays(
@@ -31,37 +32,21 @@ function ExpensePeriodForm({
     if (result > 0) {
       setError(false);
       setErrorMsg("");
-      fetch("/api/expenseTimePeriod/", {
-        method: "post",
-        headers: {
-          Accept: "application/json, */*",
-          "Content-Type": "application/json",
-          "X-CSRFToken": CSRFTOKEN,
-        },
-        body: JSON.stringify({
-          description,
-          dateStart,
-          dateEnd,
-          category: selectedCategory?.id,
-        }),
-      })
-        .then((res) => {
-          if (res.ok) {
-            return res.json();
-          } else {
-            throw Error(res.statusText);
-          }
-        })
-        .then((res) => {
-          // Add the new submitted value to all expense period arrays, and reset filters
-          setSelectedExpensePeriod(res);
-          expensePeriodsStore.addExpensePeriod(res);
-          // setExpensePeriods((prevState) => [...prevState, res]);
-        })
-        .catch((err) => {
-          setError(true);
-          setErrorMsg(err.message);
+      const addedExpensePeriod = await expensePeriodsStore.addToServer({
+        description,
+        dateStart,
+        dateEnd,
+        category: selectedCategory.id,
+      });
+      if (isLoaded) {
+        setFormData({
+          description: "",
+          dateStart: "",
+          dateEnd: "",
         });
+        setSelectedExpensePeriod(addedExpensePeriod);
+      }
+      descriptionInput.current.focus();
     } else {
       setError(true);
       setErrorMsg("The start date is before the end date.");
@@ -83,6 +68,7 @@ function ExpensePeriodForm({
       <Form>
         <Inputs>
           <input
+            ref={descriptionInput}
             type="text"
             name="description"
             placeholder="Enter Description:"
