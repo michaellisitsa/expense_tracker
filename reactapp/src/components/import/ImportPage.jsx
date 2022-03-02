@@ -1,20 +1,20 @@
 import React from "react";
-// import CSVUpload from "./CSVUpload";
-// import OFXUpload from "./OFXUpload";
-import ImportFilter from "./importFilter";
+import ImportFilter from "./ImportFilter";
 import UploadForm from "./UploadForm";
 
 function ImportPage(props) {
   const [uploadedExpenses, setUploadedExpenses] = React.useState({
-    status: undefined,
-    errorMessages: [],
     source: undefined,
     entities: [],
+    valid: undefined,
   });
 
   return (
     <div>
-      <UploadForm setUploadedExpenses={setUploadedExpenses} />
+      <UploadForm
+        uploadedExpenses={uploadedExpenses}
+        setUploadedExpenses={setUploadedExpenses}
+      />
       <ImportFilter uploadedExpenses={uploadedExpenses} />
     </div>
   );
