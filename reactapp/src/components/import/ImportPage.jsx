@@ -1,8 +1,12 @@
+import { observer } from "mobx-react-lite";
 import React from "react";
+import { useStore } from "../../store/helpers/use-store";
 import ImportFilter from "./ImportFilter";
 import UploadForm from "./UploadForm";
 
 function ImportPage(props) {
+  const { categoriesStore } = useStore();
+
   const [uploadedExpenses, setUploadedExpenses] = React.useState({
     source: undefined,
     entities: [],
@@ -15,9 +19,12 @@ function ImportPage(props) {
         uploadedExpenses={uploadedExpenses}
         setUploadedExpenses={setUploadedExpenses}
       />
-      <ImportFilter uploadedExpenses={uploadedExpenses} />
+      <ImportFilter
+        categoriesStore={categoriesStore}
+        uploadedExpenses={uploadedExpenses}
+      />
     </div>
   );
 }
 
-export default ImportPage;
+export default observer(ImportPage);

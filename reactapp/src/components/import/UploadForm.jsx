@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useCSVReader } from "react-papaparse";
 import { parse, isMatch } from "date-fns";
 import { parse as OFXParse } from "../../components/import/ofx-js";
+import { observer } from "mobx-react-lite";
 
 function UploadForm({ uploadedExpenses, setUploadedExpenses }) {
   const { CSVReader } = useCSVReader();
@@ -64,7 +65,7 @@ function UploadForm({ uploadedExpenses, setUploadedExpenses }) {
             return;
           }
           const validatedEntities = results.data.map((expense) => {
-            const description = expense[0];
+            const description = expense[2];
             const cost = parseFloat(expense[1]);
             const dateString = expense[0];
             const valid =
@@ -112,7 +113,7 @@ function UploadForm({ uploadedExpenses, setUploadedExpenses }) {
   );
 }
 
-export default UploadForm;
+export default observer(UploadForm);
 
 const Form = styled.div`
   display: flex;
