@@ -1,6 +1,6 @@
 import { runInAction, makeAutoObservable, action, autorun } from "mobx";
 import { CSRFTOKEN } from "../../utils/csrftoken";
-import { parse } from "date-fns";
+import { nextFriday, parse } from "date-fns";
 
 class ImportedExpense {
   id = "";
@@ -9,11 +9,12 @@ class ImportedExpense {
   date = "";
   category = "Select...";
   valid = false;
-  constructor(id, description, cost, date, category, importedExpensesStore) {
+  constructor(id, description, cost, date, valid, importedExpensesStore) {
     this.id = id;
     this.description = description;
     this.cost = cost;
     this.date = date;
+    this.valid = true;
     this.importedExpensesStore = importedExpensesStore;
     makeAutoObservable(this, {
       delete: action,
@@ -41,15 +42,13 @@ export default class ImportedExpensesStore {
       importCsvExpenses: action,
       addExpense: action,
     });
-    autorun(() => {
-      console.log(this.report);
-    });
   }
 
-  get report() {
-    return `List is now ${
-      this.list.length
-    } long. The items include ${this.list.map((item) => item?.description)}`;
+  get nextId() {
+    if (this.list.length === 0) {
+      return 1;
+    }
+    return Math.max(...this.list.map((expense) => expense.id)) + 1;
   }
 
   importOfxExpenses(expenses) {
@@ -60,7 +59,6 @@ export default class ImportedExpensesStore {
         description: expense.MEMO,
         cost: expense.TRNAMT,
         date: parse(expense.DTUSER, "yyyyMMdd", new Date()),
-        // category: "",
         valid: expense.valid,
       });
     });
@@ -70,11 +68,10 @@ export default class ImportedExpensesStore {
     this.source = "csv";
     expenses.forEach((expense) => {
       this.addExpense({
-        id: undefined,
+        id: this.nextId,
         description: expense.description,
         cost: expense.cost,
         date: expense.date,
-        // category: "",
         valid: true,
       });
     });
@@ -87,8 +84,7 @@ export default class ImportedExpensesStore {
         expense.description,
         expense.cost,
         expense.date,
-        expense.category,
-        // expense.valid,
+        expense.valid,
         this
       )
     );
