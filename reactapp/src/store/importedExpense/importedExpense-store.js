@@ -1,5 +1,6 @@
 import { runInAction, makeAutoObservable, action, autorun } from "mobx";
 import { CSRFTOKEN } from "../../utils/csrftoken";
+import { parse } from "date-fns";
 
 class ImportedExpense {
   id = "";
@@ -7,6 +8,7 @@ class ImportedExpense {
   cost = "";
   date = "";
   category = "";
+  valid = false;
   constructor(id, description, cost, date, category, importedExpensesStore) {
     this.id = id;
     this.description = description;
@@ -16,11 +18,16 @@ class ImportedExpense {
     this.importedExpensesStore = importedExpensesStore;
     makeAutoObservable(this, {
       delete: action,
+      setCategory: action,
     });
   }
 
   delete() {
     this.importedExpensesStore.deleteExpense(this);
+  }
+
+  setCategory(categoryId) {
+    this.category = categoryId;
   }
 }
 
@@ -31,6 +38,8 @@ export default class ImportedExpensesStore {
   constructor() {
     makeAutoObservable(this, {
       deleteExpense: action,
+      importOfxExpenses: action,
+      importCsvExpenses: action,
       addExpense: action,
     });
     autorun(() => {
@@ -42,6 +51,32 @@ export default class ImportedExpensesStore {
     return `List is now ${
       this.list.length
     } long. The items include ${this.list.map((item) => item?.description)}`;
+  }
+
+  importOfxExpenses(expenses) {
+    this.source = "ofx";
+    expenses.forEach((expense) => {
+      this.addExpense({
+        id: expense.FITID,
+        description: expense.MEMO,
+        cost: expense.TRNAMT,
+        date: parse(expense.DTUSER, "yyyyMMdd", new Date()),
+        valid: expense.valid,
+      });
+    });
+  }
+
+  importCsvExpenses(expenses) {
+    this.source = "csv";
+    expenses.forEach((expense) => {
+      this.addExpense({
+        id: undefined,
+        description: expense.description,
+        cost: expense.cost,
+        date: expense.date,
+        valid: true,
+      });
+    });
   }
 
   addExpense(expense) {

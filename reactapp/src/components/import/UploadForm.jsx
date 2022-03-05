@@ -5,38 +5,19 @@ import { parse, isMatch } from "date-fns";
 import { parse as OFXParse } from "../../components/import/ofx-js";
 import { observer } from "mobx-react-lite";
 
-function UploadForm({ uploadedExpenses, setUploadedExpenses }) {
+function UploadForm({ importedExpensesStore }) {
   const { CSVReader } = useCSVReader();
   const [error, setError] = useState({ status: false, message: "no error" });
+
   function handleOFXImport(event) {
     event.preventDefault();
     const reader = new FileReader();
     reader.onload = (event) => {
-      OFXParse(event.target.result)
-        .then((ofxData) => {
-          setUploadedExpenses({
-            source: "ofx",
-            entities:
-              ofxData.OFX.BANKMSGSRSV1.STMTTRNRS.STMTRS.BANKTRANLIST.STMTTRN.map(
-                (expense) => {
-                  return {
-                    id: expense.FITID,
-                    description: expense.MEMO,
-                    cost: expense.TRNAMT,
-                    date: parse(expense.DTUSER, "yyyyMMdd", new Date()),
-                  };
-                }
-              ),
-          });
-        })
-        .catch((error) => {
-          setUploadedExpenses({
-            status: "failure",
-            errorMessages: [error.message],
-            source: "ofx",
-            entities: [],
-          });
-        });
+      OFXParse(event.target.result).then((ofxData) => {
+        importedExpensesStore.importOfxExpenses(
+          ofxData.OFX.BANKMSGSRSV1.STMTTRNRS.STMTRS.BANKTRANLIST.STMTTRN
+        );
+      });
     };
     reader.readAsText(event.target.files[0]);
   }
@@ -64,7 +45,7 @@ function UploadForm({ uploadedExpenses, setUploadedExpenses }) {
             });
             return;
           }
-          const validatedEntities = results.data.map((expense) => {
+          const validatedList = results.data.map((expense) => {
             const description = expense[2];
             const cost = parseFloat(expense[1]);
             const dateString = expense[0];
@@ -73,17 +54,13 @@ function UploadForm({ uploadedExpenses, setUploadedExpenses }) {
               isMatch(dateString, "dd/MM/yyyy") &&
               typeof description === "string";
             return {
-              id: undefined,
               description,
               cost,
               date: parse(dateString, "dd/MM/yyyy", new Date()),
               valid,
             };
           });
-          setUploadedExpenses({
-            source: "csv",
-            entities: validatedEntities,
-          });
+          importedExpensesStore.importCsvExpenses(validatedList);
           setError({ status: false, message: "" });
         }}
       >

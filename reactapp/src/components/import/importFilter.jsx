@@ -3,11 +3,10 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 
-function ImportFilter({ categoriesStore, uploadedExpenses }) {
+function ImportFilter({ importedExpensesStore, categoriesStore }) {
   const params = useParams();
-  const { source, entities } = uploadedExpenses;
+  const { source, list, valid } = importedExpensesStore;
   const [assignedExpenses, setAssignedExpenses] = React.useState([]);
-  const [selectedCategoryId, setSelectedCategoryId] = React.useState(undefined);
   // Load initial categories, and set the selectory category
 
   React.useEffect(() => {
@@ -19,11 +18,11 @@ function ImportFilter({ categoriesStore, uploadedExpenses }) {
       // if (categoryFromParams) {
       //   setSelectedCategory(categoryFromParams);
       // } else {
-      setSelectedCategoryId(categoriesStore.list[0].id);
+
       // }
     }
     loadData();
-  }, [params.id, setSelectedCategoryId]);
+  }, []);
 
   function handleSelectExpense(event, expenseId) {
     setAssignedExpenses((prev) => [...prev, expenseId]);
@@ -47,7 +46,7 @@ function ImportFilter({ categoriesStore, uploadedExpenses }) {
           </tr>
         </thead>
         <tbody>
-          {entities.map((expense, index) => {
+          {list.map((expense, index) => {
             const expenseId = source === "ofx" ? expense.id : index;
             const assigned = assignedExpenses.find(
               (expenseToFind) => expenseId === expenseToFind
@@ -57,12 +56,10 @@ function ImportFilter({ categoriesStore, uploadedExpenses }) {
                 <td>
                   <select
                     className="category-select__select"
-                    value={selectedCategoryId}
-                    onChange={() =>
-                      setSelectedCategoryId(
-                        source === "ofx" ? expense.id : index
-                      )
-                    }
+                    onChange={(event) => {
+                      console.log(event.target.value);
+                      expense.setCategory(parseFloat(event.target.value));
+                    }}
                   >
                     <optgroup>
                       {categoriesStore.list.map((category) => (
@@ -88,7 +85,7 @@ function ImportFilter({ categoriesStore, uploadedExpenses }) {
 
       <ol>
         <h2>Assigned Expenses</h2>
-        {entities.map((expense, index) => {
+        {list.map((expense, index) => {
           const expenseId = source === "ofx" ? expense.id : index;
           const assigned = assignedExpenses.find(
             (expenseToFind) => expenseId === expenseToFind
