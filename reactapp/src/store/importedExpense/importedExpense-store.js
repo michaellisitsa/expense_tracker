@@ -7,14 +7,13 @@ class ImportedExpense {
   description = "";
   cost = "";
   date = "";
-  category = "";
+  category = "Select...";
   valid = false;
   constructor(id, description, cost, date, category, importedExpensesStore) {
     this.id = id;
     this.description = description;
     this.cost = cost;
     this.date = date;
-    this.category = category;
     this.importedExpensesStore = importedExpensesStore;
     makeAutoObservable(this, {
       delete: action,
@@ -61,6 +60,7 @@ export default class ImportedExpensesStore {
         description: expense.MEMO,
         cost: expense.TRNAMT,
         date: parse(expense.DTUSER, "yyyyMMdd", new Date()),
+        // category: "",
         valid: expense.valid,
       });
     });
@@ -74,6 +74,7 @@ export default class ImportedExpensesStore {
         description: expense.description,
         cost: expense.cost,
         date: expense.date,
+        // category: "",
         valid: true,
       });
     });
@@ -87,6 +88,7 @@ export default class ImportedExpensesStore {
         expense.cost,
         expense.date,
         expense.category,
+        // expense.valid,
         this
       )
     );
