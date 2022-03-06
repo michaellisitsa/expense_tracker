@@ -1,4 +1,10 @@
-import { runInAction, makeAutoObservable, action, autorun } from "mobx";
+import {
+  runInAction,
+  makeAutoObservable,
+  action,
+  autorun,
+  computed,
+} from "mobx";
 import { CSRFTOKEN } from "../../utils/csrftoken";
 import { nextFriday, parse } from "date-fns";
 
@@ -9,6 +15,7 @@ class ImportedExpense {
   date = "";
   category = "Select...";
   valid = false;
+  selected = false;
   constructor(id, description, cost, date, valid, importedExpensesStore) {
     this.id = id;
     this.description = description;
@@ -29,6 +36,10 @@ class ImportedExpense {
   setCategory(categoryId) {
     this.category = categoryId;
   }
+
+  toggleSelected() {
+    this.selected = !this.selected;
+  }
 }
 
 export default class ImportedExpensesStore {
@@ -41,7 +52,13 @@ export default class ImportedExpensesStore {
       importOfxExpenses: action,
       importCsvExpenses: action,
       addExpense: action,
+      selectedList: computed,
+      clearSelection: action,
     });
+  }
+
+  get selectedList() {
+    return this.list.filter((expense) => expense.selected);
   }
 
   get nextId() {
@@ -93,5 +110,13 @@ export default class ImportedExpensesStore {
   deleteExpense(expense) {
     const expenseToDeleteIndex = this.list.indexOf(expense);
     this.list.splice(expenseToDeleteIndex, 1);
+  }
+
+  clearAllSelected() {
+    this.list.forEach((expense) => {
+      if (expense.selected) {
+        expense.toggleSelected();
+      }
+    });
   }
 }

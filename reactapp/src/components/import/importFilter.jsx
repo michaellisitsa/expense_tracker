@@ -1,53 +1,46 @@
 import { observer } from "mobx-react-lite";
 import React from "react";
-import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import FilterRow from "./FilterRow";
 
 function ImportFilter({ importedExpensesStore, categoriesStore }) {
-  const params = useParams();
-  const [assignedExpenses, setAssignedExpenses] = React.useState([]);
-  // Load initial categories, and set the selectory category
+  const [editMode, setEditMode] = React.useState(false);
 
+  // Load initial categories, and set the selectory category
   React.useEffect(() => {
     async function loadData() {
       await categoriesStore.loadCategories();
-      // const categoryFromParams = categoriesStore.list.find(
-      //   (result) => result.id === parseFloat(params.id)
-      // );
-      // if (categoryFromParams) {
-      //   setSelectedCategory(categoryFromParams);
-      // } else {
-
-      // }
     }
     loadData();
   }, []);
 
-  function handleSelectExpense(event, expenseId) {
-    setAssignedExpenses((prev) => [...prev, expenseId]);
-  }
-
-  function handleUnselectExpense(event, expenseId) {
-    setAssignedExpenses((prev) =>
-      prev.filter((prevId) => prevId !== expenseId)
-    );
+  function handleEditModeToggle() {
+    importedExpensesStore.clearAllSelected();
+    setEditMode((bool) => !bool);
   }
 
   return (
-    <ColumnsWrapper>
+    <div>
+      <EditRow>
+        <button onClick={handleEditModeToggle}>
+          {editMode ? "End Edit Mode" : "Edit Mode"}
+        </button>
+      </EditRow>
       <ImportTable>
-        <caption>Our products</caption>
+        <caption>Imported Expenses</caption>
         <thead>
           <tr>
-            <th>Name</th>
-            <th>Price</th>
-            <th>In Stock</th>
+            <th>Description</th>
+            <th>Cost</th>
+            <th>Date</th>
+            <th>Category</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
           {importedExpensesStore.list.map((expense) => (
             <FilterRow
+              editMode={editMode}
               key={expense.id}
               expense={expense}
               categoriesStore={categoriesStore}
@@ -55,38 +48,27 @@ function ImportFilter({ importedExpensesStore, categoriesStore }) {
           ))}
         </tbody>
       </ImportTable>
-    </ColumnsWrapper>
+    </div>
   );
 }
 
 export default observer(ImportFilter);
 
-const ColumnsWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
-
-  > ol {
-    width: 49%;
-  }
-`;
-
-// TO DELETE
-const ExpenseItem = styled.li`
-  ${(props) => props.valid || "color: grey; cursor: not-allowed"}
+const EditRow = styled.div`
+  background: white;
 `;
 
 const ImportTable = styled.table`
   border-collapse: collapse;
   width: 100%;
 
-  th,
-  td {
+  caption {
+    font-size: 32px;
+  }
+
+  th {
     padding: 8px;
     text-align: left;
     border-bottom: 1px solid #ddd;
-  }
-
-  tr:hover {
-    background-color: lightgrey;
   }
 `;
