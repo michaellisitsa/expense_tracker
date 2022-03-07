@@ -1,6 +1,7 @@
 import { observer } from "mobx-react-lite";
 import React from "react";
 import styled from "styled-components";
+import PrimaryButton from "../../uiKit/button/PrimaryButton";
 import FilterRow from "./FilterRow";
 
 function ImportFilter({ importedExpensesStore, categoriesStore }) {
@@ -22,9 +23,9 @@ function ImportFilter({ importedExpensesStore, categoriesStore }) {
   return (
     <div>
       <EditRow>
-        <button onClick={handleEditModeToggle}>
-          {editMode ? "End Edit Mode" : "Edit Mode"}
-        </button>
+        <PrimaryButton onClick={handleEditModeToggle} selected={editMode}>
+          Edit Mode
+        </PrimaryButton>
       </EditRow>
       <ImportTable>
         <caption>Imported Expenses</caption>
@@ -55,7 +56,9 @@ function ImportFilter({ importedExpensesStore, categoriesStore }) {
 export default observer(ImportFilter);
 
 const EditRow = styled.div`
-  background: white;
+  display: flex;
+  gap: 1em;
+  margin: 0 1em;
 `;
 
 const ImportTable = styled.table`
