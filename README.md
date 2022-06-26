@@ -7,6 +7,8 @@ linux extras
 https://stackoverflow.com/a/63204453
 Change to t3 micro in command line
 eb create --single -db -db.engine postgres -db.i db.t3.micro
+Change namespace for staticfiles to
+https://stackoverflow.com/a/63156811
 
 ## Progress
 Visit the live website on:
