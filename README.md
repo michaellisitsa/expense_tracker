@@ -1,5 +1,14 @@
 # expense_tracker
 
+## Docker
+how to set up postgres in python.config
+https://www.1strategy.com/blog/2017/05/23/tutorial-django-elastic-beanstalk/
+linux extras
+https://stackoverflow.com/a/63204453
+Change to t3 micro in command line
+eb create --single -db -db.engine postgres -db.i db.t3.micro
+
+## Progress
 Visit the live website on:
 [https://web-expense-tracker.herokuapp.com/](https://web-expense-tracker.herokuapp.com/)
 
