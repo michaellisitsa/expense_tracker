@@ -33,3 +33,14 @@ Refer post https://dev.to/shakib609/deploy-your-django-react-js-app-to-heroku-2b
 - Run `python manage.py runserver` in the root directory
 - For now, you need to authenticate via the standard Django server localhost:8000/
 - Then for hot reloading, run `cd reactapp; npm start` and navigate to localhost:3000
+
+# Get EB cli on path
+   Note: To complete installation, ensure `eb` is in PATH. You can ensure this by executing:
+
+    1. Bash:
+
+       echo 'export PATH="/home/lisitsa/.ebcli-virtual-env/executables:$PATH"' >> ~/.bash_profile && source ~/.bash_profile
+
+    2. Zsh:
+
+       echo 'export PATH="/home/lisitsa/.ebcli-virtual-env/executables:$PATH"' >> ~/.zshenv && source ~/.zshenv
