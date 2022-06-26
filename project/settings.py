@@ -40,7 +40,7 @@ SECRET_KEY = env("SECRET_KEY")
 DEBUG = env("DEBUG")
 DEBUG_TOOLBAR = env("DEBUG_TOOLBAR")
 
-ALLOWED_HOSTS: List[str] = []
+ALLOWED_HOSTS: List[str] = ["expense-tracker-dev.ap-southeast-2.elasticbeanstalk.com/"]
 
 
 # Application definition
