@@ -9,6 +9,8 @@ Change to t3 micro in command line
 eb create --single -db -db.engine postgres -db.i db.t3.micro
 Change namespace for staticfiles to
 https://stackoverflow.com/a/63156811
+Change how you run migrate
+https://stackoverflow.com/a/63074854
 
 ## Progress
 Visit the live website on:
