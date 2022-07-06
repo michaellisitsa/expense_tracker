@@ -46,3 +46,6 @@ Refer post https://dev.to/shakib609/deploy-your-django-react-js-app-to-heroku-2b
     2. Zsh:
 
        echo 'export PATH="/home/lisitsa/.ebcli-virtual-env/executables:$PATH"' >> ~/.zshenv && source ~/.zshenv
+
+# Add yourself as user to the the EC2 instance
+https://www.digitalocean.com/community/questions/how-to-fix-docker-got-permission-denied-while-trying-to-connect-to-the-docker-daemon-socket

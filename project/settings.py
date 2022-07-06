@@ -119,6 +119,7 @@ WSGI_APPLICATION = "project.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
+# https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/using-features.managing.db.html
 if 'RDS_DB_NAME' in os.environ:
     DATABASES = {
         'default': {
