@@ -1,4 +1,4 @@
-FROM node
+FROM node:14.18.3-alpine
 
 WORKDIR /nodebuild
 ADD reactapp /nodebuild
