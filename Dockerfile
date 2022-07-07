@@ -1,18 +1,14 @@
-FROM node:14.18.3-alpine
-
-WORKDIR /nodebuild
-ADD reactapp /nodebuild
-
-RUN npm install && npm run build
 
 # syntax=docker/dockerfile:1
-FROM python:3
+FROM nikolaik/python-nodejs:python3.9-nodejs14
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 WORKDIR /code
 COPY requirements.txt /code/
 RUN pip install -r requirements.txt
-EXPOSE 8000
 COPY . /code/
-COPY --from=0 /nodebuild/build /code/reactapp/build
+WORKDIR /code/reactapp
+RUN npm install && npm run build
+WORKDIR /code
+EXPOSE 8000
 CMD [ "python", "./manage.py", "runserver", "0.0.0.0:8000"]
