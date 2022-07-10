@@ -246,4 +246,4 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "reactapp/build/static"),
 ]
 
-CSRF_TRUSTED_ORIGINS = ['http://localhost',"http://expense-tracker-dev.ap-southeast-2.elasticbeanstalk.com/"]
+CSRF_TRUSTED_ORIGINS = ['http://localhost',"http://expense-tracker-dev.ap-southeast-2.elasticbeanstalk.com"]
