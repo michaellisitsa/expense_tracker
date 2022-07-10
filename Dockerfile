@@ -11,4 +11,5 @@ WORKDIR /code/reactapp
 RUN npm install && npm run build
 WORKDIR /code
 EXPOSE 8000
-CMD [ "python", "./manage.py", "runserver", "0.0.0.0:8000"]
+COPY ./entrypoint.sh /code/
+ENTRYPOINT ["sh","entrypoint.sh"]
