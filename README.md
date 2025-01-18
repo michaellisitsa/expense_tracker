@@ -1,6 +1,30 @@
 # expense_tracker
 
 ## Docker
+
+- Seed a DB
+
+```bash
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+python manage.py migrate
+```
+
+- Add a `.env` file to the root folder with a SECRET_KEY and DEBUG set to TRUE
+
+```bash
+echo "SECRET_KEY=$(openssl rand -base64 32)" > .env
+echo "DEBUG=TRUE" >> .env
+```
+
+- Install app
+
+```bash
+docker compose build
+docker compose up
+```
+
 how to set up postgres in python.config
 https://www.1strategy.com/blog/2017/05/23/tutorial-django-elastic-beanstalk/
 linux extras
@@ -13,6 +37,7 @@ Change how you run migrate
 https://stackoverflow.com/a/63074854
 
 ## Progress
+
 Visit the live website on:
 [https://web-expense-tracker.herokuapp.com/](https://web-expense-tracker.herokuapp.com/)
 
@@ -37,7 +62,8 @@ Refer post https://dev.to/shakib609/deploy-your-django-react-js-app-to-heroku-2b
 - Then for hot reloading, run `cd reactapp; npm start` and navigate to localhost:3000
 
 # Get EB cli on path
-   Note: To complete installation, ensure `eb` is in PATH. You can ensure this by executing:
+
+Note: To complete installation, ensure `eb` is in PATH. You can ensure this by executing:
 
     1. Bash:
 
@@ -48,4 +74,5 @@ Refer post https://dev.to/shakib609/deploy-your-django-react-js-app-to-heroku-2b
        echo 'export PATH="/home/lisitsa/.ebcli-virtual-env/executables:$PATH"' >> ~/.zshenv && source ~/.zshenv
 
 # Add yourself as user to the the EC2 instance
+
 https://www.digitalocean.com/community/questions/how-to-fix-docker-got-permission-denied-while-trying-to-connect-to-the-docker-daemon-socket
