@@ -1,6 +1,20 @@
-# expense_tracker
+# Expense Tracker
 
-## Docker
+![Screenshot of the App](_media/screenshot.jpg)
+
+Is your discretionary spending creeping up? Do you even know how much you’re spending on Uber Eats per month? I know what you’re thinking -> I’ll track my expenses. Really? Will you spend hours per week listing out each of your expenses and laboriously putting it into that clunky spreadsheet?
+
+Fear not!! Enter as little or as much expenses as you like. We’ll crunch the numbers and figure out your average expenses. We’ll give you monthly averages over weeks, months and years. We’ll show you a nice chart so you can see things visually also!!
+
+## Technology
+
+- React JS
+- Python Django
+- Docker
+- Nginx
+- SQLite
+
+## Get Started
 
 - Seed a DB
 
