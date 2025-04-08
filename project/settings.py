@@ -120,29 +120,12 @@ WSGI_APPLICATION = "project.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 # https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/using-features.managing.db.html
-if 'RDS_DB_NAME' in os.environ:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': os.environ['RDS_DB_NAME'],
-            'USER': os.environ['RDS_USERNAME'],
-            'PASSWORD': os.environ['RDS_PASSWORD'],
-            'HOST': os.environ['RDS_HOSTNAME'],
-            'PORT': os.environ['RDS_PORT'],
-        }
-    }
-else:
-    DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('POSTGRES_NAME'),
-        'USER': os.environ.get('POSTGRES_USER'),
-        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
-        'HOST': 'db',
-        'PORT': 5432,
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -246,4 +229,7 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "reactapp/build/static"),
 ]
 
-CSRF_TRUSTED_ORIGINS = ['http://localhost',"http://expense-tracker-dev.ap-southeast-2.elasticbeanstalk.com"]
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost",
+    "http://expense-tracker-dev.ap-southeast-2.elasticbeanstalk.com",
+]
